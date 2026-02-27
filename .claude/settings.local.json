@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install bcryptjs && npm install -D @types/bcryptjs)",
+      "Bash(npm run type-check 2>&1 | head -10)",
+      "Bash(sleep 3 && curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/ 2>/dev/null || echo \"Server error\")",
+      "Bash(npm run db:seed)",
+      "Bash(sleep 2 && curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/ 2>/dev/null || echo \"Server error\")",
+      "Bash(sleep 3 && curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/schedule 2>/dev/null || echo \"Server error\")",
+      "Bash(npm run type-check 2>&1 | head -20)",
+      "Bash(sleep 2 && curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/schedule 2>/dev/null || echo \"Server error\")",
+      "Bash(curl -s http://localhost:3000/api/schedule 2>&1 | head -20)",
+      "Bash(nvim --headless +\"lua print\\('Theme:', vim.g.colors_name\\)\" +\"lua print\\('Lazy loaded:', pcall\\(require, 'lazy'\\)\\)\" +\"lua print\\('LSP available:', pcall\\(require, 'lspconfig'\\)\\)\" +q 2>&1 | grep -E \"\\(Theme|Lazy|LSP|Error|error\\)\")"
+    ]
+  }
+}

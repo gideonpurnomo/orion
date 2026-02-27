@@ -1,0 +1,215 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Multi-tenancy
+model Organization {
+  id          String    @id @default(cuid())
+  name        String
+  type        OrgType   @default(INDIVIDUAL)
+  settings    Json?
+  members     Member[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Member {
+  id             String      @id @default(cuid())
+  organizationId String
+  userId         String
+  role           MemberRole  @default(MEMBER)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime    @default(now())
+
+  @@unique([organizationId, userId])
+}
+
+// Learning Content
+model Domain {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  icon        String?
+  description String?
+  color       String?    // For UI theming
+  order       Int        @default(0)
+  categories  Category[]
+  activities  Activity[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  domainId    String
+  name        String
+  slug        String
+  description String?
+  order       Int        @default(0)
+  domain      Domain     @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  activities  Activity[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([domainId, slug])
+}
+
+model Activity {
+  id            String        @id @default(cuid())
+  domainId      String?
+  categoryId    String?
+  title         String
+  slug          String
+  description   String?       @db.Text
+  difficulty    Int           // 1-10
+  duration      Int           // minutes
+  prerequisites String[]      // array of activity IDs
+  tags          String[]
+  order         Int           @default(0)
+  domain        Domain?       @relation(fields: [domainId], references: [id], onDelete: SetNull)
+  category      Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  scheduleItems ScheduleItem[]
+  progress      Progress[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@unique([domainId, categoryId, slug])
+}
+
+// Scheduling
+model Schedule {
+  id             String        @id @default(cuid())
+  organizationId String?
+  userId         String?
+  name           String
+  type           ScheduleType  @default(DAILY)
+  startDate      DateTime
+  endDate        DateTime?
+  items          ScheduleItem[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([organizationId])
+}
+
+model ScheduleItem {
+  id           String     @id @default(cuid())
+  scheduleId   String
+  activityId   String
+  scheduledFor DateTime
+  duration     Int?       // override activity default duration
+  status       ItemStatus @default(PLANNED)
+  notes        String?    @db.Text
+  actualDuration Int?     // actual time spent
+  schedule     Schedule   @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  activity     Activity   @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([scheduleId])
+  @@index([scheduledFor])
+}
+
+// Progress & Analytics
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  activityId  String
+  completedAt DateTime
+  notes       String?  @db.Text
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity    Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, activityId, completedAt])
+  @@index([userId])
+  @@index([activityId])
+}
+
+// User Management
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  image     String?
+  password  String?   // For email/password authentication
+  accounts  Account[]
+  sessions  Session[]
+  members   Member[]
+  progress  Progress[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Enums
+enum OrgType {
+  INDIVIDUAL
+  TEAM
+  EDUCATOR
+  ORGANIZATION
+}
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+  STUDENT
+}
+
+enum ScheduleType {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum ItemStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
+}
