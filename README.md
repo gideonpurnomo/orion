@@ -1,4 +1,4 @@
-# Learning Schedule Orchestrator
+# Orion
 
 A multi-tenant learning and task orchestration platform for planning and tracking daily, weekly, and monthly learning schedules across multiple domains (cooking, programming, music, fitness, etc.).
 
@@ -39,8 +39,8 @@ A multi-tenant learning and task orchestration platform for planning and trackin
 
 1. **Clone the repository**
 ```bash
-git clone <your-repo-url>
-cd learning-schedule-orchestrator
+git clone https://github.com/gideonpurnomo/orion.git
+cd orion
 ```
 
 2. **Install dependencies**
@@ -97,7 +97,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## 📁 Project Structure
 
 ```
-learning-schedule-orchestrator/
+orion/
 ├── app/                    # Next.js app directory
 │   ├── api/               # API routes
 │   ├── dashboard/         # Dashboard pages
