@@ -10,7 +10,18 @@
       "Bash(npm run type-check 2>&1 | head -20)",
       "Bash(sleep 2 && curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/schedule 2>/dev/null || echo \"Server error\")",
       "Bash(curl -s http://localhost:3000/api/schedule 2>&1 | head -20)",
-      "Bash(nvim --headless +\"lua print\\('Theme:', vim.g.colors_name\\)\" +\"lua print\\('Lazy loaded:', pcall\\(require, 'lazy'\\)\\)\" +\"lua print\\('LSP available:', pcall\\(require, 'lspconfig'\\)\\)\" +q 2>&1 | grep -E \"\\(Theme|Lazy|LSP|Error|error\\)\")"
+      "Bash(nvim --headless +\"lua print\\('Theme:', vim.g.colors_name\\)\" +\"lua print\\('Lazy loaded:', pcall\\(require, 'lazy'\\)\\)\" +\"lua print\\('LSP available:', pcall\\(require, 'lspconfig'\\)\\)\" +q 2>&1 | grep -E \"\\(Theme|Lazy|LSP|Error|error\\)\")",
+      "Bash(curl -s -H \"Authorization: token YOUR_GITHUB_TOKEN_HERE\" https://api.github.com/repos/gideonpurnomo/orion | grep -A5 \"default_branch\")",
+      "Bash(curl -s -H \"Authorization: token YOUR_GITHUB_TOKEN_HERE\" https://api.github.com/repos/gideonpurnomo/orion/branches/main/protection 2>&1 | head -20)",
+      "Bash(test -f ~/.ssh/id_rsa.pub && echo \"SSH key found\" || echo \"No SSH key found\")",
+      "Bash(curl -s -H \"Authorization: token YOUR_GITHUB_TOKEN_HERE\" https://api.github.com/user 2>&1 | grep -E '\"type\"|\"site_admin\"' | head -5)",
+      "Bash(ps aux --sort=-%mem | head -20)",
+      "Bash(systemctl --failed)",
+      "Bash(kill 16200 15272 28776)",
+      "Bash(git restore --staged .claude/settings.local.json && git status)",
+      "Bash(git add -u && git status)",
+      "Bash(git reset HEAD .claude/settings.local.json && git status)",
+      "Bash(git add -A && git status --short)"
     ]
   }
 }

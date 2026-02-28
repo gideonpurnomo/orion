@@ -55,7 +55,7 @@ export default function TimerDisplay({
   const isCompleted = remainingSeconds === 0
 
   return (
-    <div className="bg-slate-800 border border-purple-500/30 rounded-2xl max-w-md w-full p-6 shadow-2xl shadow-purple-500/30">
+    <div className="bg-slate-800 border border-blue-500/30 rounded-2xl max-w-md w-full p-6 shadow-2xl shadow-blue-500/30">
       {/* Header */}
       <div className="text-center mb-6">
         <div

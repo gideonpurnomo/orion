@@ -35,7 +35,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -50,7 +50,7 @@ export default function DashboardPage() {
                 Library
               </Link>
             </Button>
-            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0" asChild>
+            <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0" asChild>
               <Link href="/schedule">
                 <Calendar className="h-4 w-4 mr-2" />
                 Schedule
@@ -60,18 +60,18 @@ export default function DashboardPage() {
         </div>
 
         {/* Progress Card */}
-        <Card className="mb-6 border-2 border-purple-500/30 bg-white/5 backdrop-blur-sm shadow-xl shadow-purple-500/20">
+        <Card className="mb-6 border-2 border-blue-500/30 bg-white/5 backdrop-blur-sm shadow-xl shadow-blue-500/20">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <Zap className="h-5 w-5 text-purple-400" />
+                  <Zap className="h-5 w-5 text-blue-400" />
                   Today's Progress
                 </CardTitle>
                 <CardDescription className="text-gray-400">Track your daily learning journey</CardDescription>
               </div>
               <div className="text-right">
-                <div className="text-3xl font-bold text-purple-400">{completionRate}%</div>
+                <div className="text-3xl font-bold text-blue-400">{completionRate}%</div>
                 <div className="text-sm text-gray-500">Complete</div>
               </div>
             </div>

@@ -179,7 +179,7 @@ export default function SchedulePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Error Notification */}
       {error && (
         <div className="fixed top-4 right-4 z-50 bg-red-500/90 backdrop-blur-sm text-white px-6 py-4 rounded-lg shadow-lg max-w-md">
@@ -238,7 +238,7 @@ export default function SchedulePage() {
               <h1 className="text-3xl font-bold text-white">Schedule</h1>
               <p className="text-gray-400">Plan and manage your learning schedule</p>
             </div>
-            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0">
+            <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0">
               <Plus className="h-4 w-4 mr-2" />
               Add Activity
             </Button>
@@ -252,7 +252,7 @@ export default function SchedulePage() {
             onClick={() => setView('day')}
             className={`transition-all duration-300 ${
               view === 'day'
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 shadow-lg shadow-purple-500/30'
+                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0 shadow-lg shadow-blue-500/30'
                 : 'border-white/20 text-white hover:bg-white/10 hover:border-white/40'
             }`}
           >
@@ -263,7 +263,7 @@ export default function SchedulePage() {
             onClick={() => setView('week')}
             className={`transition-all duration-300 ${
               view === 'week'
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 shadow-lg shadow-purple-500/30'
+                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0 shadow-lg shadow-blue-500/30'
                 : 'border-white/20 text-white hover:bg-white/10 hover:border-white/40'
             }`}
           >
@@ -274,7 +274,7 @@ export default function SchedulePage() {
             onClick={() => setView('month')}
             className={`transition-all duration-300 ${
               view === 'month'
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 shadow-lg shadow-purple-500/30'
+                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0 shadow-lg shadow-blue-500/30'
                 : 'border-white/20 text-white hover:bg-white/10 hover:border-white/40'
             }`}
           >
@@ -295,7 +295,7 @@ export default function SchedulePage() {
             <CardContent>
               {isLoading ? (
                 <div className="flex items-center justify-center py-20">
-                  <Loader2 className="h-8 w-8 text-purple-400 animate-spin" />
+                  <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
                 </div>
               ) : error ? (
                 <div className="text-center py-12">
@@ -322,7 +322,7 @@ export default function SchedulePage() {
                       {/* Time Column */}
                       <div className="font-semibold text-sm text-gray-500 py-2">Time</div>
                       {days.map((day) => (
-                        <div key={day} className="font-semibold text-sm text-center py-2 bg-purple-500/20 rounded text-white">
+                        <div key={day} className="font-semibold text-sm text-center py-2 bg-blue-500/20 rounded text-white">
                           {day}
                         </div>
                       ))}
@@ -346,7 +346,7 @@ export default function SchedulePage() {
                                 onClick={() => item && handleActivityClick(item)}
                                 className={`border border-white/10 rounded-lg p-2 min-h-[60px] transition-all duration-300 ${
                                   item
-                                    ? 'cursor-pointer hover:border-purple-400/50 hover:bg-purple-500/10'
+                                    ? 'cursor-pointer hover:border-blue-400/50 hover:bg-blue-500/10'
                                     : 'cursor-default'
                                 }`}
                               >
@@ -382,7 +382,7 @@ export default function SchedulePage() {
             <CardContent>
               {isLoading ? (
                 <div className="flex items-center justify-center py-20">
-                  <Loader2 className="h-8 w-8 text-purple-400 animate-spin" />
+                  <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
                 </div>
               ) : error ? (
                 <div className="text-center py-12">
@@ -415,7 +415,7 @@ export default function SchedulePage() {
                       <div
                         key={item.id}
                         onClick={() => handleActivityClick(item)}
-                        className="group flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg hover:border-purple-400/50 hover:bg-white/10 transition-all duration-300 cursor-pointer hover:scale-[1.02]"
+                        className="group flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg hover:border-blue-400/50 hover:bg-white/10 transition-all duration-300 cursor-pointer hover:scale-[1.02]"
                       >
                         <div className="flex items-center gap-4">
                           <div className="text-2xl">{item.domain?.icon}</div>
@@ -463,8 +463,8 @@ export default function SchedulePage() {
                   return (
                     <div
                       key={i}
-                      className={`border border-white/10 rounded-lg p-2 min-h-[80px] hover:border-purple-400/50 hover:bg-purple-500/10 transition-all duration-300 ${
-                        dayHasActivity ? 'bg-purple-500/20 border-purple-400/50' : ''
+                      className={`border border-white/10 rounded-lg p-2 min-h-[80px] hover:border-blue-400/50 hover:bg-blue-500/10 transition-all duration-300 ${
+                        dayHasActivity ? 'bg-blue-500/20 border-blue-400/50' : ''
                       }`}
                     >
                       {day > 0 && day <= 28 && (
@@ -482,7 +482,7 @@ export default function SchedulePage() {
                                   <div
                                     key={item.id}
                                     onClick={() => handleActivityClick(item)}
-                                    className={`text-xs bg-purple-500/30 text-purple-200 rounded px-1 py-0.5 truncate hover:bg-purple-500/50 transition-colors`}
+                                    className={`text-xs bg-blue-500/30 text-blue-200 rounded px-1 py-0.5 truncate hover:bg-blue-500/50 transition-colors`}
                                   >
                                     {item.domain?.icon} {item.title.substring(0, 15)}
                                   </div>

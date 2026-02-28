@@ -6,8 +6,8 @@ import { SessionProvider } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Proterm - Terminate Procrastination",
-  description: "Procrastinate less, terminate more. Make your schedule proper with Proterm.",
+  title: "Orion - Learning Schedule Orchestrator",
+  description: "Orchestrate your learning journey. Master any skill with Orion's intelligent scheduling system.",
 };
 
 export default function RootLayout({
