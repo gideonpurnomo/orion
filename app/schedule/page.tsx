@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -46,7 +46,7 @@ interface Activity {
   }
 }
 
-export default function SchedulePage() {
+function ScheduleContent() {
   const searchParams = useSearchParams()
   const addActivityId = searchParams.get('add')
 
@@ -500,5 +500,17 @@ export default function SchedulePage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function SchedulePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
+      </div>
+    }>
+      <ScheduleContent />
+    </Suspense>
   )
 }
