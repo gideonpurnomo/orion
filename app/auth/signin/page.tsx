@@ -50,15 +50,15 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl mb-4 shadow-2xl shadow-purple-500/30">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl mb-4 shadow-2xl shadow-blue-500/30">
             <span className="text-3xl font-black text-white">Pt</span>
           </div>
           <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-          <p className="text-gray-400 mt-1">Sign in to Proterm</p>
+          <p className="text-gray-400 mt-1">Sign in to Orion</p>
         </div>
 
         {/* Sign In Card */}
@@ -87,7 +87,7 @@ export default function SignInPage() {
                     placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-white/5 border-white/20 text-white placeholder:text-gray-600 focus:border-purple-400"
+                    className="pl-10 bg-white/5 border-white/20 text-white placeholder:text-gray-600 focus:border-blue-400"
                     required
                     disabled={isLoading}
                   />
@@ -106,14 +106,14 @@ export default function SignInPage() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 bg-white/5 border-white/20 text-white placeholder:text-gray-600 focus:border-purple-400"
+                    className="pl-10 bg-white/5 border-white/20 text-white placeholder:text-gray-600 focus:border-blue-400"
                     required
                     disabled={isLoading}
                   />
                 </div>
               </div>
 
-              <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 hover:scale-[1.02]" disabled={isLoading}>
+              <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-blue-700 hover:to-cyan-700 border-0 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-[1.02]" disabled={isLoading}>
                 {isLoading ? 'Signing in...' : 'Sign In'}
                 {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
               </Button>
@@ -165,7 +165,7 @@ export default function SignInPage() {
         {/* Sign Up Link */}
         <p className="text-center text-sm text-gray-400">
           Don't have an account?{' '}
-          <Link href="/auth/signup" className="text-purple-400 hover:text-purple-300 font-medium transition-colors">
+          <Link href="/auth/signup" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
             Sign up
           </Link>
         </p>
