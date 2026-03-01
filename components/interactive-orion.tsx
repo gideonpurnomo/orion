@@ -175,7 +175,7 @@ export default function InteractiveOrion() {
     // Draw simplified spiral galaxy (2 arms instead of 3)
     for (let i = 0; i < 2; i++) {
       const armOffset = (Math.PI * 2 / 2) * i
-      const gradient = ctx.createRadialGradient(0, 0, 0, 0, 200)
+      const gradient = ctx.createRadialGradient(0, 0, 0, 200)
 
       gradient.addColorStop(0, `rgba(100, 149, 237, ${0.06 - i * 0.02})`)
       gradient.addColorStop(0.5, `rgba(138, 180, 248, ${0.03 - i * 0.01})`)
