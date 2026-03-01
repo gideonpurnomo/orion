@@ -176,11 +176,9 @@ export default function InteractiveOrion() {
     for (let i = 0; i < 2; i++) {
       const armOffset = (Math.PI * 2 / 2) * i
       const gradient = ctx.createRadialGradient(0, 0, 0, 200)
-      const alpha1 = 0.06 - i * 0.02
-      const alpha2 = 0.03 - i * 0.01
 
-      gradient.addColorStop(0, `rgba(100, 149, 237, ${alpha1})`)
-      gradient.addColorStop(0.5, `rgba(138, 180, 248, ${alpha2})`)
+      gradient.addColorStop(0, 'rgba(100, 149, 237, 0.06)')
+      gradient.addColorStop(0.5, 'rgba(138, 180, 248, 0.03)')
       gradient.addColorStop(1, 'rgba(100, 149, 237, 0)')
 
       ctx.beginPath()
@@ -224,7 +222,7 @@ export default function InteractiveOrion() {
 
       ctx.beginPath()
       ctx.arc(x, y, star.size * starTwinkle, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * starTwinkle * 1.2})`
+      ctx.fillStyle = 'rgba(255, 255, 255, ' + star.opacity * starTwinkle * 1.2 + ')'
       ctx.fill()
     })
   }
@@ -263,8 +261,8 @@ export default function InteractiveOrion() {
 
       // Draw particle
       const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2)
-      gradient.addColorStop(0, `rgba(100, 180, 248, ${p.opacity})`)
-      gradient.addColorStop(0.5, `rgba(138, 180, 248, ${p.opacity * 0.5})`)
+      gradient.addColorStop(0, 'rgba(100, 180, 248, ' + p.opacity + ')')
+      gradient.addColorStop(0.5, 'rgba(138, 180, 248, ' + (p.opacity * 0.5) + ')')
       gradient.addColorStop(1, 'rgba(100, 180, 248, 0)')
 
       ctx.beginPath()
@@ -305,9 +303,9 @@ export default function InteractiveOrion() {
       const y2 = (toStar.y / 100) * height + offsetY * parallax
 
       const gradient = ctx.createLinearGradient(x1, y1, x2, y2)
-      gradient.addColorStop(0, `rgba(100, 149, 237, ${conn.opacity * 0.8})`)
-      gradient.addColorStop(0.5, `rgba(138, 180, 248, ${conn.opacity * 0.5})`)
-      gradient.addColorStop(1, `rgba(100, 149, 237, ${conn.opacity * 0.8})`)
+      gradient.addColorStop(0, 'rgba(100, 149, 237, ' + conn.opacity * 0.8 + ')')
+      gradient.addColorStop(0.5, 'rgba(138, 180, 248, ' + conn.opacity * 0.5 + ')')
+      gradient.addColorStop(1, 'rgba(100, 149, 237, ' + conn.opacity * 0.8 + ')')
 
       ctx.beginPath()
       ctx.moveTo(x1, y1)
@@ -326,9 +324,9 @@ export default function InteractiveOrion() {
 
       // Glow
       const gradient = ctx.createRadialGradient(x, y, 0, x, y, size * 3)
-      gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity})`)
-      gradient.addColorStop(0.3, `rgba(100, 149, 237, ${star.opacity * 0.6})`)
-      gradient.addColorStop(0.7, `rgba(138, 180, 248, ${star.opacity * 0.3})`)
+      gradient.addColorStop(0, 'rgba(255, 255, 255, ' + star.opacity + ')')
+      gradient.addColorStop(0.3, 'rgba(100, 149, 237, ' + star.opacity * 0.6 + ')')
+      gradient.addColorStop(0.7, 'rgba(138, 180, 248, ' + star.opacity * 0.3 + ')')
       gradient.addColorStop(1, 'rgba(100, 149, 237, 0)')
 
       ctx.beginPath()
@@ -339,7 +337,7 @@ export default function InteractiveOrion() {
       // Core
       ctx.beginPath()
       ctx.arc(x, y, size * 1.2, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * twinkle})`
+      ctx.fillStyle = 'rgba(255, 255, 255, ' + star.opacity * twinkle + ')'
       ctx.fill()
     })
   }
