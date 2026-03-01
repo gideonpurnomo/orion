@@ -176,9 +176,11 @@ export default function InteractiveOrion() {
     for (let i = 0; i < 2; i++) {
       const armOffset = (Math.PI * 2 / 2) * i
       const gradient = ctx.createRadialGradient(0, 0, 0, 200)
+      const alpha1 = 0.06 - i * 0.02
+      const alpha2 = 0.03 - i * 0.01
 
-      gradient.addColorStop(0, `rgba(100, 149, 237, ${0.06 - i * 0.02})`)
-      gradient.addColorStop(0.5, `rgba(138, 180, 248, ${0.03 - i * 0.01})`)
+      gradient.addColorStop(0, `rgba(100, 149, 237, ${alpha1})`)
+      gradient.addColorStop(0.5, `rgba(138, 180, 248, ${alpha2})`)
       gradient.addColorStop(1, 'rgba(100, 149, 237, 0)')
 
       ctx.beginPath()
