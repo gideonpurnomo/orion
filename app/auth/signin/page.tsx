@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -15,6 +15,22 @@ export default function SignInPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [hasGoogleProvider, setHasGoogleProvider] = useState(false)
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        const response = await fetch('/api/auth/providers')
+        if (!response.ok) return
+        const providers = await response.json()
+        setHasGoogleProvider(!!providers?.google)
+      } catch (err) {
+        setHasGoogleProvider(false)
+      }
+    }
+
+    fetchProviders()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -130,7 +146,7 @@ export default function SignInPage() {
             </div>
 
             {/* Google Sign In */}
-            {process.env.GOOGLE_CLIENT_ID && (
+            {hasGoogleProvider && (
               <Button
                 type="button"
                 variant="outline"

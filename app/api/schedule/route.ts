@@ -1,21 +1,69 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { z } from 'zod'
+import { getXPReward } from '@/lib/xp'
+
+function getCurrentWeekRange(date = new Date()) {
+  const startOfWeek = new Date(date)
+  startOfWeek.setHours(0, 0, 0, 0)
+  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay())
+
+  const endOfWeek = new Date(startOfWeek)
+  endOfWeek.setDate(startOfWeek.getDate() + 6)
+  endOfWeek.setHours(23, 59, 59, 999)
+
+  return { startOfWeek, endOfWeek }
+}
+
+const createScheduleItemSchema = z.object({
+  activityId: z.string().min(1),
+  scheduledFor: z.string().datetime(),
+  duration: z.number().int().min(1).max(24 * 60).optional(),
+  notes: z.string().max(2000).optional().nullable(),
+})
+
+const updateScheduleItemSchema = z.object({
+  itemId: z.string().min(1),
+  scheduledFor: z.string().datetime(),
+})
+
+const updateStatusSchema = z.object({
+  itemId: z.string().min(1),
+  status: z.enum(['PLANNED', 'IN_PROGRESS', 'COMPLETED', 'SKIPPED']),
+})
+
+const scheduleRangeSchema = z.object({
+  start: z.string().datetime().optional(),
+  end: z.string().datetime().optional(),
+})
 
 export async function GET(request: Request) {
   const session = await auth()
 
   if (!session?.user?.id) {
-    return NextResponse.json({ items: [] })
+    return NextResponse.json(
+      { error: 'Unauthorized', code: 'UNAUTHORIZED' },
+      { status: 401 }
+    )
   }
 
   try {
     const userId = session.user.id
 
-    // Get start of week for filtering
-    const now = new Date()
-    const startOfWeek = new Date(now)
-    startOfWeek.setDate(now.getDate() - now.getDay())
+    const { searchParams } = new URL(request.url)
+    const rangeParams = scheduleRangeSchema.safeParse({
+      start: searchParams.get('start') ?? undefined,
+      end: searchParams.get('end') ?? undefined,
+    })
+
+    const fallbackRange = getCurrentWeekRange()
+    const startOfWeek = rangeParams.success && rangeParams.data.start
+      ? new Date(rangeParams.data.start)
+      : fallbackRange.startOfWeek
+    const endOfWeek = rangeParams.success && rangeParams.data.end
+      ? new Date(rangeParams.data.end)
+      : fallbackRange.endOfWeek
 
     const scheduleItems = await prisma.scheduleItem.findMany({
       where: {
@@ -23,7 +71,8 @@ export async function GET(request: Request) {
           userId: userId
         },
         scheduledFor: {
-          gte: startOfWeek
+          gte: startOfWeek,
+          lte: endOfWeek
         }
       },
       include: {
@@ -49,6 +98,80 @@ export async function GET(request: Request) {
   }
 }
 
+// PUT endpoint for updating status and awarding XP
+export async function PUT(request: Request) {
+  const session = await auth()
+
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  try {
+    const body = await request.json()
+    const parsedBody = updateStatusSchema.safeParse(body)
+
+    if (!parsedBody.success) {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+    }
+
+    const { itemId, status } = parsedBody.data
+
+    const scheduleItem = await prisma.scheduleItem.findFirst({
+      where: {
+        id: itemId,
+        schedule: {
+          userId: session.user.id,
+        },
+      },
+      include: {
+        activity: true,
+      },
+    })
+
+    if (!scheduleItem) {
+      return NextResponse.json({ error: 'Schedule item not found' }, { status: 404 })
+    }
+
+    // Only award XP when completing an activity
+    if (status === 'COMPLETED' && scheduleItem.status !== 'COMPLETED') {
+      const xpReward = getXPReward(
+        scheduleItem.activity?.difficulty || 5,
+        scheduleItem.duration || scheduleItem.activity?.duration || 30
+      )
+
+      // Update user XP and level
+      await prisma.user.update({
+        where: { id: session.user.id },
+        data: {
+          xp: { increment: xpReward },
+        },
+      })
+
+      // Create progress record
+      await prisma.progress.create({
+        data: {
+          userId: session.user.id,
+          activityId: scheduleItem.activityId,
+          completedAt: new Date(),
+        },
+      })
+    }
+
+    const updatedItem = await prisma.scheduleItem.update({
+      where: { id: itemId },
+      data: { status },
+    })
+
+    return NextResponse.json({ item: updatedItem })
+  } catch (error) {
+    console.error('Update status error:', error)
+    return NextResponse.json(
+      { error: 'Failed to update status' },
+      { status: 500 }
+    )
+  }
+}
+
 export async function POST(request: Request) {
   const session = await auth()
 
@@ -58,9 +181,18 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json()
-    const { activityId, scheduledFor, duration, notes } = body
+    const parsedBody = createScheduleItemSchema.safeParse(body)
 
-    // Get the activity details
+    if (!parsedBody.success) {
+      return NextResponse.json(
+        { error: 'Invalid request body' },
+        { status: 400 }
+      )
+    }
+
+    const { activityId, scheduledFor, duration, notes } = parsedBody.data
+
+    // Get activity details
     const activity = await prisma.activity.findUnique({
       where: { id: activityId },
       include: {
@@ -74,11 +206,7 @@ export async function POST(request: Request) {
     }
 
     // Get or create user's weekly schedule
-    const now = new Date()
-    const startOfWeek = new Date(now)
-    startOfWeek.setDate(now.getDate() - now.getDay())
-    const endOfWeek = new Date(startOfWeek)
-    endOfWeek.setDate(startOfWeek.getDate() + 6)
+    const { startOfWeek, endOfWeek } = getCurrentWeekRange(new Date(scheduledFor))
 
     let schedule = await prisma.schedule.findFirst({
       where: {
@@ -86,7 +214,7 @@ export async function POST(request: Request) {
         type: 'WEEKLY',
         startDate: {
           gte: startOfWeek,
-          lte: endOfWeek
+          lte: endOfWeek,
         }
       }
     })
@@ -120,6 +248,58 @@ export async function POST(request: Request) {
     console.error('Create schedule item error:', error)
     return NextResponse.json(
       { error: 'Failed to create schedule item' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function PATCH(request: Request) {
+  const session = await auth()
+
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  try {
+    const body = await request.json()
+    const parsedBody = updateScheduleItemSchema.safeParse(body)
+
+    if (!parsedBody.score) {
+      return NextResponse.json(
+        { error: 'Invalid request body' },
+        { status: 400 }
+      )
+    }
+
+    const { itemId, scheduledFor } = parsedBody.data
+
+    const existingItem = await prisma.scheduleItem.findFirst({
+      where: {
+        id: itemId,
+        schedule: {
+          userId: session.user.id,
+        },
+      },
+      select: { id: true },
+    })
+
+    if (!existingItem) {
+      return NextResponse.json(
+        { error: 'Schedule item not found' },
+        { status: 404 }
+      )
+    }
+
+    const updatedItem = await prisma.scheduleItem.update({
+      where: { id: itemId },
+      data: { scheduledFor: new Date(scheduledFor) },
+    })
+
+    return NextResponse.json({ item: updatedItem })
+  } catch (error) {
+    console.error('Update schedule item error:', error)
+    return NextResponse.json(
+      { error: 'Failed to update schedule item' },
       { status: 500 }
     )
   }

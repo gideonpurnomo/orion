@@ -21,7 +21,12 @@
       "Bash(git restore --staged .claude/settings.local.json && git status)",
       "Bash(git add -u && git status)",
       "Bash(git reset HEAD .claude/settings.local.json && git status)",
-      "Bash(git add -A && git status --short)"
+      "Bash(git add -A && git status --short)",
+      "Bash(npx prisma migrate dev --name add-xp-and-level)",
+      "Bash(curl -s http://localhost:3001/api/profile/stats 2>&1 | head -20 || echo \"Server may need restart\")",
+      "Bash(npx prisma migrate dev --name add-achievement-model)",
+      "Bash(npx prisma migrate dev --name add-challenge-models)",
+      "Bash(ls -la app/api/friends/ 2>&1 && find app/api/friends -name \"*.ts\" -exec ls -la {} \\\\; 2>&1)"
     ]
   }
 }

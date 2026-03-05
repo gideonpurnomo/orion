@@ -143,10 +143,19 @@ model User {
   name      String?
   image     String?
   password  String?   // For email/password authentication
+  xp        Int        @default(0)      // Total XP earned
+  level     Int        @default(1)      // Current level (1-50)
   accounts  Account[]
   sessions  Session[]
   members   Member[]
   progress  Progress[]
+  achievements Achievement[]
+  challengeParticipations ChallengeParticipation[]
+  sentFriendRequests     FriendRequest[]  @relation("FriendRequestSender")
+  receivedFriendRequests FriendRequest[]  @relation("FriendRequestReceiver")
+  friendships            Friendship[]     @relation("Friendships")
+  friendOf               Friendship[]     @relation("FriendOf")
+  inviteCodes            FriendInviteCode[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -212,4 +221,109 @@ enum ItemStatus {
   IN_PROGRESS
   COMPLETED
   SKIPPED
+}
+
+// Achievements
+model Achievement {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   @unique // Achievement type key
+  title       String
+  description String
+  icon        String   // Emoji or icon
+  xpReward   Int      // XP awarded for this achievement
+  completedAt DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, type])
+}
+
+model Friendship {
+  id        String   @id @default(cuid())
+  userId    String
+  friendId  String
+  user      User     @relation("Friendships", fields: [userId], references: [id], onDelete: Cascade)
+  friend    User     @relation("FriendOf", fields: [friendId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, friendId])
+  @@index([userId])
+  @@index([friendId])
+}
+
+model FriendRequest {
+  id         String              @id @default(cuid())
+  senderId   String
+  receiverId String
+  status     FriendRequestStatus @default(PENDING)
+  message    String?             @db.Text
+  sender     User                @relation("FriendRequestSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User                @relation("FriendRequestReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  @@index([senderId, status])
+  @@index([receiverId, status])
+  @@index([createdAt])
+}
+
+model FriendInviteCode {
+  id        String   @id @default(cuid())
+  userId    String
+  code      String   @unique
+  isActive  Boolean  @default(true)
+  uses      Int      @default(0)
+  maxUses   Int?
+  expiresAt DateTime?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, isActive])
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELED
+}
+
+// Weekly Challenges
+model Challenge {
+  id            String       @id @default(cuid())
+  title         String
+  description   String?
+  type          ChallengeType
+  startDate     DateTime
+  endDate       DateTime
+  winnerId      String?
+  winnerXP      Int?
+  participants  ChallengeParticipation[]
+  createdAt     DateTime      @default(now())
+
+  @@index([startDate, endDate])
+  @@index([type])
+}
+
+model ChallengeParticipation {
+  id            String    @id @default(cuid())
+  challengeId  String
+  userId        String
+  score         Int       @default(0)  // XP earned during challenge
+  rank          Int?
+  challenge     Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeId, userId])
+  @@index([userId])
+}
+
+enum ChallengeType {
+  XP_COLLECTED       // Most XP earned this week
+  ACTIVITIES_COMPLETED  // Most activities completed
+  STREAK_HIGHEST      // Highest streak achieved
+  DOMAIN_MASTERY     // Most activities in specific domain
 }

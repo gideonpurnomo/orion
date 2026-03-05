@@ -9,6 +9,12 @@ export function useScheduleData() {
       setLoading(true)
       try {
         const response = await fetch('/api/schedule')
+        if (response.status === 401) {
+          setSchedule(null)
+          setError('Please sign in to view your schedule')
+          return
+        }
+
         if (!response.ok) {
           throw new Error('Failed to fetch schedule')
         }

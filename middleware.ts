@@ -6,7 +6,7 @@ export default auth((req) => {
   const isAuthenticated = !!req.auth
 
   // Define protected routes
-  const protectedRoutes = ['/dashboard', '/library', '/schedule']
+  const protectedRoutes = ['/dashboard', '/library', '/schedule', '/settings']
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
 
   // Define public routes

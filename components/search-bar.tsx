@@ -34,6 +34,67 @@ interface SearchBarProps {
   autoFocus?: boolean
 }
 
+const suggestionTerms = [
+  'French',
+  'French Cooking',
+  'JavaScript',
+  'Python',
+  'HTML',
+  'CSS',
+  'C++',
+  'Korean',
+  'Mandarin Chinese',
+  'Algebra',
+  'Calculus',
+  'Physics',
+  'Chemistry',
+  'Biology',
+  'Economics',
+  'Piano',
+  'Music Theory',
+  'Yoga',
+  'Strength Training',
+  'Machine Learning',
+  'Data Analysis',
+  'Cybersecurity',
+  'UX/UI Design',
+  'Entrepreneurship',
+]
+
+function normalize(value: string) {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+}
+
+function getSuggestions(query: string) {
+  const q = normalize(query).trim()
+  if (!q) return []
+
+  return suggestionTerms
+    .map((term) => ({ term, score: scoreSuggestion(q, term) }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6)
+    .map((item) => item.term)
+}
+
+function scoreSuggestion(normalizedQuery: string, term: string) {
+  const normalizedTerm = normalize(term)
+  if (normalizedTerm === normalizedQuery) return 100
+  if (normalizedTerm.startsWith(normalizedQuery)) return 80
+  if (normalizedTerm.includes(normalizedQuery)) return 60
+
+  const queryChars = normalizedQuery.split('')
+  let idx = 0
+  for (const ch of normalizedTerm) {
+    if (ch === queryChars[idx]) idx += 1
+    if (idx === queryChars.length) return 40
+  }
+  return 0
+}
+
 const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
   variant = 'default',
   placeholder = 'Search activities...',
@@ -56,7 +117,7 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
   // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (query.length >= 2) {
+      if (query.length >= 1) {
         performSearch(query)
       } else {
         setResults([])
@@ -106,6 +167,13 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
     router.push(`/schedule?add=${activity.id}`)
   }
 
+  const suggestions = results.length === 0 && query.length >= 1 ? getSuggestions(query) : []
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setQuery(suggestion)
+    performSearch(suggestion)
+  }
+
   return (
     <div className="relative w-full max-w-2xl" ref={searchRef}>
       {/* Search Input */}
@@ -117,7 +185,7 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
           placeholder={placeholder}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => query.length >= 2 && setShowResults(true)}
+          onFocus={() => query.length >= 1 && setShowResults(true)}
           autoFocus={autoFocus}
           className={`pl-12 pr-12 text-lg ${
             variant === 'hero'
@@ -136,7 +204,7 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
       </div>
 
       {/* Search Results Dropdown */}
-      {showResults && (query.length >= 2 || results.length > 0) && (
+      {showResults && (query.length >= 1 || results.length > 0) && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl shadow-purple-500/20 overflow-hidden z-50">
           {isLoading ? (
             <div className="p-8 text-center text-gray-400">
@@ -196,11 +264,28 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
                 </button>
               ))}
             </div>
-          ) : query.length >= 2 ? (
+          ) : query.length >= 1 ? (
             <div className="p-8 text-center">
               <Search className="h-12 w-12 mx-auto mb-3 text-gray-500" />
               <p className="text-gray-400">No activities found for "{query}"</p>
-              <p className="text-sm text-gray-500 mt-2">Try different keywords or browse the library</p>
+              {suggestions.length > 0 ? (
+                <div className="mt-3">
+                  <p className="text-sm text-gray-500 mb-2">Did you mean:</p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {suggestions.map((suggestion) => (
+                      <button
+                        key={suggestion}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 mt-2">Try different keywords or browse the library</p>
+              )}
               <Link href="/library">
                 <Button variant="outline" className="mt-4 border-white/20 text-white hover:bg-white/10">
                   Browse Library
