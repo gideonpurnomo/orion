@@ -266,6 +266,11 @@ export default function LibraryPage() {
           if (tags.some((tag) => tag.includes(token))) score += 2
         }
 
+        if (tokens.length > 1) {
+          const matchedTokens = tokens.filter((token) => blob.includes(token)).length
+          score += matchedTokens
+        }
+
         if (q.length >= 2) {
           let idx = 0
           for (const ch of title) {
@@ -277,7 +282,6 @@ export default function LibraryPage() {
           }
         }
 
-        if (!blob.includes(q) && score < 2) return 0
         return score
       }
 

@@ -35,6 +35,7 @@ export default function TopNav({ theme = 'light' }: TopNavProps) {
           <Link href="/library?next=/schedule" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Library</Link>
           <Link href="/schedule" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Schedule</Link>
           <Link href="/availability" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Availability</Link>
+          <Link href="/challenges" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Challenges</Link>
           <Link href="/leaderboard" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Leaderboard</Link>
           <Link href="/friends" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Friends</Link>
         </nav>
@@ -55,6 +56,9 @@ export default function TopNav({ theme = 'light' }: TopNavProps) {
                 </Link>
                 <Link href="/availability" className="block rounded-md px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
                   Availability
+                </Link>
+                <Link href="/challenges" className="block rounded-md px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
+                  Challenges
                 </Link>
                 <Link href="/friends" className="block rounded-md px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
                   Friends

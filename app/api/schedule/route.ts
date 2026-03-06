@@ -155,6 +155,44 @@ export async function PUT(request: Request) {
           completedAt: new Date(),
         },
       })
+
+      // Update challenge participation scores
+      const now = new Date()
+      const activeChallenges = await prisma.challenge.findMany({
+        where: {
+          startDate: { lte: now },
+          endDate: { gte: now },
+          participants: {
+            some: { userId: session.user.id },
+          },
+        },
+        select: { id: true, type: true },
+      })
+
+      for (const challenge of activeChallenges) {
+        let scoreIncrement = 0
+
+        if (challenge.type === 'XP_COLLECTED') {
+          scoreIncrement = xpReward
+        } else if (challenge.type === 'ACTIVITIES_COMPLETED') {
+          scoreIncrement = 1
+        }
+        // Note: STREAK_HIGHEST and DOMAIN_MASTERY require additional logic
+        // STREAK_HIGHEST: Would need streak calculation from progress records
+        // DOMAIN_MASTERY: Would need domain tracking (requires schema addition)
+
+        if (scoreIncrement > 0) {
+          await prisma.challengeParticipation.update({
+            where: {
+              challengeId_userId: {
+                challengeId: challenge.id,
+                userId: session.user.id,
+              },
+            },
+            data: { score: { increment: scoreIncrement } },
+          })
+        }
+      }
     }
 
     const updatedItem = await prisma.scheduleItem.update({
@@ -264,7 +302,7 @@ export async function PATCH(request: Request) {
     const body = await request.json()
     const parsedBody = updateScheduleItemSchema.safeParse(body)
 
-    if (!parsedBody.score) {
+    if (!parsedBody.success) {
       return NextResponse.json(
         { error: 'Invalid request body' },
         { status: 400 }
