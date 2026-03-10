@@ -65,7 +65,7 @@ const LEVEL_THRESHOLDS: Record<number, { xp: number; title: string; badge: strin
 // Calculate level from total XP
 export function calculateLevel(xp: number): LevelInfo {
   let level = 1
-  let xpTotal = 0
+  let xpRequired = 0
 
   for (let l = 1; l <= 50; l++) {
     const threshold = LEVEL_THRESHOLDS[l]?.xp ?? LEVEL_THRESHOLDS[50].xp
@@ -73,7 +73,7 @@ export function calculateLevel(xp: number): LevelInfo {
       break
     }
     level = l
-    xpTotal = threshold
+    xpRequired = threshold
   }
 
   const levelInfo = LEVEL_THRESHOLDS[level] || LEVEL_THRESHOLDS[50]
@@ -81,7 +81,7 @@ export function calculateLevel(xp: number): LevelInfo {
   return {
     level,
     xpRequired: levelInfo.xp,
-    xpTotal: xpTotal,
+    xpTotal: xp,
     title: levelInfo.title,
     badge: levelInfo.badge,
   }

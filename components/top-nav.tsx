@@ -5,7 +5,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { ThemeToggle } from './theme-toggle'
 
 interface TopNavProps {
-  theme?: 'light' | 'blue' | 'green'
+  theme?: 'light' | 'blue' | 'green' | 'dark'
 }
 
 export default function TopNav({ theme = 'light' }: TopNavProps) {
@@ -32,6 +32,7 @@ export default function TopNav({ theme = 'light' }: TopNavProps) {
         <nav className="hidden items-center gap-2 md:flex">
           <Link href="/" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Home</Link>
           <Link href="/dashboard" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Dashboard</Link>
+          <Link href="/progress" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Progress</Link>
           <Link href="/library?next=/schedule" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Library</Link>
           <Link href="/schedule" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Schedule</Link>
           <Link href="/availability" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Availability</Link>
@@ -53,6 +54,9 @@ export default function TopNav({ theme = 'light' }: TopNavProps) {
                 <p className="px-2 pb-2 text-xs text-slate-500 dark:text-slate-400">{session.user?.email}</p>
                 <Link href="/settings" className="block rounded-md px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
                   Settings & Profile
+                </Link>
+                <Link href="/progress" className="block rounded-md px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
+                  Progress & Analytics
                 </Link>
                 <Link href="/availability" className="block rounded-md px-2 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700">
                   Availability

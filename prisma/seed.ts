@@ -548,26 +548,6 @@ async function main() {
     },
   })
 
-  // Create test user for development
-  const hashedPassword = await bcrypt.hash('password123', 10)
-  const testUser = await prisma.user.upsert({
-    where: { email: 'testuser@local.dev' },
-    update: {},
-    create: {
-      email: 'testuser@local.dev',
-      password: hashedPassword,
-      name: 'Test User',
-    },
-  })
-
-  console.log('✅ Test user created')
-  console.log('📧 Test credentials:')
-  console.log('  Email: testuser@local.dev')
-  console.log('  Password: password123')
-  console.log('')
-  console.log('Use these credentials to sign in and test the app.')
-  console.log('')
-
   const languageProgrammingTracks = [
     {
       title: 'HTML',
