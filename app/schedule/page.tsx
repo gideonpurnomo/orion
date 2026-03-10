@@ -6,10 +6,11 @@ import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Calendar as CalendarIcon, Clock, Loader2, Copy, X, ChevronRight, ChevronLeft as PrevIcon } from 'lucide-react'
+import { Plus, Calendar as CalendarIcon, Clock, Loader2, Copy, X, ChevronRight, ChevronLeft as PrevIcon, CheckCircle } from 'lucide-react'
 import { formatDuration } from '@/lib/utils'
 import SessionPlanner, { SubTopic } from '@/components/session-planner'
 import TimerDisplay from '@/components/timer-display'
+import ActivityCompletion from '@/components/activity-completion'
 import TopNav from '@/components/top-nav'
 
 interface ScheduleItem {
@@ -117,6 +118,7 @@ function ScheduleContent() {
   const [error, setError] = useState('')
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null)
   const [clipboardActivity, setClipboardActivity] = useState<ClipboardActivity | null>(null)
+  const [completionActivity, setCompletionActivity] = useState<ScheduleItem | null>(null)
 
   const [quickAddOpen, setQuickAddOpen] = useState(false)
   const [quickAddDate, setQuickAddDate] = useState<Date | null>(null)
@@ -281,12 +283,121 @@ function ScheduleContent() {
   }
 
   const handleActivityClick = (item: ScheduleItem) => {
-    setSelectedActivity(item)
-    setShowPlanner(true)
+    setCompletionActivity(item)
   }
 
   const handleCompleteTopic = () => {
     setActiveSession(null)
+  }
+
+  const handleCompleteActivity = async (notes?: string, actualDuration?: number) => {
+    if (!completionActivity) return
+
+    try {
+      const response = await fetch('/api/completion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scheduleItemId: completionActivity.id,
+          notes,
+          actualDuration,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to complete activity')
+      }
+
+      const result = await response.json()
+
+      // Update schedule item in local state
+      setScheduleItems((prev) =>
+        prev.map((item) =>
+          item.id === completionActivity.id
+            ? { ...item, status: 'COMPLETED' }
+            : item
+        )
+      )
+
+      // Show notification
+      if (result.leveledUp || (result.achievements && result.achievements.length > 0)) {
+        // Achievement unlocked - show full result
+        if (result.achievements?.length > 0) {
+          alert(`🎉 ${result.achievements[0].title} unlocked!`)
+        }
+      }
+
+      setCompletionActivity(null)
+    } catch (err) {
+      console.error('Complete error:', err)
+      setError('Failed to complete activity')
+    }
+  }
+
+  const handleMarkInProgress = async () => {
+    if (!completionActivity) return
+
+    try {
+      const response = await fetch('/api/completion', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scheduleItemId: completionActivity.id,
+          status: 'IN_PROGRESS',
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to mark activity as in progress')
+      }
+
+      // Update schedule item in local state
+      setScheduleItems((prev) =>
+        prev.map((item) =>
+          item.id === completionActivity.id
+            ? { ...item, status: 'IN_PROGRESS' }
+            : item
+        )
+      )
+
+      setCompletionActivity(null)
+    } catch (err) {
+      console.error('Mark in progress error:', err)
+      setError('Failed to mark activity as in progress')
+    }
+  }
+
+  const handleSkipActivity = async () => {
+    if (!completionActivity) return
+
+    try {
+      const response = await fetch('/api/completion', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scheduleItemId: completionActivity.id,
+          status: 'SKIPPED',
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to skip activity')
+      }
+
+      // Update schedule item in local state
+      setScheduleItems((prev) =>
+        prev.map((item) =>
+          item.id === completionActivity.id
+            ? { ...item, status: 'SKIPPED' }
+            : item
+        )
+      )
+
+      setCompletionActivity(null)
+    } catch (err) {
+      console.error('Skip error:', err)
+      setError('Failed to skip activity')
+    }
   }
 
   const handleCopyActivity = (item: ScheduleItem) => {

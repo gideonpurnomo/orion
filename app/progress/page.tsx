@@ -283,12 +283,6 @@ export default function ProgressPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
-                <LevelBadge
-                  levelInfo={data.user.levelInfo}
-                  progressToNext={data.user.progressToNext}
-                  xp={data.user.xp}
-                  formattedXP={data.user.xp.toLocaleString()}
-                />
                 <div>
                   <div className="text-lg font-semibold text-white">{data.user.levelInfo.title}</div>
                   <div className="text-sm text-purple-200">Level {data.user.level}</div>
