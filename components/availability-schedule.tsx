@@ -1,4 +1,4 @@
-'use client' // @ts-ignore - TODO: Fix line 367 unmatched parenthesis
+'use client'
 
 
 import { useState, useEffect } from 'react'
