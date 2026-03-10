@@ -168,8 +168,6 @@ model UserAvailability {
   timePreferences Json?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-
-  @@unique([userId])
 }
 
 
@@ -234,6 +232,28 @@ enum ItemStatus {
   IN_PROGRESS
   COMPLETED
   SKIPPED
+}
+
+// Schedule Templates - Pre-built weekly schedules
+model ScheduleTemplate {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  type        TemplateType @default(CUSTOM)
+  description String?
+  intensity   Int      // 1-5 (Beginner=1, Intensive=3, Expert=5)
+  dailyHours  Int      // Average hours per day
+  isSystem    Boolean  @default(true) // System templates vs user-created
+  config      Json     // Template configuration (slots, default activities)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum TemplateType {
+  CUSTOM
+  BEGINNER
+  BALANCED
+  INTENSIVE
+  EXPERT
 }
 
 // Achievements

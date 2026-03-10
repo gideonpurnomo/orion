@@ -6,7 +6,8 @@ import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Calendar as CalendarIcon, Clock, Loader2, Copy, X, ChevronRight, ChevronLeft as PrevIcon, CheckCircle } from 'lucide-react'
+import { Plus, Calendar as CalendarIcon, Clock, Loader2, Copy, X, ChevronRight, ChevronLeft as PrevIcon, CheckCircle, LayoutTemplate } from 'lucide-react'
+import { ScheduleTemplates } from '@/components/schedule-templates'
 import { formatDuration } from '@/lib/utils'
 import SessionPlanner, { SubTopic } from '@/components/session-planner'
 import TimerDisplay from '@/components/timer-display'
@@ -125,6 +126,7 @@ function ScheduleContent() {
   const [quickAddActivities, setQuickAddActivities] = useState<Activity[]>([])
   const [quickAddLoading, setQuickAddLoading] = useState(false)
   const [quickAddQuery, setQuickAddQuery] = useState('')
+  const [templatesOpen, setTemplatesOpen] = useState(false)
 
   const weekStart = useMemo(() => startOfWeekMonday(currentDate), [currentDate])
   const weekDays = useMemo(
@@ -449,6 +451,31 @@ function ScheduleContent() {
     await openQuickAdd(targetDate)
   }
 
+  const handleApplyTemplate = async (templateId: string, startDate: Date) => {
+    try {
+      const response = await fetch('/api/templates/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          templateId,
+          startDate: startDate.toISOString(),
+          weekOffset: 0,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to apply template')
+      }
+
+      const result = await response.json()
+      await fetchSchedule()
+      return result
+    } catch (err) {
+      console.error('Apply template error:', err)
+      throw err
+    }
+  }
+
   const handleDropOnCell = async (itemId: string, targetDate: Date) => {
     const item = scheduleItems.find((s) => s.id === itemId)
     if (!item) return
@@ -628,6 +655,15 @@ function ScheduleContent() {
                   <Plus className="mr-2 h-4 w-4" />
                   Add Activity
                 </Link>
+              </Button>
+
+              <Button
+                variant="outline"
+                onClick={() => setTemplatesOpen(true)}
+                className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              >
+                <LayoutTemplate className="mr-2 h-4 w-4" />
+                Templates
               </Button>
             </div>
           </div>
@@ -911,6 +947,12 @@ function ScheduleContent() {
             </CardContent>
           </Card>
         )}
+
+        <ScheduleTemplates
+          isOpen={templatesOpen}
+          onClose={() => setTemplatesOpen(false)}
+          onApply={handleApplyTemplate}
+        />
       </div>
     </div>
   )
