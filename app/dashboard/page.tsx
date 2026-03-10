@@ -10,6 +10,7 @@ import { Calendar, BookOpen, Plus, Zap, TrendingUp, ChevronRight, Loader2 } from
 import { useScheduleStore } from '@/store/schedule'
 import { useScheduleData } from '@/hooks/useScheduleData'
 import { formatTime, formatDuration } from '@/lib/utils'
+import { AIRecommendations } from '@/components/ai-recommendations'
 
 export default function DashboardPage() {
   useScheduleData()
@@ -162,6 +163,8 @@ export default function DashboardPage() {
 
           {/* Quick Stats */}
           <div className="space-y-6">
+            <AIRecommendations limit={3} />
+
             <Card className="bg-white/5 backdrop-blur-sm border border-white/10">
               <CardHeader>
                 <CardTitle className="text-lg text-white">Quick Stats</CardTitle>
