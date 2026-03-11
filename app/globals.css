@@ -47,6 +47,58 @@
     --input: 217 33% 17%;
     --ring: 217 91% 60%;
   }
+
+  /* Sunrise Theme - Morning energy, fresh start */
+  .theme-sunrise {
+    --gradient-from: 251 191% 36%;
+    --gradient-via: 251 146% 84%;
+    --gradient-to: 251 180% 37%;
+  }
+
+  .theme-sunrise.dark {
+    --gradient-from: 234 88% 12%;
+    --gradient-via: 221 88% 20%;
+    --gradient-to: 220 83% 22%;
+  }
+
+  /* Forest Theme - Growth, organic progress */
+  .theme-forest {
+    --gradient-from: 16 185% 129%;
+    --gradient-via: 20 163% 74%;
+    --gradient-to: 5 150% 97%;
+  }
+
+  .theme-forest.dark {
+    --gradient-from: 6 78% 59%;
+    --gradient-via: 5 120% 62%;
+    --gradient-to: 22 101% 53%;
+  }
+
+  /* Nebula Theme - Possibility */
+  .theme-nebula {
+    --gradient-from: 139 92% 246%;
+    --gradient-via: 124 77% 77%;
+    --gradient-to: 192 38% 148%;
+  }
+
+  .theme-nebula.dark {
+    --gradient-from: 76 29% 80%;
+    --gradient-via: 79 52% 34%;
+    --gradient-to: 147 51% 50%;
+  }
+
+  /* Aurora Theme - Magic moments */
+  .theme-aurora {
+    --gradient-from: 217 70% 239%;
+    --gradient-via: 217 70% 181%;
+    --gradient-to: 232 51% 121%;
+  }
+
+  .theme-aurora.dark {
+    --gradient-from: 192 38% 129%;
+    --gradient-via: 192 38% 92%;
+    --gradient-to: 203 55% 64%;
+  }
 }
 
 @layer base {

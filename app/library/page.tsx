@@ -333,8 +333,8 @@ export default function LibraryPage() {
   const isDark = theme === 'dark'
 
   const gradientClass = isDark
-    ? 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-800'
-    : 'bg-gradient-to-b from-amber-50 via-sky-50 to-orange-50'
+    ? `theme-${theme}`
+    : `theme-${theme}`
 
   const cardBgClass = isDark
     ? 'bg-slate-800 border-slate-700'
@@ -467,6 +467,61 @@ export default function LibraryPage() {
                   Clear Filters
                 </Button>
               )}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className={`mb-6 ${cardBgClass}`}>
+          <CardHeader className="pb-3">
+            <CardTitle className={`text-lg ${textPrimaryClass}`}>Choose Your Theme</CardTitle>
+            <CardDescription className={textSecondaryClass}>
+              Select a color theme for your learning journey
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3">
+              {[
+                {
+                  name: 'Sunrise',
+                  description: 'Morning energy, fresh start',
+                  className: 'bg-gradient-to-b-from-amber-100 via-orange-50 to-yellow-100 dark:from-amber-200 via-orange-100 to-yellow-200',
+                  darkClass: 'bg-gradient-to-b-from-amber-200 via-orange-100 to-yellow-100 dark:from-amber-200 via-orange-100 to-yellow-200',
+                },
+                {
+                  name: 'Forest',
+                  description: 'Growth, organic progress',
+                  className: 'bg-gradient-to-b-from-emerald-100 via-teal-50 to-green-100 dark:from-emerald-800 via-green-700 to-teal-600',
+                  darkClass: 'bg-gradient-to-b-from-emerald-800 via-green-700 to-teal-600',
+                },
+                {
+                  name: 'Nebula',
+                  description: 'Exciting possibilities',
+                  className: 'bg-gradient-to-b-from-violet-100 via-blue-50 to-purple-100 dark:from-indigo-800 via-purple-700 to-blue-600',
+                  darkClass: 'bg-gradient-to-b-from-indigo-800 via-purple-700 to-blue-600',
+                },
+                {
+                  name: 'Aurora',
+                  description: 'Magic moments',
+                  className: 'bg-gradient-to-b-from-fuchsia-100 via-purple-50 to-pink-100 dark:from-fuchsia-900 via-pink-800 to-fuchsia-600',
+                  darkClass: 'bg-gradient-to-b-from-fuchsia-900 via-pink-800 to-fuchsia-600',
+                },
+              ].map((themeOption) => (
+                <button
+                  key={themeOption.name}
+                  onClick={() => setTheme(themeOption.name)}
+                  className={`relative h-24 rounded-lg border-2 transition-all duration-300 overflow-hidden ${
+                    theme === themeOption.name
+                      ? 'ring-2 ring-offset-2 ring-slate-900'
+                      : 'border-slate-200 hover:border-slate-300'
+                  } ${isDark ? 'dark:border-slate-600' : ''}`}
+                >
+                  <div className={`absolute inset-0 transition-all duration-300 ${themeOption.className} ${isDark && themeOption.darkClass ? themeOption.darkClass : ''}`}></div>
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className={`text-lg font-semibold ${textPrimaryClass}`}>{themeOption.name}</div>
+                    <div className={`text-xs ${textMutedClass}`}>{themeOption.description}</div>
+                  </div>
+                </button>
+              ))}
             </div>
           </CardContent>
         </Card>
