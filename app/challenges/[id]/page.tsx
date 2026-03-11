@@ -14,6 +14,8 @@ interface ChallengeDetail {
     title: string
     description: string | null
     type: 'XP_COLLECTED' | 'ACTIVITIES_COMPLETED' | 'STREAK_HIGHEST' | 'DOMAIN_MASTERY'
+    domainId: string | null
+    domain: { id: string; name: string; icon: string | null } | null
     startDate: string
     endDate: string
   }
@@ -138,6 +140,7 @@ export default function ChallengeDetailsPage() {
                   {new Date(data.challenge.startDate).toLocaleString()} - {new Date(data.challenge.endDate).toLocaleString()}
                 </p>
                 <p>{data.participantCount} participants</p>
+                {data.challenge.domain && <p>{data.challenge.domain.icon || ''} {data.challenge.domain.name}</p>}
                 {data.myRank ? <p>Your rank: #{data.myRank.rank} • Score: {data.myRank.score}</p> : <p>You have not joined this challenge.</p>}
                 <div className="flex gap-2">
                   {data.canJoin && (

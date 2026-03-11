@@ -8,6 +8,7 @@ const createChallengeSchema = z.object({
   title: z.string().trim().min(3).max(120),
   description: z.string().trim().max(1000).optional().or(z.literal('')),
   type: z.enum(['XP_COLLECTED', 'ACTIVITIES_COMPLETED', 'STREAK_HIGHEST', 'DOMAIN_MASTERY']),
+  domainId: z.string().optional(),
   startDate: z.string().datetime(),
   endDate: z.string().datetime(),
 })
@@ -78,6 +79,9 @@ export async function GET(request: Request) {
             participants: true,
           },
         },
+        domain: {
+          select: { id: true, name: true, icon: true },
+        },
         participants: {
           where: { userId },
           select: {
@@ -95,6 +99,8 @@ export async function GET(request: Request) {
         title: challenge.title,
         description: challenge.description,
         type: challenge.type,
+        domainId: challenge.domainId,
+        domain: challenge.domain ? { id: challenge.domain.id, name: challenge.domain.name, icon: challenge.domain.icon } : null,
         startDate: challenge.startDate,
         endDate: challenge.endDate,
         winnerId: challenge.winnerId,
@@ -127,7 +133,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
     }
 
-    const { title, description, type, startDate, endDate } = parsedBody.data
+    const { title, description, type, domainId, startDate, endDate } = parsedBody.data
 
     const start = new Date(startDate)
     const end = new Date(endDate)
@@ -136,12 +142,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'startDate must be before endDate' }, { status: 400 })
     }
 
+    // For DOMAIN_MASTERY challenges, a domainId is required
+    if (type === 'DOMAIN_MASTERY' && !domainId) {
+      return NextResponse.json({ error: 'domainId is required for DOMAIN_MASTERY challenges' }, { status: 400 })
+    }
+
+    // Validate domainId exists if provided
+    if (domainId) {
+      const domain = await prisma.domain.findUnique({ where: { id: domainId } })
+      if (!domain) {
+        return NextResponse.json({ error: 'Invalid domainId' }, { status: 400 })
+      }
+    }
+
     const created = await prisma.$transaction(async (tx) => {
       const challenge = await tx.challenge.create({
         data: {
           title,
           description: description || null,
           type: type as ChallengeType,
+          domainId: domainId || null,
           startDate: start,
           endDate: end,
         },

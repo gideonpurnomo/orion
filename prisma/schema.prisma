@@ -44,6 +44,7 @@ model Domain {
   order       Int        @default(0)
   categories  Category[]
   activities  Activity[]
+  challenges  Challenge[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
@@ -330,15 +331,18 @@ model Challenge {
   title         String
   description   String?
   type          ChallengeType
+  domainId      String?
   startDate     DateTime
   endDate       DateTime
   winnerId      String?
   winnerXP      Int?
   participants  ChallengeParticipation[]
+  domain        Domain?       @relation(fields: [domainId], references: [id], onDelete: SetNull)
   createdAt     DateTime      @default(now())
 
   @@index([startDate, endDate])
   @@index([type])
+  @@index([domainId])
 }
 
 model ChallengeParticipation {

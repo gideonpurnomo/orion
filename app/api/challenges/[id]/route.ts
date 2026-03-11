@@ -24,6 +24,9 @@ export async function GET(
     const challenge = await prisma.challenge.findUnique({
       where: { id: params.id },
       include: {
+        domain: {
+          select: { id: true, name: true, icon: true },
+        },
         participants: {
           include: {
             user: {
@@ -69,6 +72,8 @@ export async function GET(
         title: challenge.title,
         description: challenge.description,
         type: challenge.type,
+        domainId: challenge.domainId,
+        domain: challenge.domain ? { id: challenge.domain.id, name: challenge.domain.name, icon: challenge.domain.icon } : null,
         startDate: challenge.startDate,
         endDate: challenge.endDate,
         winnerId: challenge.winnerId,

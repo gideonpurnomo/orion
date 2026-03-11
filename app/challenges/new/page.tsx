@@ -1,21 +1,36 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import TopNav from '@/components/top-nav'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+interface Domain {
+  id: string
+  name: string
+  icon?: string | null
+}
+
 export default function NewChallengePage() {
   const router = useRouter()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [type, setType] = useState<'XP_COLLECTED' | 'ACTIVITIES_COMPLETED' | 'STREAK_HIGHEST' | 'DOMAIN_MASTERY'>('XP_COLLECTED')
+  const [domainId, setDomainId] = useState('')
+  const [domains, setDomains] = useState<Domain[]>([])
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    fetch('/api/domains')
+      .then(r => r.json())
+      .then(data => setDomains(data.domains || []))
+      .catch(() => {})
+  }, [])
 
   const submit = async (event: FormEvent) => {
     event.preventDefault()
@@ -23,16 +38,22 @@ export default function NewChallengePage() {
     setMessage('')
 
     try {
+      const body: any = {
+        title,
+        description,
+        type,
+        startDate: new Date(startDate).toISOString(),
+        endDate: new Date(endDate).toISOString(),
+      }
+
+      if (type === 'DOMAIN_MASTERY') {
+        body.domainId = domainId
+      }
+
       const response = await fetch('/api/challenges', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title,
-          description,
-          type,
-          startDate: new Date(startDate).toISOString(),
-          endDate: new Date(endDate).toISOString(),
-        }),
+        body: JSON.stringify(body),
       })
 
       const data = await response.json().catch(() => null)
@@ -87,6 +108,25 @@ export default function NewChallengePage() {
                   <option value="DOMAIN_MASTERY">Domain Mastery</option>
                 </select>
               </div>
+
+              {type === 'DOMAIN_MASTERY' && (
+                <div>
+                  <label className="mb-1 block text-sm font-medium">Domain</label>
+                  <select
+                    value={domainId}
+                    onChange={(e) => setDomainId(e.target.value)}
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                    required
+                  >
+                    <option value="">Select a domain...</option>
+                    {domains.map((domain) => (
+                      <option key={domain.id} value={domain.id}>
+                        {domain.icon ? `${domain.icon} ` : ''}{domain.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>

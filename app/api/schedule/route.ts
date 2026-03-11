@@ -4,6 +4,40 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { getXPReward } from '@/lib/xp'
 
+function calculateHighestStreak(completedDates: Date[]): number {
+  if (completedDates.length === 0) return 0
+
+  // Sort dates in ascending order
+  const sortedDates = [...completedDates].sort((a, b) => a.getTime() - b.getTime())
+
+  // Normalize dates to midnight (ignore time of day)
+  const dates = sortedDates.map(d => {
+    const normalized = new Date(d)
+    normalized.setHours(0, 0, 0, 0)
+    return normalized.getTime()
+  })
+
+  // Calculate consecutive days
+  let highestStreak = 1
+  let currentStreak = 1
+  const oneDayMs = 24 * 60 * 60 * 1000
+
+  for (let i = 1; i < dates.length; i++) {
+    const diff = dates[i] - dates[i - 1]
+
+    // If difference is exactly 1 day, continue streak
+    if (diff === oneDayMs || (diff > 0 && diff < oneDayMs && dates[i] !== dates[i - 1])) {
+      currentStreak++
+    } else {
+      // Streak broken
+      highestStreak = Math.max(highestStreak, currentStreak)
+      currentStreak = 1
+    }
+  }
+
+  return Math.max(highestStreak, currentStreak)
+}
+
 function getCurrentWeekRange(date = new Date()) {
   const startOfWeek = new Date(date)
   startOfWeek.setHours(0, 0, 0, 0)
@@ -166,22 +200,11 @@ export async function PUT(request: Request) {
             some: { userId: session.user.id },
           },
         },
-        select: { id: true, type: true },
+        select: { id: true, type: true, startDate: true, domainId: true },
       })
 
       for (const challenge of activeChallenges) {
-        let scoreIncrement = 0
-
         if (challenge.type === 'XP_COLLECTED') {
-          scoreIncrement = xpReward
-        } else if (challenge.type === 'ACTIVITIES_COMPLETED') {
-          scoreIncrement = 1
-        }
-        // Note: STREAK_HIGHEST and DOMAIN_MASTERY require additional logic
-        // STREAK_HIGHEST: Would need streak calculation from progress records
-        // DOMAIN_MASTERY: Would need domain tracking (requires schema addition)
-
-        if (scoreIncrement > 0) {
           await prisma.challengeParticipation.update({
             where: {
               challengeId_userId: {
@@ -189,8 +212,69 @@ export async function PUT(request: Request) {
                 userId: session.user.id,
               },
             },
-            data: { score: { increment: scoreIncrement } },
+            data: { score: { increment: xpReward } },
           })
+        } else if (challenge.type === 'ACTIVITIES_COMPLETED') {
+          await prisma.challengeParticipation.update({
+            where: {
+              challengeId_userId: {
+                challengeId: challenge.id,
+                userId: session.user.id,
+              },
+            },
+            data: { score: { increment: 1 } },
+          })
+        } else if (challenge.type === 'STREAK_HIGHEST') {
+          // Get all progress records within challenge date range
+          const progressRecords = await prisma.progress.findMany({
+            where: {
+              userId: session.user.id,
+              completedAt: {
+                gte: challenge.startDate,
+                lte: challenge.endDate,
+              },
+            },
+            select: { completedAt: true },
+          })
+
+          const highestStreak = calculateHighestStreak(progressRecords.map(p => p.completedAt))
+
+          // Get current score
+          const participation = await prisma.challengeParticipation.findUnique({
+            where: {
+              challengeId_userId: {
+                challengeId: challenge.id,
+                userId: session.user.id,
+              },
+            },
+            select: { score: true },
+          })
+
+          // Only update if new streak is higher
+          if (highestStreak > (participation?.score || 0)) {
+            await prisma.challengeParticipation.update({
+              where: {
+                challengeId_userId: {
+                  challengeId: challenge.id,
+                  userId: session.user.id,
+                },
+              },
+              data: { score: highestStreak },
+            })
+          }
+        } else if (challenge.type === 'DOMAIN_MASTERY') {
+          // Only track if activity matches the challenge's domain
+          if (challenge.domainId && scheduleItem.activity?.domainId === challenge.domainId) {
+            await prisma.challengeParticipation.update({
+              where: {
+                challengeId_userId: {
+                  challengeId: challenge.id,
+                  userId: session.user.id,
+                },
+              },
+              data: { score: { increment: 1 } },
+            })
+          }
         }
       }
     }

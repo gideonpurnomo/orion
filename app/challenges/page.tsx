@@ -12,6 +12,8 @@ interface Challenge {
   title: string
   description: string | null
   type: 'XP_COLLECTED' | 'ACTIVITIES_COMPLETED' | 'STREAK_HIGHEST' | 'DOMAIN_MASTERY'
+  domainId: string | null
+  domain: { id: string; name: string; icon: string | null } | null
   startDate: string
   endDate: string
   participantCount: number
@@ -128,6 +130,7 @@ export default function ChallengesPage() {
                     {new Date(challenge.startDate).toLocaleDateString()} - {new Date(challenge.endDate).toLocaleDateString()}
                   </p>
                   <p>{challenge.participantCount} participants</p>
+                  {challenge.domain && <p>{challenge.domain.icon || ''} {challenge.domain.name}</p>}
                   {challenge.myParticipation && <p>Your score: {challenge.myParticipation.score}</p>}
                   <div className="flex gap-2">
                     <Button asChild variant="outline">
