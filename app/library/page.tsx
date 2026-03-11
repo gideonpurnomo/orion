@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
+import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -72,6 +73,7 @@ function normalizeText(value: string) {
 export default function LibraryPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { theme } = useTheme()
 
   const [selectedDomain, setSelectedDomain] = useState<string>('all')
   const [domains, setDomains] = useState<DomainTab[]>([
@@ -327,9 +329,48 @@ export default function LibraryPage() {
     query || maxDifficulty !== 'all' || durationFilter !== 'all' || selectedTag !== 'all' || sortBy !== 'relevance'
   )
 
+  // Theme-aware colors for better contrast
+  const isDark = theme === 'dark'
+
+  const gradientClass = isDark
+    ? 'bg-gradient-to-b from-slate-800 via-slate-900 to-slate-800'
+    : 'bg-gradient-to-b from-amber-50 via-sky-50 to-orange-50'
+
+  const cardBgClass = isDark
+    ? 'bg-slate-800 border-slate-700'
+    : 'bg-white border-slate-200'
+
+  const textPrimaryClass = isDark
+    ? 'text-slate-100'
+    : 'text-slate-900'
+
+  const textSecondaryClass = isDark
+    ? 'text-slate-300'
+    : 'text-slate-600'
+
+  const textMutedClass = isDark
+    ? 'text-slate-400'
+    : 'text-slate-500'
+
+  const inputBgClass = isDark
+    ? 'bg-slate-900 border-slate-700'
+    : 'bg-white border-slate-300'
+
+  const inputTextClass = isDark
+    ? 'dark:text-slate-100 dark:placeholder:text-slate-400'
+    : 'dark:text-slate-900 dark:placeholder:text-slate-400'
+
+  const buttonClass = isDark
+    ? 'dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
+    : 'bg-white text-slate-700 hover:bg-slate-50'
+
+  const outlineButtonClass = isDark
+    ? 'border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
+    : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-sky-50 to-orange-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      <TopNav theme="light" />
+    <div className={`min-h-screen ${gradientClass}`}>
+      <TopNav />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -346,31 +387,31 @@ export default function LibraryPage() {
           </div>
         </div>
 
-        <Card className="mb-6 border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+        <Card className={`mb-6 ${cardBgClass}`}>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <CardTitle className={`text-lg flex items-center gap-2 ${textPrimaryClass}`}>
               <SlidersHorizontal className="h-5 w-5 text-orange-600" />
               Smart Search Filters
             </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-300">
+            <CardDescription className={textSecondaryClass}>
               Search is case-insensitive and typo-tolerant. Use filters to narrow results fast.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <Search className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 ${isDark ? 'text-slate-500' : ''}`} />
               <input
                 value={queryInput}
                 onChange={(e) => setQueryInput(e.target.value)}
                 placeholder="Search topic, tag, domain, or category..."
-                className="w-full rounded-md border border-slate-300 bg-white py-2 pl-9 pr-3 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400"
+                className={`w-full rounded-md border py-2 pl-9 pr-3 text-sm ${inputBgClass} ${inputTextClass}`}
               />
             </div>
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
               <select
                 value={maxDifficulty}
                 onChange={(e) => setMaxDifficulty(e.target.value)}
-                className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                className={`rounded-md border px-3 py-2 text-sm ${inputBgClass} ${inputTextClass}`}
               >
                 <option value="all">Any Difficulty</option>
                 <option value="3">Beginner (&lt;= 3)</option>
@@ -382,7 +423,7 @@ export default function LibraryPage() {
               <select
                 value={durationFilter}
                 onChange={(e) => setDurationFilter(e.target.value as 'all' | 'short' | 'medium' | 'long')}
-                className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                className={`rounded-md border px-3 py-2 text-sm ${inputBgClass} ${inputTextClass}`}
               >
                 <option value="all">Any Duration</option>
                 <option value="short">Short (&lt;= 30 min)</option>
@@ -393,7 +434,7 @@ export default function LibraryPage() {
               <select
                 value={selectedTag}
                 onChange={(e) => setSelectedTag(e.target.value)}
-                className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                className={`rounded-md border px-3 py-2 text-sm ${inputBgClass} ${inputTextClass}`}
               >
                 {tagOptions.map((tag) => (
                   <option key={tag} value={tag}>
@@ -405,7 +446,7 @@ export default function LibraryPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as 'relevance' | 'difficulty-asc' | 'difficulty-desc' | 'duration-asc' | 'duration-desc' | 'title-asc')}
-                className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                className={`rounded-md border px-3 py-2 text-sm ${inputBgClass} ${inputTextClass}`}
               >
                 <option value="relevance">Sort: Relevance</option>
                 <option value="difficulty-asc">Sort: Difficulty Low to High</option>
@@ -417,11 +458,11 @@ export default function LibraryPage() {
             </div>
 
             <div className="flex items-center justify-between text-sm">
-              <p className="text-slate-600 dark:text-slate-300">
-                Showing <span className="font-semibold text-slate-900 dark:text-slate-100">{filteredActivities.length}</span> of {activities.length} results
+              <p className={textSecondaryClass}>
+                Showing <span className={`font-semibold ${textPrimaryClass}`}>{filteredActivities.length}</span> of {activities.length} results
               </p>
               {hasActiveFilters && (
-                <Button variant="outline" className="border-slate-300 text-slate-700 dark:border-slate-600 dark:text-slate-200" onClick={clearFilters}>
+                <Button variant="outline" className={outlineButtonClass} onClick={clearFilters}>
                   <X className="mr-1 h-4 w-4" />
                   Clear Filters
                 </Button>
@@ -430,10 +471,10 @@ export default function LibraryPage() {
           </CardContent>
         </Card>
 
-        <Card className="mb-6 border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+        <Card className={`mb-6 ${cardBgClass}`}>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg text-slate-900 dark:text-slate-100">Create Your Own Topic</CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-300">
+            <CardTitle className={`text-lg ${textPrimaryClass}`}>Create Your Own Topic</CardTitle>
+            <CardDescription className={textSecondaryClass}>
               Type a broad topic like <span className="font-medium">JavaScript</span>, <span className="font-medium">Python</span>, or <span className="font-medium">Calculus</span>.
               We&apos;ll add it to your selected domain and send it to schedule.
             </CardDescription>
@@ -443,7 +484,7 @@ export default function LibraryPage() {
               value={customTopic}
               onChange={(e) => setCustomTopic(e.target.value)}
               placeholder={selectedDomain === 'all' ? 'Select a domain first (e.g. Programming)' : `New ${selectedDomain} topic...`}
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400"
+              className={`w-full rounded-md border px-3 py-2 text-sm ${inputBgClass} ${inputTextClass}`}
             />
             <Button
               onClick={handleCreateTopic}
@@ -455,10 +496,10 @@ export default function LibraryPage() {
           </CardContent>
         </Card>
 
-        <Card className="mb-6 border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+        <Card className={`mb-6 ${cardBgClass}`}>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg text-slate-900 dark:text-slate-100">Starter Subject Packs</CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-300">
+            <CardTitle className={`text-lg ${textPrimaryClass}`}>Starter Subject Packs</CardTitle>
+            <CardDescription className={textSecondaryClass}>
               One-click add. Use this to quickly bootstrap your library.
             </CardDescription>
           </CardHeader>
@@ -474,13 +515,13 @@ export default function LibraryPage() {
                       key={key}
                       onClick={() => handleStarterAdd(subject)}
                       disabled={isLoadingStarter}
-                      className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-left transition hover:border-orange-300 hover:bg-orange-50 disabled:opacity-70 dark:border-slate-700 dark:bg-slate-700 dark:hover:border-orange-500 dark:hover:bg-orange-950/30"
+                      className={`rounded-lg border p-3 text-left transition hover:border-orange-300 hover:bg-orange-50 disabled:opacity-70 ${isDark ? 'border-slate-700 bg-slate-700 dark:hover:border-orange-500 dark:hover:bg-orange-950/30' : 'border-slate-200 bg-slate-50'}`}
                     >
                       <div className="flex items-center justify-between">
-                        <p className="font-medium text-slate-900 dark:text-slate-100">{subject.icon} {subject.title}</p>
+                        <p className={`font-medium ${textPrimaryClass}`}>{subject.icon} {subject.title}</p>
                         {isLoadingStarter ? <Loader2 className="h-4 w-4 animate-spin text-orange-500" /> : null}
                       </div>
-                      <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">{subject.description}</p>
+                      <p className={`mt-1 text-xs ${textSecondaryClass}`}>{subject.description}</p>
                     </button>
                   )
                 })}
@@ -497,7 +538,7 @@ export default function LibraryPage() {
               className={`min-w-fit transition-all duration-300 ${
                 selectedDomain === d.id
                   ? 'bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 border-0 text-white'
-                  : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
+                  : buttonClass
               }`}
             >
               {d.icon} {d.name}
@@ -509,26 +550,26 @@ export default function LibraryPage() {
           <div className="flex items-center justify-center py-20">
             <div className="flex flex-col items-center gap-4">
               <Loader2 className="h-12 w-12 text-orange-500 animate-spin" />
-              <p className="text-slate-600 dark:text-slate-300">Loading activities...</p>
+              <p className={textSecondaryClass}>Loading activities...</p>
             </div>
           </div>
         ) : error ? (
-          <Card className="text-center py-12 bg-white border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <Card className={`text-center py-12 ${cardBgClass}`}>
             <CardContent>
               <p className="text-red-400 mb-4">{error}</p>
-              <Button onClick={() => fetchActivities(selectedDomain)} variant="outline" className="border-slate-300 text-slate-700 dark:border-slate-600 dark:text-slate-200">
+              <Button onClick={() => fetchActivities(selectedDomain)} variant="outline" className={outlineButtonClass}>
                 Try Again
               </Button>
             </CardContent>
           </Card>
         ) : activities.length === 0 ? (
-          <Card className="text-center py-12 bg-white border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <Card className={`text-center py-12 ${cardBgClass}`}>
             <CardContent>
-              <p className="text-slate-700 dark:text-slate-200 mb-2 font-medium">Activity catalog is empty</p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+              <p className={`mb-2 font-medium ${textPrimaryClass}`}>Activity catalog is empty</p>
+              <p className={`text-sm mb-4 ${textMutedClass}`}>
                 Smart search needs seeded activities before it can return results.
               </p>
-              <div className="mx-auto max-w-xl rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-left text-xs text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+              <div className="mx-auto max-w-xl rounded-md border bg-slate-50 px-3 py-2 text-left text-xs text-slate-700 dark:bg-slate-900 dark:text-slate-300">
                 Run: <span className="font-mono">npm run db:push && npm run db:seed</span>
               </div>
             </CardContent>
@@ -538,30 +579,30 @@ export default function LibraryPage() {
             {filteredActivities.map((activity) => (
               <Card
                 key={activity.id}
-                className="group bg-white border border-slate-200 hover:border-orange-300 hover:bg-orange-50 transition-all duration-300 cursor-pointer hover:scale-[1.01]"
+                className={`group ${cardBgClass} border hover:border-orange-300 hover:bg-orange-50 transition-all duration-300 cursor-pointer hover:scale-[1.01] ${isDark ? 'hover:border-orange-500 hover:bg-orange-950/30' : ''}`}
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between mb-2">
                     <Badge className={getDifficultyColor(activity.difficulty)}>
                       {getDifficultyLabel(activity.difficulty)} - {activity.difficulty}/10
                     </Badge>
-                    <div className="flex items-center text-sm text-slate-600">
+                    <div className={`flex items-center text-sm ${textSecondaryClass}`}>
                       <Clock className="h-3 w-3 mr-1" />
                       {formatDuration(activity.duration)}
                     </div>
                   </div>
-                  <CardTitle className="text-lg text-slate-900 dark:text-slate-100 transition-colors">
+                  <CardTitle className={`text-lg transition-colors ${textPrimaryClass}`}>
                     {activity.title}
                   </CardTitle>
-                  <CardDescription className="text-xs text-slate-600 dark:text-slate-300">
+                  <CardDescription className={`text-xs ${textSecondaryClass}`}>
                     {activity.domain?.name} {activity.category?.name ? `• ${activity.category.name}` : ''}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2">{activity.description}</p>
+                  <p className={`text-sm line-clamp-2 ${textSecondaryClass}`}>{activity.description}</p>
                   <div className="flex flex-wrap gap-1">
                     {activity.tags?.slice(0, 4).map((tag) => (
-                      <Badge key={tag} variant="outline" className="text-xs border-slate-300 text-slate-600 dark:border-slate-600 dark:text-slate-300">
+                      <Badge key={tag} variant="outline" className={`text-xs ${outlineButtonClass}`}>
                         {tag}
                       </Badge>
                     ))}
@@ -577,10 +618,10 @@ export default function LibraryPage() {
             ))}
           </div>
         ) : (
-          <Card className="text-center py-12 bg-white border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <Card className={`text-center py-12 ${cardBgClass}`}>
             <CardContent>
-              <p className="text-slate-600 dark:text-slate-300 mb-2">No activities found with current filters</p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Try clearing filters or switching domain</p>
+              <p className={`mb-2 ${textSecondaryClass}`}>No activities found with current filters</p>
+              <p className={`text-sm ${textMutedClass}`}>Try clearing filters or switching domain</p>
             </CardContent>
           </Card>
         )}
