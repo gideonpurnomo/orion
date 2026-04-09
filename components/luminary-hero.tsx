@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ArrowRight, ChevronDown, Sparkles } from 'lucide-react'
+import { ArrowRight, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
+import { LuminaryLogo } from './luminary-logo'
 
-export default function OrionHero() {
+export default function LuminaryHero() {
   const { data: session } = useSession()
   const [email, setEmail] = useState('')
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -18,7 +19,6 @@ export default function OrionHero() {
   const [scrollHintVisible, setScrollHintVisible] = useState(true)
 
   useEffect(() => {
-    // Reveal animations with delays
     const timer1 = setTimeout(() => setLogoRevealed(true), 500)
     const timer2 = setTimeout(() => setTextRevealed(true), 1500)
 
@@ -38,7 +38,6 @@ export default function OrionHero() {
       setHeroOpacity(1 - progress * 1.2)
       setContentOpacity(Math.max(0, progress - 0.2) * 1.3)
 
-      // Hide scroll hint after scrolling
       if (scrollY > 50) {
         setScrollHintVisible(false)
       } else {
@@ -69,9 +68,7 @@ export default function OrionHero() {
                 : 'opacity-0 translate-y-8'
             }`}
           >
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-3xl shadow-2xl shadow-blue-500/30">
-              <span className="text-4xl font-black text-white">Or</span>
-            </div>
+            <LuminaryLogo size="lg" variant="gold" animate />
           </div>
 
           {/* Title */}
@@ -79,9 +76,10 @@ export default function OrionHero() {
             className={`text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight transition-all duration-1000 delay-300 ${
               textRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            <span className="block mb-2">Orchestrate your</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+            <span className="block mb-2">Illuminate your</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300">
               learning journey
             </span>
           </h1>
@@ -92,7 +90,7 @@ export default function OrionHero() {
               textRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            The constellation that guides your path to mastery
+            Become the light that guides your path to mastery
           </p>
 
           {/* Email Input + CTA */}
@@ -108,7 +106,7 @@ export default function OrionHero() {
               onChange={(e) => setEmail(e.target.value)}
               className="bg-white/10 border-white/20 text-white placeholder:text-gray-500 h-12 text-base backdrop-blur-sm"
             />
-            <Button asChild size="lg" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white border-0 h-12 px-8 whitespace-nowrap">
+            <Button asChild size="lg" className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white border-0 h-12 px-8 whitespace-nowrap shadow-lg shadow-amber-500/30">
               <Link href={session ? "/dashboard" : "/auth/signup"}>
                 Get Started Free
                 <ArrowRight className="h-4 w-4 ml-2" />

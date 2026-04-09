@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { ThemeToggle } from './theme-toggle'
+import { LuminaryLogo } from './luminary-logo'
 
 interface TopNavProps {
   theme?: 'light' | 'blue' | 'green' | 'dark'
@@ -23,10 +24,7 @@ export default function TopNav({ theme = 'light' }: TopNavProps) {
     <header className={`sticky top-0 z-30 border-b backdrop-blur ${wrapperClass}`}>
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-2">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-600 text-sm font-bold text-white">
-            O
-          </span>
-          <span className="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">Orion</span>
+          <LuminaryLogo size="sm" variant="gold" withWordmark />
         </Link>
 
         <nav className="hidden items-center gap-2 md:flex">

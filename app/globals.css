@@ -10,7 +10,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 217 91% 60%; /* Blue-600 */
+    --primary: 45 93% 47%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -22,18 +22,18 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 217 91% 60%;
+    --ring: 45 93% 47%;
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222 84% 5%; /* Dark slate */
+    --background: 222 84% 5%;
     --foreground: 210 40% 98%;
     --card: 217 33% 17%;
     --card-foreground: 210 40% 98%;
     --popover: 217 33% 17%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%; /* Blue-600 */
+    --primary: 45 93% 57%;
     --primary-foreground: 210 40% 98%;
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
@@ -45,67 +45,199 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 217 91% 60%;
+    --ring: 45 93% 57%;
   }
 
-  /* Sunrise Theme - Morning energy, fresh start */
-  .theme-sunrise {
-    --gradient-from: 251 191% 36%;
-    --gradient-via: 251 146% 84%;
-    --gradient-to: 251 180% 37%;
-  }
-
-  .theme-sunrise.dark {
-    --gradient-from: 234 88% 12%;
-    --gradient-via: 221 88% 20%;
-    --gradient-to: 220 83% 22%;
-  }
-
-  /* Forest Theme - Growth, organic progress */
-  .theme-forest {
-    --gradient-from: 16 185% 129%;
-    --gradient-via: 20 163% 74%;
-    --gradient-to: 5 150% 97%;
-  }
-
-  .theme-forest.dark {
-    --gradient-from: 6 78% 59%;
-    --gradient-via: 5 120% 62%;
-    --gradient-to: 22 101% 53%;
-  }
-
-  /* Nebula Theme - Possibility */
-  .theme-nebula {
-    --gradient-from: 139 92% 246%;
-    --gradient-via: 124 77% 77%;
-    --gradient-to: 192 38% 148%;
-  }
-
-  .theme-nebula.dark {
-    --gradient-from: 76 29% 80%;
-    --gradient-via: 79 52% 34%;
-    --gradient-to: 147 51% 50%;
-  }
-
-  /* Aurora Theme - Magic moments */
-  .theme-aurora {
-    --gradient-from: 217 70% 239%;
-    --gradient-via: 217 70% 181%;
-    --gradient-to: 232 51% 121%;
-  }
-
-  .theme-aurora.dark {
-    --gradient-from: 192 38% 129%;
-    --gradient-via: 192 38% 92%;
-    --gradient-to: 203 55% 64%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/*
+  Named color themes.
+  next-themes puts the theme value as a class on <html>.
+  When user selects "Nebula", <html class="nebula"> is set.
+  These selectors target <html> directly so variables cascade to everything.
+  All named themes provide dark backgrounds directly (no .dark ancestor needed).
+*/
+
+/* Luminary (Default) - Gold/amber */
+.Luminary, .theme-luminary {
+  --primary: 45 93% 57%;
+  --primary-foreground: 210 40% 98%;
+  --ring: 45 93% 57%;
+  --accent: 43 96% 66%;
+  --accent-foreground: 210 40% 98%;
+  --background: 30 40% 8%;
+  --foreground: 43 30% 90%;
+  --card: 30 30% 12%;
+  --card-foreground: 43 30% 90%;
+  --border: 43 15% 25%;
+  --input: 30 25% 18%;
+  --muted: 30 20% 18%;
+  --muted-foreground: 43 20% 60%;
+  --secondary: 30 25% 16%;
+  --secondary-foreground: 43 30% 90%;
+  --theme-gradient-start: 30 50% 12%;
+  --theme-gradient-mid: 35 55% 15%;
+  --theme-gradient-end: 25 45% 10%;
+  --theme-card: 30 30% 14%;
+  --theme-accent: 45 93% 57%;
+  --theme-glow: 43 96% 56%;
+  --theme-primary: 45 93% 57%;
+  --theme-text-highlight: 43 96% 66%;
+  --theme-border: 43 20% 30%;
+}
+
+/* Sunrise - Orange */
+.Sunrise, .theme-sunrise {
+  --primary: 24 95% 60%;
+  --primary-foreground: 210 40% 98%;
+  --ring: 24 95% 60%;
+  --accent: 24 90% 65%;
+  --accent-foreground: 210 40% 98%;
+  --background: 20 50% 8%;
+  --foreground: 24 40% 92%;
+  --card: 20 30% 12%;
+  --card-foreground: 24 40% 92%;
+  --border: 20 20% 22%;
+  --input: 20 25% 16%;
+  --muted: 20 25% 16%;
+  --muted-foreground: 24 25% 55%;
+  --secondary: 20 30% 16%;
+  --secondary-foreground: 24 40% 92%;
+  --theme-gradient-start: 20 70% 15%;
+  --theme-gradient-mid: 24 65% 18%;
+  --theme-gradient-end: 15 60% 12%;
+  --theme-card: 20 30% 14%;
+  --theme-accent: 24 95% 60%;
+  --theme-glow: 24 90% 55%;
+  --theme-primary: 24 95% 60%;
+  --theme-text-highlight: 24 95% 70%;
+  --theme-border: 20 25% 25%;
+}
+
+/* Nebula - Purple */
+.Nebula, .theme-nebula {
+  --primary: 263 70% 60%;
+  --primary-foreground: 210 40% 98%;
+  --ring: 263 70% 60%;
+  --accent: 270 60% 65%;
+  --accent-foreground: 210 40% 98%;
+  --background: 270 40% 8%;
+  --foreground: 263 40% 92%;
+  --card: 270 30% 12%;
+  --card-foreground: 263 40% 92%;
+  --border: 263 20% 22%;
+  --input: 270 25% 16%;
+  --muted: 263 20% 16%;
+  --muted-foreground: 263 30% 55%;
+  --secondary: 270 25% 14%;
+  --secondary-foreground: 263 40% 92%;
+  --theme-gradient-start: 263 50% 15%;
+  --theme-gradient-mid: 270 45% 18%;
+  --theme-gradient-end: 280 50% 12%;
+  --theme-card: 263 30% 14%;
+  --theme-accent: 263 70% 60%;
+  --theme-glow: 263 80% 55%;
+  --theme-primary: 263 70% 60%;
+  --theme-text-highlight: 263 80% 70%;
+  --theme-border: 263 25% 25%;
+}
+
+/* Aurora - Teal */
+.Aurora, .theme-aurora {
+  --primary: 199 89% 58%;
+  --primary-foreground: 210 40% 98%;
+  --ring: 199 89% 58%;
+  --accent: 190 80% 60%;
+  --accent-foreground: 210 40% 98%;
+  --background: 200 40% 7%;
+  --foreground: 199 40% 95%;
+  --card: 200 25% 11%;
+  --card-foreground: 199 40% 95%;
+  --border: 199 18% 22%;
+  --input: 200 20% 15%;
+  --muted: 200 20% 14%;
+  --muted-foreground: 199 25% 55%;
+  --secondary: 200 22% 13%;
+  --secondary-foreground: 199 40% 95%;
+  --theme-gradient-start: 200 60% 12%;
+  --theme-gradient-mid: 190 55% 15%;
+  --theme-gradient-end: 185 50% 10%;
+  --theme-card: 200 30% 13%;
+  --theme-accent: 199 89% 58%;
+  --theme-glow: 190 80% 50%;
+  --theme-primary: 199 89% 58%;
+  --theme-text-highlight: 190 80% 65%;
+  --theme-border: 199 25% 25%;
+}
+
+/* Forest - Green */
+.Forest, .theme-forest {
+  --primary: 160 84% 49%;
+  --primary-foreground: 210 40% 98%;
+  --ring: 160 84% 49%;
+  --accent: 155 75% 50%;
+  --accent-foreground: 210 40% 98%;
+  --background: 155 30% 6%;
+  --foreground: 155 30% 95%;
+  --card: 155 25% 11%;
+  --card-foreground: 155 30% 95%;
+  --border: 155 18% 22%;
+  --input: 155 18% 16%;
+  --muted: 155 18% 14%;
+  --muted-foreground: 155 25% 55%;
+  --secondary: 155 22% 13%;
+  --secondary-foreground: 155 30% 95%;
+  --theme-gradient-start: 155 50% 10%;
+  --theme-gradient-mid: 150 45% 13%;
+  --theme-gradient-end: 160 50% 8%;
+  --theme-card: 155 25% 12%;
+  --theme-accent: 160 84% 49%;
+  --theme-glow: 155 75% 45%;
+  --theme-primary: 160 84% 49%;
+  --theme-text-highlight: 155 75% 55%;
+  --theme-border: 155 20% 25%;
+}
+
+@layer components {
+  .theme-gradient-bg {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--theme-gradient-start)),
+      hsl(var(--theme-gradient-mid)),
+      hsl(var(--theme-gradient-end))
+    );
+  }
+
+  .theme-card-bg {
+    background-color: hsl(var(--theme-card));
+  }
+
+  .theme-glow {
+    box-shadow: 0 0 20px hsl(var(--theme-glow) / 0.3),
+      0 0 60px hsl(var(--theme-glow) / 0.1);
+  }
+
+  .theme-glow-text {
+    text-shadow: 0 0 10px hsl(var(--theme-glow) / 0.5),
+      0 0 30px hsl(var(--theme-glow) / 0.2);
+  }
+}
+
+@keyframes luminary-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px hsl(45 96% 56% / 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px hsl(45 96% 56% / 0.9));
+  }
+}
+
+.luminary-logo-animate {
+  animation: luminary-pulse 3s ease-in-out infinite;
 }

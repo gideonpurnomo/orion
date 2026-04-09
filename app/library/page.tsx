@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, Suspense } from 'react'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -70,10 +70,10 @@ function normalizeText(value: string) {
     .replace(/[\u0300-\u036f]/g, '')
 }
 
-export default function LibraryPage() {
+function LibraryContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { theme } = useTheme()
+  const { theme, setTheme } = useTheme()
 
   const [selectedDomain, setSelectedDomain] = useState<string>('all')
   const [domains, setDomains] = useState<DomainTab[]>([
@@ -378,7 +378,7 @@ export default function LibraryPage() {
               <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Activity Library</h1>
               <p className="text-slate-600 dark:text-slate-300">Smart search + filters to quickly find what you want</p>
             </div>
-            <Button className="bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 border-0" asChild>
+            <Button className="bg-primary hover:opacity-90 border-0" asChild>
               <Link href={nextPath}>
                 <Plus className="h-4 w-4 mr-2" />
                 Create Schedule
@@ -479,31 +479,37 @@ export default function LibraryPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-3">
               {[
+                {
+                  name: 'Luminary',
+                  description: 'Become the light',
+                  lightBg: 'linear-gradient(135deg, #fbbf24, #f59e0b, #d97706)',
+                  darkBg: 'linear-gradient(135deg, #78350f, #92400e, #451a03)',
+                },
                 {
                   name: 'Sunrise',
                   description: 'Morning energy, fresh start',
-                  className: 'bg-gradient-to-b-from-amber-100 via-orange-50 to-yellow-100 dark:from-amber-200 via-orange-100 to-yellow-200',
-                  darkClass: 'bg-gradient-to-b-from-amber-200 via-orange-100 to-yellow-100 dark:from-amber-200 via-orange-100 to-yellow-200',
-                },
-                {
-                  name: 'Forest',
-                  description: 'Growth, organic progress',
-                  className: 'bg-gradient-to-b-from-emerald-100 via-teal-50 to-green-100 dark:from-emerald-800 via-green-700 to-teal-600',
-                  darkClass: 'bg-gradient-to-b-from-emerald-800 via-green-700 to-teal-600',
+                  lightBg: 'linear-gradient(135deg, #fb923c, #f97316, #ea580c)',
+                  darkBg: 'linear-gradient(135deg, #7c2d12, #9a3412, #431407)',
                 },
                 {
                   name: 'Nebula',
                   description: 'Exciting possibilities',
-                  className: 'bg-gradient-to-b-from-violet-100 via-blue-50 to-purple-100 dark:from-indigo-800 via-purple-700 to-blue-600',
-                  darkClass: 'bg-gradient-to-b-from-indigo-800 via-purple-700 to-blue-600',
+                  lightBg: 'linear-gradient(135deg, #a78bfa, #8b5cf6, #7c3aed)',
+                  darkBg: 'linear-gradient(135deg, #3b0764, #4c1d95, #2e1065)',
                 },
                 {
                   name: 'Aurora',
                   description: 'Magic moments',
-                  className: 'bg-gradient-to-b-from-fuchsia-100 via-purple-50 to-pink-100 dark:from-fuchsia-900 via-pink-800 to-fuchsia-600',
-                  darkClass: 'bg-gradient-to-b-from-fuchsia-900 via-pink-800 to-fuchsia-600',
+                  lightBg: 'linear-gradient(135deg, #22d3ee, #06b6d4, #0891b2)',
+                  darkBg: 'linear-gradient(135deg, #164e63, #083344, #0c4a6e)',
+                },
+                {
+                  name: 'Forest',
+                  description: 'Growth, organic progress',
+                  lightBg: 'linear-gradient(135deg, #34d399, #10b981, #059669)',
+                  darkBg: 'linear-gradient(135deg, #064e3b, #065f46, #022c22)',
                 },
               ].map((themeOption) => (
                 <button
@@ -515,10 +521,10 @@ export default function LibraryPage() {
                       : 'border-slate-200 hover:border-slate-300'
                   } ${isDark ? 'dark:border-slate-600' : ''}`}
                 >
-                  <div className={`absolute inset-0 transition-all duration-300 ${themeOption.className} ${isDark && themeOption.darkClass ? themeOption.darkClass : ''}`}></div>
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className={`text-lg font-semibold ${textPrimaryClass}`}>{themeOption.name}</div>
-                    <div className={`text-xs ${textMutedClass}`}>{themeOption.description}</div>
+                  <div className={`absolute inset-0 transition-all duration-300`} style={{ background: isDark ? themeOption.darkBg : themeOption.lightBg }}></div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <div className="text-lg font-semibold text-white drop-shadow-md">{themeOption.name}</div>
+                    <div className="text-xs text-white/80">{themeOption.description}</div>
                   </div>
                 </button>
               ))}
@@ -592,7 +598,7 @@ export default function LibraryPage() {
               onClick={() => setSelectedDomain(d.id)}
               className={`min-w-fit transition-all duration-300 ${
                 selectedDomain === d.id
-                  ? 'bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 border-0 text-white'
+                  ? 'bg-primary hover:opacity-90 border-0 text-primary-foreground'
                   : buttonClass
               }`}
             >
@@ -662,7 +668,7 @@ export default function LibraryPage() {
                       </Badge>
                     ))}
                   </div>
-                  <Button className="w-full bg-orange-500 hover:bg-orange-600 border-0" size="sm" asChild>
+                  <Button className="w-full bg-primary hover:opacity-90 border-0" size="sm" asChild>
                     <Link href={buildAddLink(activity.id)}>
                       <Plus className="h-4 w-4 mr-2" />
                       Add to Schedule
@@ -682,5 +688,17 @@ export default function LibraryPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function LibraryPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    }>
+      <LibraryContent />
+    </Suspense>
   )
 }

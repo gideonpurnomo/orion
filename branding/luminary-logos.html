@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luminary — Logo Concepts</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-card: #111118;
+      --bg-card-hover: #16161f;
+      --border: #1e1e2e;
+      --text-primary: #f0f0f5;
+      --text-secondary: #8888aa;
+      --text-tertiary: #555570;
+      --gold: #f5b942;
+      --gold-light: #ffd97a;
+      --blue: #4f7df7;
+      --blue-light: #7da0ff;
+      --purple: #8b5cf6;
+      --teal: #14b8a6;
+      --rose: #f43f5e;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), #e8982a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+    .header p {
+      color: var(--text-secondary);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .header .subtitle {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    /* Concept Grid */
+    .concepts {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .concept {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      margin-bottom: 40px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .concept:hover {
+      border-color: #2a2a3e;
+    }
+
+    .concept-header {
+      padding: 28px 36px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .concept-header .number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .concept-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .concept-header .tagline {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .concept-body {
+      padding: 48px 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+    }
+
+    /* Logo Display Rows */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .logo-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo-display .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-tertiary);
+    }
+    .logo-display .size-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    /* Background variants */
+    .bg-dark { background: #0a0a0f; border-radius: 16px; padding: 40px; }
+    .bg-light { background: #f8f8fc; border-radius: 16px; padding: 40px; }
+    .bg-gradient-nebula { background: linear-gradient(135deg, #1a0a2e, #2d1b4e); border-radius: 16px; padding: 40px; }
+    .bg-gradient-sunrise { background: linear-gradient(135deg, #2a1a0a, #3d2510); border-radius: 16px; padding: 40px; }
+    .bg-gradient-aurora { background: linear-gradient(135deg, #0a1a2e, #1b2d4e); border-radius: 16px; padding: 40px; }
+
+    /* Wordmark section */
+    .wordmark-section {
+      width: 100%;
+      text-align: center;
+    }
+    .wordmark-section h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--text-tertiary);
+      margin-bottom: 24px;
+    }
+
+    /* Description */
+    .concept-footer {
+      padding: 20px 36px 28px;
+      border-top: 1px solid var(--border);
+    }
+    .concept-footer p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 800px;
+    }
+    .concept-footer strong {
+      color: var(--gold);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header h1 { font-size: 32px; }
+      .concept-body { padding: 32px 20px; }
+      .logo-row { gap: 32px; }
+    }
+
+    /* Animations */
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 8px rgba(245, 185, 66, 0.3)); }
+      50% { filter: drop-shadow(0 0 20px rgba(245, 185, 66, 0.6)); }
+    }
+    @keyframes rotate-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .animate-glow { animation: pulse-glow 3s ease-in-out infinite; }
+    .animate-rotate { animation: rotate-slow 60s linear infinite; }
+    .twinkle-1 { animation: twinkle 3s ease-in-out infinite; }
+    .twinkle-2 { animation: twinkle 4s ease-in-out infinite 1s; }
+    .twinkle-3 { animation: twinkle 2.5s ease-in-out infinite 0.5s; }
+
+    /* Size comparison */
+    .size-grid {
+      display: flex;
+      align-items: flex-end;
+      gap: 40px;
+      justify-content: center;
+    }
+    .size-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Color strip */
+    .color-strip {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .color-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+    }
+
+    /* Final section */
+    .final-recommendation {
+      max-width: 1400px;
+      margin: 0 auto 80px;
+      padding: 0 20px;
+    }
+    .final-card {
+      background: linear-gradient(135deg, #111118, #161625);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px;
+      text-align: center;
+    }
+    .final-card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .final-card .brand-statement {
+      font-size: 20px;
+      color: var(--text-primary);
+      line-height: 1.8;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="subtitle">Brand Identity Exploration</div>
+    <h1>LUMINARY</h1>
+    <p>A learning schedule orchestrator where every learner becomes a guiding light. Below are six logo concepts exploring different facets of the brand.</p>
+  </div>
+
+  <div class="concepts">
+
+    <!-- ============================================ -->
+    <!-- CONCEPT 1: The Rising Star -->
+    <!-- ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="number">Concept 01</span>
+        <div>
+          <h2>The Rising Star</h2>
+          <span class="tagline">"From orbit to brilliance"</span>
+        </div>
+      </div>
+      <div class="concept-body">
+
+        <!-- Main logo on dark -->
+        <div class="logo-row">
+          <div class="logo-display">
+            <div class="label">On Dark</div>
+            <div class="bg-dark animate-glow">
+              <svg width="120" height="120" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Orbital rings -->
+                <ellipse cx="100" cy="115" rx="70" ry="22" stroke="url(#orbit1)" stroke-width="1.5" fill="none" transform="rotate(-25, 100, 115)" opacity="0.5"/>
+                <ellipse cx="100" cy="115" rx="70" ry="22" stroke="url(#orbit1)" stroke-width="1.5" fill="none" transform="rotate(25, 100, 115)" opacity="0.5"/>
+                <ellipse cx="100" cy="115" rx="70" ry="22" stroke="url(#orbit2)" stroke-width="1.5" fill="none" opacity="0.3"/>
+                <!-- 4-pointed star -->
+                <path d="M100 30 L106 70 L108 76 L115 78 L148 88 L115 98 L108 100 L106 106 L100 146 L94 106 L92 100 L85 98 L52 88 L85 78 L92 76 L94 70 Z" fill="url(#star1)"/>
+                <!-- Inner glow -->
+                <circle cx="100" cy="88" r="6" fill="#fff" opacity="0.9"/>
+                <circle cx="100" cy="88" r="12" fill="#fff" opacity="0.15"/>
+                <defs>
+                  <linearGradient id="orbit1" x1="30" y1="0" x2="170" y2="0">
+                    <stop offset="0%" stop-color="#f5b942" stop-opacity="0"/>
+                    <stop offset="50%" stop-color="#f5b942" stop-opacity="1"/>
+                    <stop offset="100%" stop-color="#f5b942" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="orbit2" x1="30" y1="0" x2="170" y2="0">
+                    <stop offset="0%" stop-color="#4f7df7" stop-opacity="0"/>
+                    <stop offset="50%" stop-color="#4f7df7" stop-opacity="0.6"/>
+                    <stop offset="100%" stop-color="#4f7df7" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="star1" x1="100" y1="30" x2="100" y2="146">
+                    <stop offset="0%" stop-color="#ffd97a"/>
+                    <stop offset="50%" stop-color="#f5b942"/>
+                    <stop offset="100%" stop-color="#e8982a"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+
+          <!-- On light -->
+          <div class="logo-display">
+            <div class="label">On Light</div>
+            <div class="bg-light">
+              <svg width="120" height="120" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="100" cy="115" rx="70" ry="22" stroke="#d4a030" stroke-width="1.5" fill="none" transform="rotate(-25, 100, 115)" opacity="0.3"/>
+                <ellipse cx="100" cy="115" rx="70" ry="22" stroke="#d4a030" stroke-width="1.5" fill="none" transform="rotate(25, 100, 115)" opacity="0.3"/>
+                <ellipse cx="100" cy="115" rx="70" ry="22" stroke="#4f7df7" stroke-width="1.5" fill="none" opacity="0.2"/>
+                <path d="M100 30 L106 70 L108 76 L115 78 L148 88 L115 98 L108 100 L106 106 L100 146 L94 106 L92 100 L85 98 L52 88 L85 78 L92 76 L94 70 Z" fill="#e8a020"/>
+                <circle cx="100" cy="88" r="6" fill="#fff" opacity="0.95"/>
+                <circle cx="100" cy="88" r="12" fill="#e8a020" opacity="0.1"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- With wordmark -->
+          <div class="logo-display">
+            <div class="label">With Wordmark</div>
+            <div class="bg-dark">
+              <div style="display:flex;align-items:center;gap:16px;">
+                <svg width="48" height="48" viewBox="0 0 200 200" fill="none">
+                  <path d="M100 30 L106 70 L108 76 L115 78 L148 88 L115 98 L108 100 L106 106 L100 146 L94 106 L92 100 L85 98 L52 88 L85 78 L92 76 L94 70 Z" fill="url(#star1b)"/>
+                  <circle cx="100" cy="88" r="6" fill="#fff" opacity="0.9"/>
+                  <defs><linearGradient id="star1b" x1="100" y1="30" x2="100" y2="146"><stop offset="0%" stop-color="#ffd97a"/><stop offset="100%" stop-color="#e8982a"/></linearGradient></defs>
+                </svg>
+                <span style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:600;letter-spacing:-0.5px;color:#f0f0f5;">Luminary</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Size comparison -->
+        <div class="logo-row">
+          <div class="size-grid">
+            <div class="size-item">
+              <svg width="64" height="64" viewBox="0 0 200 200" fill="none"><path d="M100 30 L106 70 L108 76 L115 78 L148 88 L115 98 L108 100 L106 106 L100 146 L94 106 L92 100 L85 98 L52 88 L85 78 L92 76 L94 70 Z" fill="#f5b942"/><circle cx="100" cy="88" r="6" fill="#fff" opacity="0.9"/></svg>
+              <span class="size-label">64px</span>
+            </div>
+            <div class="size-item">
+              <svg width="48" height="48" viewBox="0 0 200 200" fill="none"><path d="M100 30 L106 70 L108 76 L115 78 L148 88 L115 98 L108 100 L106 106 L100 146 L94 106 L92 100 L85 98 L52 88 L85 78 L92 76 L94 70 Z" fill="#f5b942"/><circle cx="100" cy="88" r="6" fill="#fff" opacity="0.9"/></svg>
+              <span class="size-label">48px</span>
+            </div>
+            <div class="size-item">
+              <svg width="32" height="32" viewBox="0 0 200 200" fill="none"><path d="M100 30 L106 70 L108 76 L115 78 L148 88 L115 98 L108 100 L106 106 L100 146 L94 106 L92 100 L85 98 L52 88 L85 78 L92 76 L94 70 Z" fill="#f5b942"/><circle cx="100" cy="88" r="8" fill="#fff" opacity="0.9"/></svg>
+              <span class="size-label">32px</span>
+            </div>
+            <div class="size-item">
+              <svg width="20" height="20" viewBox="0 0 200 200" fill="none"><path d="M100 30 L106 70 L108 76 L115 78 L148 88 L115 98 L108 100 L106 106 L100 146 L94 106 L92 100 L85 98 L52 88 L85 78 L92 76 L94 70 Z" fill="#f5b942"/><circle cx="100" cy="88" r="10" fill="#fff" opacity="0.9"/></svg>
+              <span class="size-label">20px</span>
+            </div>
+            <div class="size-item">
+              <svg width="14" height="14" viewBox="0 0 200 200" fill="none"><circle cx="100" cy="88" r="50" fill="#f5b942"/><circle cx="100" cy="88" r="10" fill="#fff" opacity="0.9"/></svg>
+              <span class="size-label">14px</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-footer">
+        <p>A four-pointed star <strong>ascending through orbital rings</strong> — representing a learner rising above the noise. The orbits symbolize structured learning paths, while the star is the individual emerging into brilliance. Clean geometric shape ensures scalability down to 14px favicons.</p>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- CONCEPT 2: The L Monogram -->
+    <!-- ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="number">Concept 02</span>
+        <div>
+          <h2>The L Monogram</h2>
+          <span class="tagline">"Structure meets light"</span>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div class="logo-row">
+          <div class="logo-display">
+            <div class="label">Primary</div>
+            <div class="bg-dark animate-glow">
+              <svg width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- L shape made of geometric blocks -->
+                <rect x="45" y="30" width="24" height="120" rx="4" fill="url(#lgrad)"/>
+                <rect x="45" y="126" width="90" height="24" rx="4" fill="url(#lgrad)"/>
+                <!-- Star accent replacing the serif of L -->
+                <path d="M69 30 L72 40 L73 42 L83 44 L73 46 L72 48 L69 58 L66 48 L65 46 L55 44 L65 42 L66 40 Z" fill="#ffd97a"/>
+                <path d="M135 126 L137 132 L138 133 L144 134 L138 135 L137 136 L135 142 L133 136 L132 135 L126 134 L132 133 L133 132 Z" fill="#ffd97a"/>
+                <!-- Subtle glow -->
+                <circle cx="69" cy="44" r="20" fill="#f5b942" opacity="0.06"/>
+                <defs>
+                  <linearGradient id="lgrad" x1="45" y1="30" x2="135" y2="150">
+                    <stop offset="0%" stop-color="#f5b942"/>
+                    <stop offset="100%" stop-color="#e8982a"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+
+          <div class="logo-display">
+            <div class="label">On Light</div>
+            <div class="bg-light">
+              <svg width="140" height="140" viewBox="0 0 200 200" fill="none">
+                <rect x="45" y="30" width="24" height="120" rx="4" fill="#c48a20"/>
+                <rect x="45" y="126" width="90" height="24" rx="4" fill="#c48a20"/>
+                <path d="M69 30 L72 40 L73 42 L83 44 L73 46 L72 48 L69 58 L66 48 L65 46 L55 44 L65 42 L66 40 Z" fill="#e8a020"/>
+                <path d="M135 126 L137 132 L138 133 L144 134 L138 135 L137 136 L135 142 L133 136 L132 135 L126 134 L132 133 L133 132 Z" fill="#e8a020"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="logo-display">
+            <div class="label">With Wordmark</div>
+            <div class="bg-dark">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <svg width="44" height="44" viewBox="0 0 200 200" fill="none">
+                  <rect x="45" y="30" width="24" height="120" rx="4" fill="#f5b942"/>
+                  <rect x="45" y="126" width="90" height="24" rx="4" fill="#f5b942"/>
+                  <path d="M69 30 L72 40 L73 42 L83 44 L73 46 L72 48 L69 58 L66 48 L65 46 L55 44 L65 42 L66 40 Z" fill="#ffd97a"/>
+                </svg>
+                <span style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;letter-spacing:-0.5px;color:#f0f0f5;">Luminary</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="logo-row">
+          <div class="size-grid">
+            <div class="size-item">
+              <svg width="56" height="56" viewBox="0 0 200 200" fill="none"><rect x="45" y="30" width="24" height="120" rx="4" fill="#f5b942"/><rect x="45" y="126" width="90" height="24" rx="4" fill="#f5b942"/><path d="M69 30 L72 40 L73 42 L83 44 L73 46 L72 48 L69 58 L66 48 L65 46 L55 44 L65 42 L66 40 Z" fill="#ffd97a"/></svg>
+              <span class="size-label">56px</span>
+            </div>
+            <div class="size-item">
+              <svg width="36" height="36" viewBox="0 0 200 200" fill="none"><rect x="45" y="30" width="24" height="120" rx="4" fill="#f5b942"/><rect x="45" y="126" width="90" height="24" rx="4" fill="#f5b942"/><path d="M69 30 L72 40 L73 42 L83 44 L73 46 L72 48 L69 58 L66 48 L65 46 L55 44 L65 42 L66 40 Z" fill="#ffd97a"/></svg>
+              <span class="size-label">36px</span>
+            </div>
+            <div class="size-item">
+              <svg width="22" height="22" viewBox="0 0 200 200" fill="none"><rect x="45" y="30" width="24" height="120" rx="4" fill="#f5b942"/><rect x="45" y="126" width="90" height="24" rx="4" fill="#f5b942"/></svg>
+              <span class="size-label">22px</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-footer">
+        <p>A bold geometric <strong>"L" monogram</strong> where miniature stars replace traditional serifs. The letterform feels architectural and grounded — structure — while the stars add lightness and aspiration. The L works beautifully as a standalone app icon.</p>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- CONCEPT 3: The Beacon -->
+    <!-- ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="number">Concept 03</span>
+        <div>
+          <h2>The Beacon</h2>
+          <span class="tagline">"Your guiding light in learning"</span>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div class="logo-row">
+          <div class="logo-display">
+            <div class="label">Primary</div>
+            <div class="bg-dark">
+              <svg width="160" height="160" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Light rays -->
+                <line x1="100" y1="40" x2="100" y2="8" stroke="#f5b942" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                <line x1="132" y1="50" x2="155" y2="27" stroke="#f5b942" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <line x1="68" y1="50" x2="45" y2="27" stroke="#f5b942" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <line x1="145" y1="72" x2="175" y2="60" stroke="#f5b942" stroke-width="2" stroke-linecap="round" opacity="0.25"/>
+                <line x1="55" y1="72" x2="25" y2="60" stroke="#f5b942" stroke-width="2" stroke-linecap="round" opacity="0.25"/>
+                <!-- Beacon / flame shape -->
+                <path d="M100 35 C100 35 125 65 125 90 C125 108 115 120 100 125 C85 120 75 108 75 90 C75 65 100 35 100 35Z" fill="url(#beacon1)"/>
+                <!-- Inner flame -->
+                <path d="M100 55 C100 55 115 72 115 88 C115 98 108 105 100 108 C92 105 85 98 85 88 C85 72 100 55 100 55Z" fill="url(#beacon2)" opacity="0.8"/>
+                <!-- Core light -->
+                <circle cx="100" cy="85" r="8" fill="#fff" opacity="0.9"/>
+                <circle cx="100" cy="85" r="16" fill="#fff" opacity="0.1"/>
+                <!-- Base platform -->
+                <path d="M70 140 L130 140 L120 155 L80 155Z" fill="#f5b942" opacity="0.3"/>
+                <rect x="75" y="155" width="50" height="6" rx="3" fill="#f5b942" opacity="0.4"/>
+                <!-- Small stars around -->
+                <circle cx="150" cy="40" r="2" fill="#f5b942" class="twinkle-1" opacity="0.5"/>
+                <circle cx="160" cy="90" r="1.5" fill="#f5b942" class="twinkle-2" opacity="0.4"/>
+                <circle cx="40" cy="55" r="1.5" fill="#f5b942" class="twinkle-3" opacity="0.4"/>
+                <circle cx="35" cy="100" r="2" fill="#ffd97a" class="twinkle-1" opacity="0.3"/>
+                <circle cx="170" cy="130" r="1" fill="#ffd97a" class="twinkle-2" opacity="0.3"/>
+                <defs>
+                  <linearGradient id="beacon1" x1="100" y1="35" x2="100" y2="125">
+                    <stop offset="0%" stop-color="#ffd97a"/>
+                    <stop offset="60%" stop-color="#f5b942"/>
+                    <stop offset="100%" stop-color="#d4882a"/>
+                  </linearGradient>
+                  <linearGradient id="beacon2" x1="100" y1="55" x2="100" y2="108">
+                    <stop offset="0%" stop-color="#fff8e0"/>
+                    <stop offset="100%" stop-color="#ffd97a"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+
+          <div class="logo-display">
+            <div class="label">Nebula Theme</div>
+            <div class="bg-gradient-nebula">
+              <svg width="120" height="120" viewBox="0 0 200 200" fill="none">
+                <line x1="100" y1="40" x2="100" y2="8" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                <line x1="132" y1="50" x2="155" y2="27" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <line x1="68" y1="50" x2="45" y2="27" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <path d="M100 35 C100 35 125 65 125 90 C125 108 115 120 100 125 C85 120 75 108 75 90 C75 65 100 35 100 35Z" fill="url(#beaconN)"/>
+                <path d="M100 55 C100 55 115 72 115 88 C115 98 108 105 100 108 C92 105 85 98 85 88 C85 72 100 55 100 55Z" fill="#e0d4ff" opacity="0.7"/>
+                <circle cx="100" cy="85" r="8" fill="#fff" opacity="0.9"/>
+                <path d="M70 140 L130 140 L120 155 L80 155Z" fill="#8b5cf6" opacity="0.3"/>
+                <defs><linearGradient id="beaconN" x1="100" y1="35" x2="100" y2="125"><stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs>
+              </svg>
+            </div>
+          </div>
+
+          <div class="logo-display">
+            <div class="label">Aurora Theme</div>
+            <div class="bg-gradient-aurora">
+              <svg width="120" height="120" viewBox="0 0 200 200" fill="none">
+                <line x1="100" y1="40" x2="100" y2="8" stroke="#7da0ff" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                <line x1="132" y1="50" x2="155" y2="27" stroke="#7da0ff" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <line x1="68" y1="50" x2="45" y2="27" stroke="#7da0ff" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                <path d="M100 35 C100 35 125 65 125 90 C125 108 115 120 100 125 C85 120 75 108 75 90 C75 65 100 35 100 35Z" fill="url(#beaconA)"/>
+                <path d="M100 55 C100 55 115 72 115 88 C115 98 108 105 100 108 C92 105 85 98 85 88 C85 72 100 55 100 55Z" fill="#c0d4ff" opacity="0.7"/>
+                <circle cx="100" cy="85" r="8" fill="#fff" opacity="0.9"/>
+                <path d="M70 140 L130 140 L120 155 L80 155Z" fill="#4f7df7" opacity="0.3"/>
+                <defs><linearGradient id="beaconA" x1="100" y1="35" x2="100" y2="125"><stop offset="0%" stop-color="#7da0ff"/><stop offset="100%" stop-color="#3b5edb"/></linearGradient></defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-footer">
+        <p>A <strong>beacon of light</strong> — a flame that doubles as a star — radiating outward. This concept leans into the "guiding light" meaning of Luminary. The shape evokes both a lighthouse beacon and a candle flame. Adapts beautifully to each theme color.</p>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- CONCEPT 4: The Constellation Path -->
+    <!-- ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="number">Concept 04</span>
+        <div>
+          <h2>The Constellation Path</h2>
+          <span class="tagline">"Every star connected, every step intentional"</span>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div class="logo-row">
+          <div class="logo-display">
+            <div class="label">Primary</div>
+            <div class="bg-dark">
+              <svg width="180" height="140" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Connection lines -->
+                <line x1="40" y1="140" x2="80" y2="100" stroke="#f5b942" stroke-width="1.5" opacity="0.3"/>
+                <line x1="80" y1="100" x2="120" y2="120" stroke="#f5b942" stroke-width="1.5" opacity="0.4"/>
+                <line x1="120" y1="120" x2="140" y2="70" stroke="#f5b942" stroke-width="1.5" opacity="0.5"/>
+                <line x1="140" y1="70" x2="175" y2="50" stroke="#f5b942" stroke-width="1.5" opacity="0.6"/>
+                <line x1="175" y1="50" x2="210" y2="30" stroke="#f5b942" stroke-width="2" opacity="0.8"/>
+                <!-- Dashed upward path -->
+                <path d="M40 145 Q120 140 140 75 Q160 30 210 30" stroke="#4f7df7" stroke-width="1" stroke-dasharray="4 4" fill="none" opacity="0.2"/>
+                <!-- Star nodes (growing) -->
+                <circle cx="40" cy="140" r="4" fill="#f5b942" opacity="0.4"/>
+                <circle cx="80" cy="100" r="5" fill="#f5b942" opacity="0.5"/>
+                <circle cx="120" cy="120" r="5" fill="#f5b942" opacity="0.6"/>
+                <circle cx="140" cy="70" r="7" fill="#f5b942" opacity="0.7"/>
+                <circle cx="175" cy="50" r="9" fill="#f5b942" opacity="0.8"/>
+                <!-- Final star - the Luminary -->
+                <path d="M210 30 L214 42 L215 43 L227 45 L215 47 L214 48 L210 60 L206 48 L205 47 L193 45 L205 43 L206 42 Z" fill="#ffd97a"/>
+                <circle cx="210" cy="45" r="3" fill="#fff" opacity="0.9"/>
+                <circle cx="210" cy="45" r="12" fill="#ffd97a" opacity="0.08"/>
+                <!-- Small scattered stars -->
+                <circle cx="60" cy="50" r="1.5" fill="#f5b942" class="twinkle-2" opacity="0.3"/>
+                <circle cx="190" cy="90" r="1.5" fill="#f5b942" class="twinkle-1" opacity="0.3"/>
+                <circle cx="100" cy="40" r="1" fill="#ffd97a" class="twinkle-3" opacity="0.25"/>
+                <circle cx="160" cy="130" r="1" fill="#ffd97a" class="twinkle-2" opacity="0.2"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="logo-display">
+            <div class="label">Compact Mark</div>
+            <div class="bg-dark animate-glow">
+              <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                <!-- Ascending path -->
+                <line x1="15" y1="100" x2="40" y2="72" stroke="#f5b942" stroke-width="1.5" opacity="0.3"/>
+                <line x1="40" y1="72" x2="60" y2="80" stroke="#f5b942" stroke-width="1.5" opacity="0.4"/>
+                <line x1="60" y1="80" x2="75" y2="48" stroke="#f5b942" stroke-width="1.5" opacity="0.5"/>
+                <line x1="75" y1="48" x2="95" y2="28" stroke="#f5b942" stroke-width="2" opacity="0.7"/>
+                <!-- Nodes -->
+                <circle cx="15" cy="100" r="3" fill="#f5b942" opacity="0.4"/>
+                <circle cx="40" cy="72" r="4" fill="#f5b942" opacity="0.5"/>
+                <circle cx="60" cy="80" r="4" fill="#f5b942" opacity="0.6"/>
+                <circle cx="75" cy="48" r="5.5" fill="#f5b942" opacity="0.7"/>
+                <!-- Star at peak -->
+                <path d="M95 28 L97.5 35 L98 35.5 L105 36.5 L98 37.5 L97.5 38 L95 45 L92.5 38 L92 37.5 L85 36.5 L92 35.5 L92.5 35 Z" fill="#ffd97a"/>
+                <circle cx="95" cy="36.5" r="2.5" fill="#fff" opacity="0.9"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="logo-display">
+            <div class="label">With Wordmark</div>
+            <div class="bg-dark">
+              <div style="display:flex;align-items:center;gap:16px;">
+                <svg width="48" height="48" viewBox="0 0 120 120" fill="none">
+                  <line x1="15" y1="100" x2="40" y2="72" stroke="#f5b942" stroke-width="1.5" opacity="0.3"/>
+                  <line x1="40" y1="72" x2="60" y2="80" stroke="#f5b942" stroke-width="1.5" opacity="0.4"/>
+                  <line x1="60" y1="80" x2="75" y2="48" stroke="#f5b942" stroke-width="1.5" opacity="0.5"/>
+                  <line x1="75" y1="48" x2="95" y2="28" stroke="#f5b942" stroke-width="2" opacity="0.7"/>
+                  <circle cx="15" cy="100" r="3" fill="#f5b942" opacity="0.4"/>
+                  <circle cx="40" cy="72" r="4" fill="#f5b942" opacity="0.5"/>
+                  <circle cx="60" cy="80" r="4" fill="#f5b942" opacity="0.6"/>
+                  <circle cx="75" cy="48" r="5.5" fill="#f5b942" opacity="0.7"/>
+                  <path d="M95 28 L97.5 35 L98 35.5 L105 36.5 L98 37.5 L97.5 38 L95 45 L92.5 38 L92 37.5 L85 36.5 L92 35.5 L92.5 35 Z" fill="#ffd97a"/>
+                  <circle cx="95" cy="36.5" r="2.5" fill="#fff" opacity="0.9"/>
+                </svg>
+                <span style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:600;letter-spacing:-0.5px;color:#f0f0f5;">Luminary</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-footer">
+        <p>An <strong>ascending constellation</strong> — nodes of increasing brightness connected by lines, culminating in a brilliant star. This directly visualizes the learning journey: small beginnings, connected steps, growing mastery. Each node is a skill; the final star is the Luminary you become.</p>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- CONCEPT 5: The Solar Arch -->
+    <!-- ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="number">Concept 05</span>
+        <div>
+          <h2>The Solar Arch</h2>
+          <span class="tagline">"The arc of mastery"</span>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div class="logo-row">
+          <div class="logo-display">
+            <div class="label">Primary</div>
+            <div class="bg-dark animate-glow">
+              <svg width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Arc -->
+                <path d="M30 150 Q100 -20 170 150" stroke="url(#arc1)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Star at apex -->
+                <path d="M100 22 L104 38 L105 39 L120 42 L105 45 L104 46 L100 62 L96 46 L95 45 L80 42 L95 39 L96 38 Z" fill="url(#starArc)"/>
+                <circle cx="100" cy="42" r="4" fill="#fff" opacity="0.9"/>
+                <!-- Glow at top -->
+                <circle cx="100" cy="42" r="20" fill="#f5b942" opacity="0.06"/>
+                <circle cx="100" cy="42" r="35" fill="#f5b942" opacity="0.03"/>
+                <!-- Small dots along arc -->
+                <circle cx="50" cy="105" r="2.5" fill="#f5b942" opacity="0.3"/>
+                <circle cx="65" cy="72" r="3" fill="#f5b942" opacity="0.4"/>
+                <circle cx="82" cy="46" r="3.5" fill="#f5b942" opacity="0.5"/>
+                <circle cx="118" cy="46" r="3.5" fill="#f5b942" opacity="0.5"/>
+                <circle cx="135" cy="72" r="3" fill="#f5b942" opacity="0.4"/>
+                <circle cx="150" cy="105" r="2.5" fill="#f5b942" opacity="0.3"/>
+                <defs>
+                  <linearGradient id="arc1" x1="30" y1="150" x2="170" y2="150">
+                    <stop offset="0%" stop-color="#f5b942" stop-opacity="0"/>
+                    <stop offset="20%" stop-color="#f5b942" stop-opacity="0.5"/>
+                    <stop offset="50%" stop-color="#ffd97a" stop-opacity="1"/>
+                    <stop offset="80%" stop-color="#f5b942" stop-opacity="0.5"/>
+                    <stop offset="100%" stop-color="#f5b942" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="starArc" x1="100" y1="22" x2="100" y2="62">
+                    <stop offset="0%" stop-color="#ffd97a"/>
+                    <stop offset="100%" stop-color="#f5b942"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+
+          <div class="logo-display">
+            <div class="label">Minimal</div>
+            <div class="bg-dark">
+              <svg width="100" height="100" viewBox="0 0 200 200" fill="none">
+                <path d="M30 150 Q100 -20 170 150" stroke="#f5b942" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M100 22 L104 38 L105 39 L120 42 L105 45 L104 46 L100 62 L96 46 L95 45 L80 42 L95 39 L96 38 Z" fill="#f5b942"/>
+                <circle cx="100" cy="42" r="4" fill="#fff" opacity="0.9"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="logo-display">
+            <div class="label">Sunrise Theme</div>
+            <div class="bg-gradient-sunrise">
+              <svg width="100" height="100" viewBox="0 0 200 200" fill="none">
+                <path d="M30 150 Q100 -20 170 150" stroke="#ff9a3c" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M100 22 L104 38 L105 39 L120 42 L105 45 L104 46 L100 62 L96 46 L95 45 L80 42 L95 39 L96 38 Z" fill="#ffb347"/>
+                <circle cx="100" cy="42" r="4" fill="#fff" opacity="0.9"/>
+                <circle cx="65" cy="72" r="3" fill="#ff9a3c" opacity="0.5"/>
+                <circle cx="82" cy="46" r="3.5" fill="#ff9a3c" opacity="0.6"/>
+                <circle cx="118" cy="46" r="3.5" fill="#ff9a3c" opacity="0.6"/>
+                <circle cx="135" cy="72" r="3" fill="#ff9a3c" opacity="0.5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color palette -->
+        <div>
+          <div class="label" style="text-align:center;margin-bottom:12px;">Brand Color Palette</div>
+          <div class="color-strip">
+            <div class="color-swatch" style="background:#ffd97a;"></div>
+            <div class="color-swatch" style="background:#f5b942;"></div>
+            <div class="color-swatch" style="background:#e8982a;"></div>
+            <div class="color-swatch" style="background:#4f7df7;"></div>
+            <div class="color-swatch" style="background:#8b5cf6;"></div>
+            <div class="color-swatch" style="background:#14b8a6;"></div>
+            <div class="color-swatch" style="background:#f43f5e;"></div>
+            <div class="color-swatch" style="background:#0a0a0f;"></div>
+            <div class="color-swatch" style="background:#f8f8fc;border-color:#ddd;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-footer">
+        <p>A <strong>parabolic arch</strong> with a star at its apex — like a star clearing the horizon at dawn. The arc represents the learning curve (deliberately not a straight line — mastery is curved, organic). Dots along the path represent milestones. The most minimal and elegant of the concepts.</p>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- CONCEPT 6: The Wordmark Focus -->
+    <!-- ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="number">Concept 06</span>
+        <div>
+          <h2>The Wordmark</h2>
+          <span class="tagline">"The name IS the logo"</span>
+        </div>
+      </div>
+      <div class="concept-body">
+        <div class="logo-row">
+          <!-- Dark wordmark variations -->
+          <div class="logo-display">
+            <div class="label">Primary — Dark</div>
+            <div class="bg-dark" style="padding:48px 60px;">
+              <svg width="320" height="60" viewBox="0 0 320 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- LUMINARY text -->
+                <text x="0" y="46" font-family="'Space Grotesk', sans-serif" font-size="48" font-weight="700" fill="#f0f0f5" letter-spacing="-1">Luminar</text>
+                <!-- The 'y' with star accent -->
+                <text x="228" y="46" font-family="'Space Grotesk', sans-serif" font-size="48" font-weight="700" fill="url(#ygrad)" letter-spacing="-1">y</text>
+                <!-- Star dot on the 'y' -->
+                <path d="M254 4 L256 10 L256.5 10.5 L263 11.5 L256.5 12.5 L256 13 L254 19 L252 13 L251.5 12.5 L245 11.5 L251.5 10.5 L252 10 Z" fill="#ffd97a"/>
+                <!-- Subtle glow -->
+                <circle cx="254" cy="11.5" r="12" fill="#ffd97a" opacity="0.06"/>
+                <defs>
+                  <linearGradient id="ygrad" x1="228" y1="0" x2="270" y2="50">
+                    <stop offset="0%" stop-color="#ffd97a"/>
+                    <stop offset="100%" stop-color="#f5b942"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="logo-row">
+          <div class="logo-display">
+            <div class="label">Light Background</div>
+            <div class="bg-light" style="padding:36px 48px;">
+              <svg width="260" height="48" viewBox="0 0 320 60" fill="none">
+                <text x="0" y="46" font-family="'Space Grotesk', sans-serif" font-size="48" font-weight="700" fill="#1a1a2e" letter-spacing="-1">Luminar</text>
+                <text x="228" y="46" font-family="'Space Grotesk', sans-serif" font-size="48" font-weight="700" fill="#c48a20" letter-spacing="-1">y</text>
+                <path d="M254 4 L256 10 L256.5 10.5 L263 11.5 L256.5 12.5 L256 13 L254 19 L252 13 L251.5 12.5 L245 11.5 L251.5 10.5 L252 10 Z" fill="#e8a020"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="logo-display">
+            <div class="label">Stacked / Mobile</div>
+            <div class="bg-dark" style="padding:32px 48px;">
+              <div style="text-align:center;">
+                <svg width="48" height="48" viewBox="0 0 200 200" fill="none" style="margin-bottom:12px;">
+                  <path d="M100 30 L106 70 L108 76 L115 78 L148 88 L115 98 L108 100 L106 106 L100 146 L94 106 L92 100 L85 98 L52 88 L85 78 L92 76 L94 70 Z" fill="#f5b942"/>
+                  <circle cx="100" cy="88" r="6" fill="#fff" opacity="0.9"/>
+                </svg>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#f0f0f5;letter-spacing:-0.5px;">Luminary</div>
+                <div style="font-size:11px;color:#555570;letter-spacing:4px;text-transform:uppercase;margin-top:4px;">Become the light</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-footer">
+        <p>A <strong>pure typographic wordmark</strong> where the "y" in Luminary transforms into gold, crowned with a four-pointed star. The name does the heavy lifting — no symbol needed. The star-on-y becomes a recognizable micro-brand element. "Luminar" in white anchors trust; the golden "y" adds aspiration. Perfect for header bars, splash screens, and app stores.</p>
+      </div>
+    </div>
+
+  </div><!-- /concepts -->
+
+  <!-- ============================================ -->
+  <!-- FINAL RECOMMENDATION -->
+  <!-- ============================================ -->
+  <div class="final-recommendation">
+    <div class="final-card">
+      <h2>Recommended Direction</h2>
+      <p class="brand-statement">
+        <strong style="color:#ffd97a;">Concept 01 (Rising Star)</strong> as the primary icon mark<br/>
+        <strong style="color:#ffd97a;">Concept 06 (Wordmark)</strong> as the primary logotype<br/><br/>
+        Used together they create a flexible brand system:<br/>
+        Icon mark for favicons, app icons, and avatars<br/>
+        Wordmark for headers, splash screens, and documentation<br/>
+        Stacked version for mobile and social media<br/><br/>
+        <span style="color:#8888aa;">Brand palette: Gold (#f5b942) as primary, Blue (#4f7df7) as accent, Near-black (#0a0a0f) and Off-white (#f8f8fc) as backgrounds.</span>
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

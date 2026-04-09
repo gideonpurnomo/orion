@@ -7,7 +7,8 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Zap, Mail, Lock, ArrowRight } from 'lucide-react'
+import { LuminaryLogo } from '@/components/luminary-logo'
+import { Mail, Lock, ArrowRight } from 'lucide-react'
 
 export default function SignInPage() {
   const router = useRouter()
@@ -66,15 +67,30 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl mb-4 shadow-2xl shadow-blue-500/30">
-            <span className="text-3xl font-black text-white">Pt</span>
+          <div className="inline-flex items-center justify-center mb-4">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="signin-glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="2" result="blur" />
+                  <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+                <linearGradient id="signin-arc" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#d97706" />
+                  <stop offset="50%" stopColor="#f59e0b" />
+                  <stop offset="100%" stopColor="#fbbf24" />
+                </linearGradient>
+              </defs>
+              <path d="M 10 47 Q 28 8 46 47" stroke="url(#signin-arc)" strokeWidth="3" strokeLinecap="round" fill="none" filter="url(#signin-glow)" />
+              <circle cx="28" cy="16" r="10" fill="#fbbf24" filter="url(#signin-glow)" />
+              <circle cx="28" cy="16" r="4" fill="white" />
+            </svg>
           </div>
           <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-          <p className="text-gray-400 mt-1">Sign in to Orion</p>
+          <p className="text-gray-400 mt-1">Sign in to Luminary</p>
         </div>
 
         {/* Sign In Card */}
@@ -129,7 +145,7 @@ export default function SignInPage() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-blue-700 hover:to-cyan-700 border-0 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 hover:scale-[1.02]" disabled={isLoading}>
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 border-0 shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all duration-300 hover:scale-[1.02]" disabled={isLoading}>
                 {isLoading ? 'Signing in...' : 'Sign In'}
                 {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
               </Button>

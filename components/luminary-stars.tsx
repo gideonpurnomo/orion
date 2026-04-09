@@ -18,37 +18,34 @@ interface Connection {
   opacity: number
 }
 
-// Orion constellation stars (relative positions)
-const orionStars: Star[] = [
-  // Betelgeuse (top left shoulder)
-  { id: 1, x: 30, y: 20, size: 4, opacity: 0.9, twinkleSpeed: 2, delay: 0 },
-  // Bellatrix (top right shoulder)
-  { id: 2, x: 70, y: 25, size: 3.5, opacity: 0.85, twinkleSpeed: 2.5, delay: 0.5 },
-  // Belt stars (Alnitak, Alnilam, Mintaka)
-  { id: 3, x: 45, y: 50, size: 3, opacity: 0.8, twinkleSpeed: 1.8, delay: 1 },
-  { id: 4, x: 50, y: 50, size: 3, opacity: 0.8, twinkleSpeed: 1.8, delay: 1.2 },
-  { id: 5, x: 55, y: 50, size: 3, opacity: 0.8, twinkleSpeed: 1.8, delay: 1.4 },
-  // Saiph (left knee)
-  { id: 6, x: 35, y: 75, size: 3.5, opacity: 0.85, twinkleSpeed: 2.2, delay: 0.8 },
-  // Rigel (right foot - bright blue star)
-  { id: 7, x: 65, y: 80, size: 4.5, opacity: 1, twinkleSpeed: 1.5, delay: 1.6 },
-  // Meissa (head)
-  { id: 8, x: 50, y: 10, size: 2.5, opacity: 0.7, twinkleSpeed: 3, delay: 0.3 },
+// Ascending star pattern (Solar Arch constellation)
+const archStars: Star[] = [
+  // Apex star (brightest)
+  { id: 1, x: 50, y: 15, size: 5, opacity: 1, twinkleSpeed: 1.5, delay: 0 },
+  // Left arm
+  { id: 2, x: 35, y: 30, size: 3.5, opacity: 0.85, twinkleSpeed: 2, delay: 0.3 },
+  { id: 3, x: 25, y: 50, size: 3, opacity: 0.75, twinkleSpeed: 2.2, delay: 0.6 },
+  { id: 4, x: 20, y: 70, size: 2.5, opacity: 0.65, twinkleSpeed: 2.5, delay: 0.9 },
+  { id: 5, x: 18, y: 85, size: 2, opacity: 0.55, twinkleSpeed: 2.8, delay: 1.2 },
+  // Right arm
+  { id: 6, x: 65, y: 30, size: 3.5, opacity: 0.85, twinkleSpeed: 2, delay: 0.4 },
+  { id: 7, x: 75, y: 50, size: 3, opacity: 0.75, twinkleSpeed: 2.2, delay: 0.7 },
+  { id: 8, x: 80, y: 70, size: 2.5, opacity: 0.65, twinkleSpeed: 2.5, delay: 1.0 },
+  { id: 9, x: 82, y: 85, size: 2, opacity: 0.55, twinkleSpeed: 2.8, delay: 1.3 },
 ]
 
-// Constellation connections
-const orionConnections: Connection[] = [
-  { from: 8, to: 1, opacity: 0.3 }, // Meissa to Betelgeuse
-  { from: 8, to: 2, opacity: 0.3 }, // Meissa to Bellatrix
-  { from: 1, to: 3, opacity: 0.4 }, // Betelgeuse to Belt
-  { from: 2, to: 5, opacity: 0.4 }, // Bellatrix to Belt
-  { from: 3, to: 4, opacity: 0.4 }, // Belt stars
-  { from: 4, to: 5, opacity: 0.4 }, // Belt stars
-  { from: 3, to: 6, opacity: 0.3 }, // Belt to Saiph
-  { from: 5, to: 7, opacity: 0.3 }, // Belt to Rigel
+// Ascending connections
+const archConnections: Connection[] = [
+  { from: 1, to: 2, opacity: 0.5 },
+  { from: 1, to: 6, opacity: 0.5 },
+  { from: 2, to: 3, opacity: 0.4 },
+  { from: 3, to: 4, opacity: 0.35 },
+  { from: 4, to: 5, opacity: 0.3 },
+  { from: 6, to: 7, opacity: 0.4 },
+  { from: 7, to: 8, opacity: 0.35 },
+  { from: 8, to: 9, opacity: 0.3 },
 ]
 
-// Background random stars
 const generateBackgroundStars = (count: number): Star[] => {
   return Array.from({ length: count }, (_, i) => ({
     id: i + 100,
@@ -61,7 +58,7 @@ const generateBackgroundStars = (count: number): Star[] => {
   }))
 }
 
-export default function OrionStars() {
+export default function LuminaryStars() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number>()
   const timeRef = useRef(0)
@@ -73,7 +70,6 @@ export default function OrionStars() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Set canvas size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
@@ -81,18 +77,15 @@ export default function OrionStars() {
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
 
-    // Background stars
     const backgroundStars = generateBackgroundStars(150)
 
-    // Animation loop
     const animate = () => {
       timeRef.current += 0.016
 
-      // Clear canvas with dark background
       ctx.fillStyle = 'rgba(5, 10, 30, 0.15)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // Draw background stars
+      // Background stars
       backgroundStars.forEach(star => {
         const twinkle = Math.sin(timeRef.current * star.twinkleSpeed + star.delay) * 0.3 + 0.85
         ctx.beginPath()
@@ -107,10 +100,10 @@ export default function OrionStars() {
         ctx.fill()
       })
 
-      // Draw constellation connections
-      orionConnections.forEach(conn => {
-        const fromStar = orionStars.find(s => s.id === conn.from)
-        const toStar = orionStars.find(s => s.id === conn.to)
+      // Arch connections (gold-tinted)
+      archConnections.forEach(conn => {
+        const fromStar = archStars.find(s => s.id === conn.from)
+        const toStar = archStars.find(s => s.id === conn.to)
         if (!fromStar || !toStar) return
 
         const gradient = ctx.createLinearGradient(
@@ -119,9 +112,9 @@ export default function OrionStars() {
           (toStar.x / 100) * canvas.width,
           (toStar.y / 100) * canvas.height
         )
-        gradient.addColorStop(0, `rgba(100, 149, 237, ${conn.opacity * 0.8})`)
-        gradient.addColorStop(0.5, `rgba(138, 180, 248, ${conn.opacity * 0.5})`)
-        gradient.addColorStop(1, `rgba(100, 149, 237, ${conn.opacity * 0.8})`)
+        gradient.addColorStop(0, `rgba(251, 191, 36, ${conn.opacity * 0.8})`)
+        gradient.addColorStop(0.5, `rgba(245, 158, 11, ${conn.opacity * 0.5})`)
+        gradient.addColorStop(1, `rgba(251, 191, 36, ${conn.opacity * 0.8})`)
 
         ctx.beginPath()
         ctx.moveTo(
@@ -137,33 +130,33 @@ export default function OrionStars() {
         ctx.stroke()
       })
 
-      // Draw Orion constellation stars
-      orionStars.forEach(star => {
+      // Arch stars (gold glow)
+      archStars.forEach(star => {
         const twinkle = Math.sin(timeRef.current * star.twinkleSpeed + star.delay) * 0.3 + 0.85
         const x = (star.x / 100) * canvas.width
         const y = (star.y / 100) * canvas.height
         const size = star.size * twinkle
 
-        // Glow effect - larger and brighter
+        // Gold glow
         const gradient = ctx.createRadialGradient(x, y, 0, x, y, size * 4)
         gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity})`)
-        gradient.addColorStop(0.3, `rgba(100, 149, 237, ${star.opacity * 0.6})`)
-        gradient.addColorStop(0.7, `rgba(138, 180, 248, ${star.opacity * 0.3})`)
-        gradient.addColorStop(1, 'rgba(100, 149, 237, 0)')
+        gradient.addColorStop(0.3, `rgba(251, 191, 36, ${star.opacity * 0.6})`)
+        gradient.addColorStop(0.7, `rgba(245, 158, 11, ${star.opacity * 0.3})`)
+        gradient.addColorStop(1, 'rgba(251, 191, 36, 0)')
 
         ctx.beginPath()
         ctx.arc(x, y, size * 4, 0, Math.PI * 2)
         ctx.fillStyle = gradient
         ctx.fill()
 
-        // Star core - brighter
+        // Star core
         ctx.beginPath()
         ctx.arc(x, y, size * 1.2, 0, Math.PI * 2)
         ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * twinkle})`
         ctx.fill()
       })
 
-      // Draw shooting stars occasionally
+      // Shooting stars
       if (Math.random() < 0.02) {
         drawShootingStar(ctx, canvas.width, canvas.height)
       }
@@ -192,8 +185,8 @@ export default function OrionStars() {
       startX + Math.cos(angle) * length,
       startY + Math.sin(angle) * length
     )
-    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)')
-    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)')
+    gradient.addColorStop(0, 'rgba(251, 191, 36, 0.8)')
+    gradient.addColorStop(1, 'rgba(251, 191, 36, 0)')
 
     ctx.beginPath()
     ctx.moveTo(startX, startY)

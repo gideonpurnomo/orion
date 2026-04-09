@@ -72,7 +72,7 @@ export default function SettingsPage() {
           <Card className="border-slate-200 bg-white">
             <CardHeader>
               <CardTitle>Profile</CardTitle>
-              <CardDescription>Update how your account appears in Orion</CardDescription>
+              <CardDescription>Update how your account appears in Luminary</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {loading ? (

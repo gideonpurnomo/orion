@@ -118,13 +118,13 @@ export function PomodoroTimer({ initialMinutes = 25, onComplete, onCancel }: Pom
   useEffect(() => {
     // Update document title with timer
     if (isActive) {
-      document.title = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} - Pomodoro | Orion`
+      document.title = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} - Pomodoro | Luminary`
     } else {
-      document.title = 'Pomodoro Timer | Orion'
+      document.title = 'Pomodoro Timer | Luminary'
     }
 
     return () => {
-      document.title = 'Orion'
+      document.title = 'Luminary'
     }
   }, [minutes, seconds, isActive])
 
