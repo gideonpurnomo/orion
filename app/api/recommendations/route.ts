@@ -78,7 +78,9 @@ export async function GET(request: Request) {
     const domainFrequency = new Map<string, number>()
     completedActivities.forEach(p => {
       const domainId = p.activity.domainId
-      domainFrequency.set(domainId, (domainFrequency.get(domainId) || 0) + 1)
+      if (domainId) {
+        domainFrequency.set(domainId, (domainFrequency.get(domainId) || 0) + 1)
+      }
     })
 
     // Get user's preferred categories

@@ -33,7 +33,7 @@ function escapeCSV(text: string): string {
 }
 
 function generateICS(items: any[]): string {
-  let ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Orion Learning//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nX-WR-TIMEZONE:UTC\r\nX-WR-CALNAME:UTC\r\n`
+  let ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Luminary Learning//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nX-WR-TIMEZONE:UTC\r\nX-WR-CALNAME:UTC\r\n`
 
   for (const item of items) {
     const startTime = new Date(item.scheduledFor)
@@ -41,7 +41,7 @@ function generateICS(items: any[]): string {
     const endTime = new Date(startTime.getTime() + duration * 60000)
 
     ics += `BEGIN:VEVENT\r\n`
-    ics += `UID:${item.id}@orion\r\n`
+    ics += `UID:${item.id}@luminary\r\n`
     ics += `DTSTAMP:${formatDateForICS(startTime)}\r\n`
     ics += `DTSTART:${formatICSDateTime(startTime)}\r\n`
     ics += `DTEND:${formatICSDateTime(endTime)}\r\n`
@@ -159,19 +159,19 @@ export async function GET(request: Request) {
       case 'ics':
         content = generateICS(scheduleItems)
         contentType = 'text/calendar; charset=utf-8'
-        filename = `orion-schedule-${start.toISOString().split('T')[0]}.ics`
+        filename = `luminary-schedule-${start.toISOString().split('T')[0]}.ics`
         break
 
       case 'csv':
         content = generateCSV(scheduleItems)
         contentType = 'text/csv; charset=utf-8'
-        filename = `orion-schedule-${start.toISOString().split('T')[0]}.csv`
+        filename = `luminary-schedule-${start.toISOString().split('T')[0]}.csv`
         break
 
       case 'json':
         content = generateJSON(scheduleItems)
         contentType = 'application/json; charset=utf-8'
-        filename = `orion-schedule-${start.toISOString().split('T')[0]}.json`
+        filename = `luminary-schedule-${start.toISOString().split('T')[0]}.json`
         break
     }
 

@@ -217,6 +217,7 @@ async function checkAchievements(userId: string, xp: number, level: number): Pro
           title: 'First Steps',
           description: 'Complete your first activity',
           icon: '🎯',
+          xpReward: 10,
           completedAt: new Date(),
         },
       })
@@ -246,6 +247,7 @@ async function checkAchievements(userId: string, xp: number, level: number): Pro
             title: ach.title,
             description: ach.description,
             icon: ach.icon,
+            xpReward: 0,
             completedAt: new Date(),
           },
         })
@@ -275,6 +277,7 @@ async function checkAchievements(userId: string, xp: number, level: number): Pro
             title: ach.title,
             description: ach.description,
             icon: ach.icon,
+            xpReward: 0,
             completedAt: new Date(),
           },
         })

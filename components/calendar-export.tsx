@@ -24,6 +24,7 @@ const DATE_RANGES = [
   { value: 'week', label: 'This Week' },
   { value: 'month', label: 'This Month' },
   { value: 'all', label: 'All Time' },
+  { value: 'custom', label: 'Custom' },
 ]
 
 const INTEGRATIONS = [
@@ -34,7 +35,7 @@ const INTEGRATIONS = [
 
 export default function CalendarExport({ isOpen, onClose }: CalendarExportProps) {
   const [format, setFormat] = useState<'ics' | 'csv' | 'json'>('ics')
-  const [dateRange, setDateRange] = useState<'today' | 'week' | 'month' | 'all'>('month')
+  const [dateRange, setDateRange] = useState<'today' | 'week' | 'month' | 'all' | 'custom'>('month')
   const [startDate, setStartDate] = useState<Date | null>(null)
   const [endDate, setEndDate] = useState<Date | null>(null)
   const [isExporting, setIsExporting] = useState(false)
@@ -70,7 +71,7 @@ export default function CalendarExport({ isOpen, onClose }: CalendarExportProps)
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = response.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1] || `orion-export.${format}`
+      a.download = response.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1] || `luminary-export.${format}`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
@@ -154,7 +155,7 @@ export default function CalendarExport({ isOpen, onClose }: CalendarExportProps)
                 {DATE_RANGES.map((range) => (
                   <button
                     key={range.value}
-                    onClick={() => setDateRange(range.value as 'today' | 'week' | 'month' | 'all')}
+                    onClick={() => setDateRange(range.value as typeof dateRange)}
                     className={`p-3 rounded-lg border-2 transition-all ${
                       dateRange === range.value
                         ? 'bg-blue-600 text-white border-blue-600'

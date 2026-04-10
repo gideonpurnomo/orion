@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { ItemStatus } from '@prisma/client'
 import { z } from 'zod'
 
 const applyTemplateSchema = z.object({
@@ -190,7 +191,7 @@ export async function POST(request: Request) {
       activityId: string
       scheduledFor: Date
       duration?: number
-      status: string
+      status: ItemStatus
     }> = []
 
     // Use custom config if provided, otherwise use template defaults
@@ -204,7 +205,7 @@ export async function POST(request: Request) {
       currentDay.setHours(0, 0, 0, 0)
 
       // Skip Sunday (day 7) for most templates
-      if (dayOffset === 7 && templateType !== 'EXPERT') {
+      if (dayOffset === 7 && configType !== 'EXPERT') {
         continue
       }
 
@@ -229,7 +230,7 @@ export async function POST(request: Request) {
             activityId: activity.id,
             scheduledFor,
             duration: activity.duration,
-            status: 'PLANNED',
+            status: 'PLANNED' as ItemStatus,
           })
         }
       }

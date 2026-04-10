@@ -200,7 +200,7 @@ export async function PUT(request: Request) {
             some: { userId: session.user.id },
           },
         },
-        select: { id: true, type: true, startDate: true, domainId: true },
+        select: { id: true, type: true, startDate: true, endDate: true, domainId: true },
       })
 
       for (const challenge of activeChallenges) {

@@ -33,7 +33,7 @@ interface ActivityCompletionProps {
     }
   }
   scheduleItemId: string
-  onComplete: (notes?: string, actualDuration?: number) => Promise<void>
+  onComplete: (notes?: string, actualDuration?: number) => Promise<any>
   onMarkInProgress: () => Promise<void>
   onSkip: () => Promise<void>
 }
