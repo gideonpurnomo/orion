@@ -38,6 +38,7 @@ interface ScheduleState {
   currentSchedule: Schedule | null
   isLoading: boolean
   error: string | null
+  streak: number
 
   // Actions
   setSchedule: (schedule: Schedule | null) => void
@@ -49,6 +50,8 @@ interface ScheduleState {
   deleteItem: (id: string) => void
   updateItemStatus: (id: string, status: ScheduleItem['status']) => void
 
+  setStreak: (streak: number) => void
+
   // Derived
   getTodayItems: () => ScheduleItem[]
   getCompletionRate: () => number
@@ -59,12 +62,15 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   currentSchedule: null,
   isLoading: false,
   error: null,
+  streak: 0,
 
   setSchedule: (schedule) => set({ currentSchedule: schedule }),
 
   setLoading: (loading) => set({ isLoading: loading }),
 
   setError: (error) => set({ error }),
+
+  setStreak: (streak) => set({ streak }),
 
   addItem: (item) => set((state) => ({
     currentSchedule: state.currentSchedule
@@ -143,20 +149,6 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   },
 
   getStreak: () => {
-    // Simplified streak calculation - in production, this would use actual progress data
-    const state = get()
-    if (!state.currentSchedule) return 0
-
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
-    const todayItems = state.currentSchedule.items.filter((item) => {
-      const itemDate = new Date(item.scheduledFor)
-      itemDate.setHours(0, 0, 0, 0)
-      return itemDate.getTime() === today.getTime() && item.status === 'COMPLETED'
-    })
-
-    // This is a placeholder - real streak tracking needs progress history
-    return todayItems.length > 0 ? 1 : 0
+    return get().streak
   },
 }))

@@ -1,15 +1,26 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
-import { Calendar, BookOpen, Plus, Zap, TrendingUp, ChevronRight, Loader2 } from 'lucide-react'
+import { Calendar, BookOpen, Plus, Zap, TrendingUp, ChevronRight, Loader2, Trophy } from 'lucide-react'
 import { useScheduleStore } from '@/store/schedule'
 import { useScheduleData } from '@/hooks/useScheduleData'
 import { formatTime, formatDuration } from '@/lib/utils'
 import { AIRecommendations } from '@/components/ai-recommendations'
+
+interface DashboardAchievement {
+  id: string
+  type: string
+  title: string
+  description: string
+  icon: string
+  xpReward: number
+  completedAt: string
+}
 
 export default function DashboardPage() {
   useScheduleData()
@@ -18,6 +29,25 @@ export default function DashboardPage() {
   const completionRate = useScheduleStore(state => state.getCompletionRate())
   const streak = useScheduleStore(state => state.getStreak())
   const isLoading = useScheduleStore(state => state.isLoading)
+  const [achievements, setAchievements] = useState<DashboardAchievement[]>([])
+  const [achievementsLoading, setAchievementsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        const response = await fetch('/api/profile/achievements')
+        if (response.ok) {
+          const data = await response.json()
+          setAchievements(data.earned || [])
+        }
+      } catch {
+        // Non-critical
+      } finally {
+        setAchievementsLoading(false)
+      }
+    }
+    fetchAchievements()
+  }, [])
 
   // Calculate real quick stats
   const completedToday = todayItems.filter(item => item.status === 'COMPLETED').length
@@ -190,30 +220,31 @@ export default function DashboardPage() {
 
             <Card className="bg-card backdrop-blur-sm border border-border">
               <CardHeader>
-                <CardTitle className="text-lg text-foreground">Achievements</CardTitle>
+                <CardTitle className="text-lg text-foreground flex items-center gap-2">
+                  <Trophy className="h-5 w-5 text-primary" />
+                  Achievements
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex items-center gap-3 p-2 bg-primary/10 rounded-lg border border-primary/20 group hover:bg-primary/20 transition-all duration-300">
-                  <div className="text-2xl">&#x1F3C6;</div>
-                  <div>
-                    <div className="font-medium text-sm text-foreground group-hover:text-primary">First Week</div>
-                    <div className="text-xs text-muted-foreground">Complete your first week</div>
+                {achievementsLoading ? (
+                  <div className="flex items-center justify-center py-4">
+                    <Loader2 className="h-5 w-5 animate-spin text-primary" />
                   </div>
-                </div>
-                <div className="flex items-center gap-3 p-2 bg-primary/10 rounded-lg border border-primary/20 group hover:bg-primary/20 transition-all duration-300">
-                  <div className="text-2xl">&#x1F3AF;</div>
-                  <div>
-                    <div className="font-medium text-sm text-foreground group-hover:text-primary">Code Master</div>
-                    <div className="text-xs text-muted-foreground">Complete 10 coding activities</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-2 bg-primary/10 rounded-lg border border-primary/20 group hover:bg-primary/20 transition-all duration-300">
-                  <div className="text-2xl">&#x1F525;</div>
-                  <div>
-                    <div className="font-medium text-sm text-foreground group-hover:text-primary">3-Day Streak</div>
-                    <div className="text-xs text-muted-foreground">3 days in a row</div>
-                  </div>
-                </div>
+                ) : achievements.length === 0 ? (
+                  <p className="text-sm text-muted-foreground py-4 text-center">
+                    Complete activities to earn achievements
+                  </p>
+                ) : (
+                  achievements.slice(0, 3).map((achievement) => (
+                    <div key={achievement.id} className="flex items-center gap-3 p-2 bg-primary/10 rounded-lg border border-primary/20 group hover:bg-primary/20 transition-all duration-300">
+                      <div className="text-2xl">{achievement.icon}</div>
+                      <div>
+                        <div className="font-medium text-sm text-foreground group-hover:text-primary">{achievement.title}</div>
+                        <div className="text-xs text-muted-foreground">{achievement.description}</div>
+                      </div>
+                    </div>
+                  ))
+                )}
               </CardContent>
             </Card>
 

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useScheduleStore } from '@/store/schedule'
 
 export function useScheduleData() {
-  const { setSchedule, setLoading, setError, currentSchedule } = useScheduleStore()
+  const { setSchedule, setLoading, setError, setStreak, currentSchedule } = useScheduleStore()
 
   useEffect(() => {
     const fetchSchedule = async () => {
@@ -40,8 +40,21 @@ export function useScheduleData() {
       }
     }
 
+    const fetchStreak = async () => {
+      try {
+        const response = await fetch('/api/progress')
+        if (response.ok) {
+          const data = await response.json()
+          setStreak(data.streak?.current ?? 0)
+        }
+      } catch {
+        // Streak fetch failure is non-critical
+      }
+    }
+
     fetchSchedule()
-  }, [setSchedule, setLoading, setError])
+    fetchStreak()
+  }, [setSchedule, setLoading, setError, setStreak])
 
   return { currentSchedule }
 }
