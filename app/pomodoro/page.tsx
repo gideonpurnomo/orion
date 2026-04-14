@@ -6,9 +6,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Clock, Coffee, Zap, Target, Flame, Trophy } from 'lucide-react'
 
 export default function PomodoroPage() {
-  const handleComplete = (session: PomodoroSession) => {
-    // Log session completion (could be sent to API)
-    console.log('Pomodoro session completed:', session)
+  const handleComplete = async (session: PomodoroSession) => {
+    if (session.type === 'focus') {
+      try {
+        await fetch('/api/completion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scheduleItemId: `pomodoro-${session.id}`,
+            notes: `Pomodoro focus session (${session.duration} min)`,
+            actualDuration: session.duration,
+            isPomodoro: true,
+          }),
+        })
+      } catch {
+        // Non-critical — session tracked locally in timer UI
+      }
+    }
   }
 
   return (

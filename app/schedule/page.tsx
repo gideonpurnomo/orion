@@ -6,8 +6,9 @@ import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Calendar as CalendarIcon, Clock, Loader2, Copy, X, ChevronRight, ChevronLeft as PrevIcon, CheckCircle, LayoutTemplate } from 'lucide-react'
+import { Plus, Calendar as CalendarIcon, Clock, Loader2, Copy, X, ChevronRight, ChevronLeft as PrevIcon, CheckCircle, LayoutTemplate, Download } from 'lucide-react'
 import { ScheduleTemplates } from '@/components/schedule-templates'
+import CalendarExport from '@/components/calendar-export'
 import { formatDuration } from '@/lib/utils'
 import SessionPlanner, { SubTopic } from '@/components/session-planner'
 import TimerDisplay from '@/components/timer-display'
@@ -117,6 +118,7 @@ function ScheduleContent() {
   const [scheduleItems, setScheduleItems] = useState<ScheduleItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null)
   const [clipboardActivity, setClipboardActivity] = useState<ClipboardActivity | null>(null)
   const [completionActivity, setCompletionActivity] = useState<ScheduleItem | null>(null)
@@ -127,6 +129,7 @@ function ScheduleContent() {
   const [quickAddLoading, setQuickAddLoading] = useState(false)
   const [quickAddQuery, setQuickAddQuery] = useState('')
   const [templatesOpen, setTemplatesOpen] = useState(false)
+  const [exportOpen, setExportOpen] = useState(false)
 
   const weekStart = useMemo(() => startOfWeekMonday(currentDate), [currentDate])
   const weekDays = useMemo(
@@ -323,10 +326,12 @@ function ScheduleContent() {
 
       // Show notification
       if (result.leveledUp || (result.achievements && result.achievements.length > 0)) {
-        // Achievement unlocked - show full result
-        if (result.achievements?.length > 0) {
-          alert(`🎉 ${result.achievements[0].title} unlocked!`)
-        }
+        const msgs: string[] = []
+        if (result.leveledUp) msgs.push(`Level up! You're now level ${result.newLevel}`)
+        if (result.achievements?.length > 0) msgs.push(`${result.achievements[0].icon} ${result.achievements[0].title} unlocked! +${result.xpAwarded} XP`)
+        const notification = msgs.join(' • ')
+        setSuccessMessage(notification)
+        setTimeout(() => setSuccessMessage(''), 5000)
       }
 
       setCompletionActivity(null)
@@ -551,6 +556,15 @@ function ScheduleContent() {
         </div>
       )}
 
+      {successMessage && (
+        <div className="fixed right-4 top-4 z-50 max-w-md rounded-lg bg-emerald-500/90 px-6 py-4 text-white shadow-lg backdrop-blur-sm">
+          <div className="flex items-center justify-between gap-4">
+            <p>{successMessage}</p>
+            <button onClick={() => setSuccessMessage('')} className="rounded p-1 transition-colors hover:bg-white/20">✕</button>
+          </div>
+        </div>
+      )}
+
       {activeSession && activeSession.length > 0 && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm dark:bg-black/90">
           <TimerDisplay
@@ -664,6 +678,15 @@ function ScheduleContent() {
               >
                 <LayoutTemplate className="mr-2 h-4 w-4" />
                 Templates
+              </Button>
+
+              <Button
+                variant="outline"
+                onClick={() => setExportOpen(true)}
+                className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Export
               </Button>
             </div>
           </div>
@@ -952,6 +975,11 @@ function ScheduleContent() {
           isOpen={templatesOpen}
           onClose={() => setTemplatesOpen(false)}
           onApply={handleApplyTemplate}
+        />
+
+        <CalendarExport
+          isOpen={exportOpen}
+          onClose={() => setExportOpen(false)}
         />
       </div>
     </div>
