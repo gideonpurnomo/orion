@@ -7,9 +7,10 @@ interface FriendListProps {
   loading: boolean
   loadingId: string | null
   onRemove: (friendId: string) => void
+  onViewSchedule?: (friendId: string, friendName: string) => void
 }
 
-export function FriendList({ friends, loading, loadingId, onRemove }: FriendListProps) {
+export function FriendList({ friends, loading, loadingId, onRemove, onViewSchedule }: FriendListProps) {
   return (
     <Card className="border-slate-200 bg-white lg:col-span-1">
       <CardHeader>
@@ -25,6 +26,7 @@ export function FriendList({ friends, loading, loadingId, onRemove }: FriendList
             createdAt={friend.createdAt}
             isRemoving={loadingId === friend.user.id}
             onRemove={onRemove}
+            onViewSchedule={onViewSchedule}
           />
         ))}
       </CardContent>

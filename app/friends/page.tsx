@@ -7,15 +7,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { InviteCodeCard } from '@/components/friends/invite-code-card'
 import { FriendList } from '@/components/friends/friend-list'
 import { FriendRequests } from '@/components/friends/friend-requests'
 import type { FriendRecord, FriendRequest, InviteCode } from '@/components/friends/types'
+import { Loader2, Clock } from 'lucide-react'
 
 interface FriendsPayload {
   friends: FriendRecord[]
   incomingRequests: FriendRequest[]
   outgoingRequests: FriendRequest[]
+}
+
+interface FriendScheduleItem {
+  id: string
+  scheduledFor: string
+  duration?: number
+  status: string
+  activity?: {
+    title: string
+    duration?: number
+    domain?: { name: string; icon?: string }
+  }
 }
 
 export default function FriendsPage() {
@@ -29,6 +43,11 @@ export default function FriendsPage() {
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null)
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false)
+  const [scheduleFriendId, setScheduleFriendId] = useState('')
+  const [scheduleFriendName, setScheduleFriendName] = useState('')
+  const [friendSchedule, setFriendSchedule] = useState<FriendScheduleItem[]>([])
+  const [scheduleLoading, setScheduleLoading] = useState(false)
 
   const pendingCount = useMemo(
     () => friendsData.incomingRequests.length + friendsData.outgoingRequests.length,
@@ -183,6 +202,26 @@ export default function FriendsPage() {
     }
   }
 
+  const viewFriendSchedule = async (friendId: string, friendName: string) => {
+    setScheduleFriendId(friendId)
+    setScheduleFriendName(friendName)
+    setScheduleDialogOpen(true)
+    setScheduleLoading(true)
+    setFriendSchedule([])
+
+    try {
+      const response = await fetch(`/api/friends/${friendId}/schedule`)
+      if (!response.ok) throw new Error('Failed to load schedule')
+      const data = await response.json()
+      setFriendSchedule(data.schedule || [])
+    } catch (error) {
+      console.error('Load friend schedule error:', error)
+      setMessage('Could not load friend schedule')
+    } finally {
+      setScheduleLoading(false)
+    }
+  }
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-100 to-slate-200">
       <TopNav />
@@ -246,6 +285,7 @@ export default function FriendsPage() {
             loading={loading}
             loadingId={actionLoadingId}
             onRemove={removeFriend}
+            onViewSchedule={viewFriendSchedule}
           />
         </div>
 
@@ -255,6 +295,53 @@ export default function FriendsPage() {
           </p>
         )}
       </div>
+
+      <Dialog open={scheduleDialogOpen} onOpenChange={setScheduleDialogOpen}>
+        <DialogContent className="max-w-lg bg-white dark:bg-slate-800">
+          <DialogHeader>
+            <DialogTitle>{scheduleFriendName}'s Schedule</DialogTitle>
+            <DialogDescription>Their activities for this week</DialogDescription>
+          </DialogHeader>
+          {scheduleLoading ? (
+            <div className="flex items-center justify-center py-10">
+              <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+            </div>
+          ) : friendSchedule.length === 0 ? (
+            <p className="py-8 text-center text-sm text-slate-500">No activities scheduled this week.</p>
+          ) : (
+            <div className="max-h-[60vh] space-y-2 overflow-y-auto">
+              {friendSchedule.map((item) => {
+                const date = new Date(item.scheduledFor)
+                const dayLabel = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+                const timeLabel = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+                const statusColor =
+                  item.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
+                  item.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-700' :
+                  item.status === 'SKIPPED' ? 'bg-red-100 text-red-700' :
+                  'bg-slate-100 text-slate-700'
+
+                return (
+                  <div key={item.id} className="flex items-center justify-between rounded-lg border border-slate-200 p-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">{item.activity?.domain?.icon || '📚'}</span>
+                      <div>
+                        <p className="font-medium text-sm text-slate-900 dark:text-slate-100">{item.activity?.title || 'Untitled'}</p>
+                        <p className="text-xs text-slate-500 flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {dayLabel} {timeLabel} &middot; {item.duration || item.activity?.duration || 0} min
+                        </p>
+                      </div>
+                    </div>
+                    <span className={`rounded px-2 py-0.5 text-xs font-medium ${statusColor}`}>
+                      {item.status}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </main>
   )
 }

@@ -654,39 +654,41 @@ function ScheduleContent() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <Button variant="outline" onClick={goPrev} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
-                <PrevIcon className="mr-1 h-4 w-4" /> Prev
+              <Button variant="outline" size="sm" onClick={goPrev} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+                <PrevIcon className="h-4 w-4" />
               </Button>
-              <Button variant="outline" onClick={() => setCurrentDate(new Date())} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+              <Button variant="outline" size="sm" onClick={() => setCurrentDate(new Date())} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
                 Today
               </Button>
-              <Button variant="outline" onClick={goNext} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
-                Next <ChevronRight className="ml-1 h-4 w-4" />
+              <Button variant="outline" size="sm" onClick={goNext} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+                <ChevronRight className="h-4 w-4" />
               </Button>
 
-              <Button asChild className="bg-gradient-to-r from-blue-600 to-cyan-600 border-0 text-white hover:from-blue-700 hover:to-cyan-700">
+              <Button asChild size="sm" className="bg-gradient-to-r from-blue-600 to-cyan-600 border-0 text-white hover:from-blue-700 hover:to-cyan-700">
                 <Link href="/library?next=/schedule">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Activity
+                  <Plus className="mr-1 h-4 w-4" />
+                  <span className="hidden sm:inline">Add Activity</span>
                 </Link>
               </Button>
 
               <Button
                 variant="outline"
+                size="sm"
                 onClick={() => setTemplatesOpen(true)}
                 className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
               >
-                <LayoutTemplate className="mr-2 h-4 w-4" />
-                Templates
+                <LayoutTemplate className="mr-1 h-4 w-4" />
+                <span className="hidden sm:inline">Templates</span>
               </Button>
 
               <Button
                 variant="outline"
+                size="sm"
                 onClick={() => setExportOpen(true)}
                 className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
               >
-                <Download className="mr-2 h-4 w-4" />
-                Export
+                <Download className="mr-1 h-4 w-4" />
+                <span className="hidden sm:inline">Export</span>
               </Button>
             </div>
           </div>
@@ -744,101 +746,155 @@ function ScheduleContent() {
                   <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <div className="min-w-[900px]">
-                    <div className="grid grid-cols-8 gap-2">
-                      <div className="py-2 text-sm font-semibold text-slate-500">Time</div>
-                      {weekDays.map((day, index) => (
-                        <div key={day.toISOString()} className="rounded bg-blue-100 py-2 text-center text-sm font-semibold text-slate-800">
-                          {weekDayLabels[index]}<br />
-                          <span className="text-xs text-slate-600">{day.getMonth() + 1}/{day.getDate()}</span>
-                        </div>
-                      ))}
+                <>
+                  {/* Mobile: stacked day lists */}
+                  <div className="space-y-4 md:hidden">
+                    {weekDays.map((dayDate, dayIndex) => {
+                      const dayItemsList = scheduleItems
+                        .filter((s) => new Date(s.scheduledFor).toDateString() === dayDate.toDateString())
+                        .sort((a, b) => new Date(a.scheduledFor).getTime() - new Date(b.scheduledFor).getTime())
 
-                      {hours.map((hour) => (
-                        <React.Fragment key={hour}>
-                          <div className="py-3 pr-2 text-right text-sm text-slate-500">{formatHour(hour)}</div>
-                          {weekDays.map((dayDate) => {
-                            const targetDate = toCellDate(dayDate, hour)
-                            const itemsInCell = scheduleItems.filter((s) => {
-                              const d = new Date(s.scheduledFor)
-                              return d.toDateString() === targetDate.toDateString() && d.getHours() === hour
-                            })
-
-                            return (
-                              <div
-                                key={`${targetDate.toISOString()}-${hour}`}
-                                onClick={() => {
-                                  if (itemsInCell.length === 0) {
-                                    void handleAddToCell(targetDate)
-                                  }
-                                }}
-                                onDragOver={(e) => e.preventDefault()}
-                                onDrop={(e) => {
-                                  e.preventDefault()
-                                  const itemId = e.dataTransfer.getData('text/plain')
-                                  if (itemId) {
-                                    void handleDropOnCell(itemId, targetDate)
-                                  }
-                                  setDraggingItemId(null)
-                                }}
-                                className={`min-h-[72px] rounded-lg border border-slate-200 p-2 transition-all ${
-                                  itemsInCell.length > 0 ? 'hover:border-blue-300 hover:bg-blue-50' : 'cursor-pointer hover:border-blue-300 hover:bg-blue-50/70'
-                                } ${draggingItemId ? 'ring-1 ring-blue-300' : ''}`}
-                              >
-                                {itemsInCell.length === 0 && (
-                                  <div className="mt-4 text-center text-[11px] text-slate-400">Click to add</div>
-                                )}
-
-                                {itemsInCell.length > 0 && (
-                                  <div className="space-y-1">
-                                    {itemsInCell.slice(0, 2).map((item) => (
-                                      <button
-                                        key={item.id}
-                                        draggable
-                                        onDragStart={(e) => {
-                                          e.dataTransfer.setData('text/plain', item.id)
-                                          e.dataTransfer.effectAllowed = 'move'
-                                          setDraggingItemId(item.id)
-                                        }}
-                                        onDragEnd={() => setDraggingItemId(null)}
-                                        onClick={(e) => {
-                                          e.stopPropagation()
-                                          handleActivityClick(item)
-                                        }}
-                                        className={`w-full rounded border p-2 text-left text-sm ${getStatusColor(item.status)} hover:opacity-90`}
-                                      >
-                                        <div className="flex items-center justify-between gap-2">
-                                          <div className="truncate font-medium">{getItemIcon(item)} {getItemTitle(item)}</div>
-                                          <span
-                                            onClick={(e) => {
-                                              e.stopPropagation()
-                                              handleCopyActivity(item)
-                                            }}
-                                            className="inline-flex h-6 w-6 items-center justify-center rounded bg-white/70 text-slate-600 hover:bg-white"
-                                          >
-                                            <Copy className="h-3.5 w-3.5" />
-                                          </span>
-                                        </div>
-                                        <div className="mt-1 flex items-center gap-1 text-xs opacity-80">
-                                          <Clock className="h-3 w-3" />
-                                          {formatDuration(getItemDuration(item))}
-                                        </div>
-                                      </button>
-                                    ))}
-                                    {itemsInCell.length > 2 && (
-                                      <div className="px-1 text-[10px] text-blue-700">+{itemsInCell.length - 2} more</div>
-                                    )}
+                      return (
+                        <div key={dayDate.toISOString()} className="rounded-lg border border-slate-200 p-3">
+                          <div className="mb-2 rounded bg-blue-100 px-3 py-2 text-center text-sm font-semibold text-slate-800">
+                            {weekDayLabels[dayIndex]} — {dayDate.getMonth() + 1}/{dayDate.getDate()}
+                          </div>
+                          {dayItemsList.length === 0 ? (
+                            <button
+                              onClick={() => void handleAddToCell(toCellDate(dayDate, 9))}
+                              className="w-full rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-400 hover:border-blue-300 hover:bg-blue-50"
+                            >
+                              + Add activity
+                            </button>
+                          ) : (
+                            <div className="space-y-2">
+                              {dayItemsList.map((item) => (
+                                <button
+                                  key={item.id}
+                                  onClick={() => handleActivityClick(item)}
+                                  className={`w-full rounded border p-3 text-left text-sm ${getStatusColor(item.status)} hover:opacity-90`}
+                                >
+                                  <div className="flex items-center justify-between gap-2">
+                                    <div className="truncate font-medium">{getItemIcon(item)} {getItemTitle(item)}</div>
+                                    <span
+                                      onClick={(e) => { e.stopPropagation(); handleCopyActivity(item) }}
+                                      className="inline-flex h-6 w-6 items-center justify-center rounded bg-white/70 text-slate-600 hover:bg-white"
+                                    >
+                                      <Copy className="h-3.5 w-3.5" />
+                                    </span>
                                   </div>
-                                )}
-                              </div>
-                            )
-                          })}
-                        </React.Fragment>
-                      ))}
+                                  <div className="mt-1 flex items-center gap-1 text-xs opacity-80">
+                                    <Clock className="h-3 w-3" />
+                                    {new Date(item.scheduledFor).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
+                                    {' · '}
+                                    {formatDuration(getItemDuration(item))}
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* Desktop: grid view */}
+                  <div className="hidden md:block overflow-x-auto">
+                    <div className="min-w-[900px]">
+                      <div className="grid grid-cols-8 gap-2">
+                        <div className="py-2 text-sm font-semibold text-slate-500">Time</div>
+                        {weekDays.map((day, index) => (
+                          <div key={day.toISOString()} className="rounded bg-blue-100 py-2 text-center text-sm font-semibold text-slate-800">
+                            {weekDayLabels[index]}<br />
+                            <span className="text-xs text-slate-600">{day.getMonth() + 1}/{day.getDate()}</span>
+                          </div>
+                        ))}
+
+                        {hours.map((hour) => (
+                          <React.Fragment key={hour}>
+                            <div className="py-3 pr-2 text-right text-sm text-slate-500">{formatHour(hour)}</div>
+                            {weekDays.map((dayDate) => {
+                              const targetDate = toCellDate(dayDate, hour)
+                              const itemsInCell = scheduleItems.filter((s) => {
+                                const d = new Date(s.scheduledFor)
+                                return d.toDateString() === targetDate.toDateString() && d.getHours() === hour
+                              })
+
+                              return (
+                                <div
+                                  key={`${targetDate.toISOString()}-${hour}`}
+                                  onClick={() => {
+                                    if (itemsInCell.length === 0) {
+                                      void handleAddToCell(targetDate)
+                                    }
+                                  }}
+                                  onDragOver={(e) => e.preventDefault()}
+                                  onDrop={(e) => {
+                                    e.preventDefault()
+                                    const itemId = e.dataTransfer.getData('text/plain')
+                                    if (itemId) {
+                                      void handleDropOnCell(itemId, targetDate)
+                                    }
+                                    setDraggingItemId(null)
+                                  }}
+                                  className={`min-h-[72px] rounded-lg border border-slate-200 p-2 transition-all ${
+                                    itemsInCell.length > 0 ? 'hover:border-blue-300 hover:bg-blue-50' : 'cursor-pointer hover:border-blue-300 hover:bg-blue-50/70'
+                                  } ${draggingItemId ? 'ring-1 ring-blue-300' : ''}`}
+                                >
+                                  {itemsInCell.length === 0 && (
+                                    <div className="mt-4 text-center text-[11px] text-slate-400">Click to add</div>
+                                  )}
+
+                                  {itemsInCell.length > 0 && (
+                                    <div className="space-y-1">
+                                      {itemsInCell.slice(0, 2).map((item) => (
+                                        <button
+                                          key={item.id}
+                                          draggable
+                                          onDragStart={(e) => {
+                                            e.dataTransfer.setData('text/plain', item.id)
+                                            e.dataTransfer.effectAllowed = 'move'
+                                            setDraggingItemId(item.id)
+                                          }}
+                                          onDragEnd={() => setDraggingItemId(null)}
+                                          onClick={(e) => {
+                                            e.stopPropagation()
+                                            handleActivityClick(item)
+                                          }}
+                                          className={`w-full rounded border p-2 text-left text-sm ${getStatusColor(item.status)} hover:opacity-90`}
+                                        >
+                                          <div className="flex items-center justify-between gap-2">
+                                            <div className="truncate font-medium">{getItemIcon(item)} {getItemTitle(item)}</div>
+                                            <span
+                                              onClick={(e) => {
+                                                e.stopPropagation()
+                                                handleCopyActivity(item)
+                                              }}
+                                              className="inline-flex h-6 w-6 items-center justify-center rounded bg-white/70 text-slate-600 hover:bg-white"
+                                            >
+                                              <Copy className="h-3.5 w-3.5" />
+                                            </span>
+                                          </div>
+                                          <div className="mt-1 flex items-center gap-1 text-xs opacity-80">
+                                            <Clock className="h-3 w-3" />
+                                            {formatDuration(getItemDuration(item))}
+                                          </div>
+                                        </button>
+                                      ))}
+                                      {itemsInCell.length > 2 && (
+                                        <div className="px-1 text-[10px] text-blue-700">+{itemsInCell.length - 2} more</div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              )
+                            })}
+                          </React.Fragment>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </>
               )}
             </CardContent>
           </Card>
