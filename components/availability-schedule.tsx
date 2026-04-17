@@ -252,7 +252,7 @@ export default function AvailabilitySchedule({ isOpen, onClose }: { isOpen: bool
                         disabled={isSaving}
                         className={`h-16 w-full rounded-lg border-2 transition-all text-sm ${
                           isDayOff
-                            ? 'bg-red-100 text-red-700 border-red-300 dark:bg-red-900/50 dark:border-red-700 dark:text-red-200'
+                            ? 'bg-red-900/50 text-red-200 border-red-700'
                             : 'bg-muted text-muted-foreground border-border hover:bg-muted/80'
                         }`}
                       >
@@ -435,7 +435,7 @@ export default function AvailabilitySchedule({ isOpen, onClose }: { isOpen: bool
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/50 border-2 border-green-200 flex flex-col items-center justify-center text-green-700 dark:text-green-200">
+                      <div className="w-12 h-12 rounded-full bg-green-900/50 border-2 border-green-700 flex flex-col items-center justify-center text-green-200">
                         <span className="text-lg font-bold">{7 - settings.daysOff.length}</span>
                       </div>
                       <div>
@@ -445,7 +445,7 @@ export default function AvailabilitySchedule({ isOpen, onClose }: { isOpen: bool
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/50 border-2 border-blue-200 flex items-center justify-center text-blue-700 dark:text-blue-200">
+                      <div className="w-12 h-12 rounded-full bg-blue-900/50 border-2 border-blue-700 flex items-center justify-center text-blue-200">
                         <span className="text-lg font-bold">
                           {DAYS.reduce((count, day) => count + (settings.workingHours[day]?.enabled ? 1 : 0), 0)}
                         </span>
@@ -459,7 +459,7 @@ export default function AvailabilitySchedule({ isOpen, onClose }: { isOpen: bool
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/50 border-2 border-purple-200 flex items-center justify-center text-purple-700 dark:text-purple-200">
+                      <div className="w-12 h-12 rounded-full bg-purple-900/50 border-2 border-purple-700 flex items-center justify-center text-purple-200">
                         <TrendingUp className="h-4 w-4" />
                       </div>
                       <div>

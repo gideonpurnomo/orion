@@ -169,8 +169,8 @@ export default function ProgressPage() {
 
   const getActivityStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return 'text-green-700 bg-green-100 border-green-200'
-      default: return 'text-slate-700 bg-slate-100 border-slate-200'
+      case 'COMPLETED': return 'text-green-400 bg-green-900/30 border-green-700'
+      default: return 'text-slate-300 bg-slate-800 border-slate-700'
     }
   }
 

@@ -107,20 +107,20 @@ export default function SettingsPage() {
     }
   }
 
-  const inputClass = "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+  const inputClass = "w-full rounded-md border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-slate-100"
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-100 to-slate-200 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       <TopNav />
 
       <div className="mx-auto w-full max-w-4xl px-6 py-10">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Settings & Profile</h1>
-          <p className="text-slate-600 dark:text-slate-400">Edit your personal details and account preferences.</p>
+          <h1 className="text-3xl font-bold text-slate-100">Settings & Profile</h1>
+          <p className="text-slate-400">Edit your personal details and account preferences.</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          <Card className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+          <Card className="border-slate-700 bg-slate-800">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><User className="h-5 w-5" /> Profile</CardTitle>
               <CardDescription>Update how your account appears in Luminary</CardDescription>
@@ -131,18 +131,18 @@ export default function SettingsPage() {
               ) : (
                 <>
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
-                    <input value={profile?.email || ''} disabled className={`${inputClass} bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed`} />
+                    <label className="mb-1 block text-sm font-medium text-slate-300">Email</label>
+                    <input value={profile?.email || ''} disabled className={`${inputClass} bg-slate-700 text-slate-400 cursor-not-allowed`} />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Name</label>
+                    <label className="mb-1 block text-sm font-medium text-slate-300">Name</label>
                     <input value={name} onChange={(e) => setName(e.target.value)} className={inputClass} />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Profile Image URL</label>
+                    <label className="mb-1 block text-sm font-medium text-slate-300">Profile Image URL</label>
                     <input value={image} onChange={(e) => setImage(e.target.value)} placeholder="https://..." className={inputClass} />
                   </div>
-                  <Button onClick={saveProfile} disabled={saving} className="bg-slate-900 text-white hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200">
+                  <Button onClick={saveProfile} disabled={saving} className="bg-slate-100 text-slate-900 hover:bg-slate-200">
                     {saving ? 'Saving...' : 'Save Changes'}
                   </Button>
                 </>
@@ -150,7 +150,7 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+          <Card className="border-slate-700 bg-slate-800">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><Lock className="h-5 w-5" /> Change Password</CardTitle>
               <CardDescription>Update your account password</CardDescription>
@@ -161,18 +161,18 @@ export default function SettingsPage() {
               ) : (
                 <>
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Current Password</label>
+                    <label className="mb-1 block text-sm font-medium text-slate-300">Current Password</label>
                     <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className={inputClass} />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">New Password</label>
+                    <label className="mb-1 block text-sm font-medium text-slate-300">New Password</label>
                     <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Min. 6 characters" className={inputClass} />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Confirm New Password</label>
+                    <label className="mb-1 block text-sm font-medium text-slate-300">Confirm New Password</label>
                     <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className={inputClass} />
                   </div>
-                  <Button onClick={changePassword} disabled={savingPassword} className="bg-slate-900 text-white hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200">
+                  <Button onClick={changePassword} disabled={savingPassword} className="bg-slate-100 text-slate-900 hover:bg-slate-200">
                     {savingPassword ? 'Changing...' : 'Change Password'}
                   </Button>
                 </>
@@ -180,7 +180,7 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+          <Card className="border-slate-700 bg-slate-800">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><BarChart3 className="h-5 w-5" /> Account Stats</CardTitle>
               <CardDescription>Your learning journey at a glance</CardDescription>
@@ -190,9 +190,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-center py-8"><Loader2 className="h-6 w-6 animate-spin text-slate-400" /></div>
               ) : (
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between"><span className="text-slate-600 dark:text-slate-400">Level</span><span className="font-semibold text-slate-900 dark:text-slate-100">{profile?.level ?? 1}</span></div>
-                  <div className="flex justify-between"><span className="text-slate-600 dark:text-slate-400">Total XP</span><span className="font-semibold text-slate-900 dark:text-slate-100">{profile?.xp?.toLocaleString() ?? 0}</span></div>
-                  <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                  <div className="flex justify-between"><span className="text-slate-400">Level</span><span className="font-semibold text-slate-100">{profile?.level ?? 1}</span></div>
+                  <div className="flex justify-between"><span className="text-slate-400">Total XP</span><span className="font-semibold text-slate-100">{profile?.xp?.toLocaleString() ?? 0}</span></div>
+                  <div className="flex items-center gap-2 text-slate-400">
                     <Calendar className="h-4 w-4" />
                     <span>Member since {profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : 'N/A'}</span>
                   </div>
@@ -201,13 +201,13 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+          <Card className="border-slate-700 bg-slate-800">
             <CardHeader>
               <CardTitle>Quick Tips</CardTitle>
               <CardDescription>Get the most out of Luminary</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
-              <p>Use Library with <code className="rounded bg-slate-100 px-1 dark:bg-slate-700">next=/schedule</code> to add activities and continue planning quickly.</p>
+            <CardContent className="space-y-3 text-sm text-slate-400">
+              <p>Use Library with <code className="rounded bg-slate-700 px-1">next=/schedule</code> to add activities and continue planning quickly.</p>
               <p>Copy activities in Schedule and paste to another week/month by selecting a target block.</p>
               <p>Use the Export button on the Schedule page to download your calendar as ICS, CSV, or JSON.</p>
               <p>Complete Pomodoro focus sessions to earn bonus XP toward your level.</p>
@@ -218,8 +218,8 @@ export default function SettingsPage() {
         {message && (
           <p className={`mt-4 rounded-md border px-3 py-2 text-sm ${
             messageType === 'error'
-              ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-400'
-              : 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-400'
+              ? 'border-red-800 bg-red-950/30 text-red-400'
+              : 'border-emerald-800 bg-emerald-950/30 text-emerald-400'
           }`}>
             {message}
           </p>

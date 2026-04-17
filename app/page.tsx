@@ -56,8 +56,8 @@ export default async function Home() {
               <p className="text-sm font-semibold text-foreground">2. Schedule</p>
               <p className="text-sm text-muted-foreground">Drag activities into the right day and time slot.</p>
             </Link>
-            <Link href="/dashboard" className="block rounded-xl border border-border bg-card p-4 hover:border-emerald-400/50 hover:bg-emerald-50 dark:hover:bg-emerald-950/30">
-              <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">3. Dashboard</p>
+            <Link href="/dashboard" className="block rounded-xl border border-border bg-card p-4 hover:border-emerald-400/50 hover:bg-emerald-950/30">
+              <p className="text-sm font-semibold text-emerald-400">3. Dashboard</p>
               <p className="text-sm text-muted-foreground">Check progress, streak, and what&apos;s due today.</p>
             </Link>
           </div>
@@ -78,10 +78,10 @@ export default async function Home() {
               <p className="mb-4 text-sm text-muted-foreground">Plan sessions in day, week, and month views.</p>
               <p className="text-sm font-semibold text-foreground">Plan and Drag</p>
             </Link>
-            <Link href="/dashboard" className="block rounded-xl border border-border bg-card p-5 transition hover:border-emerald-400/50 hover:bg-emerald-50 dark:hover:bg-emerald-950/30">
+            <Link href="/dashboard" className="block rounded-xl border border-border bg-card p-5 transition hover:border-emerald-400/50 hover:bg-emerald-950/30">
               <h3 className="mb-1 font-semibold text-card-foreground">Dashboard</h3>
               <p className="mb-4 text-sm text-muted-foreground">Review today&apos;s plan and completion metrics.</p>
-              <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Track Progress</p>
+              <p className="text-sm font-semibold text-emerald-400">Track Progress</p>
             </Link>
           </div>
         </div>

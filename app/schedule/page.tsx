@@ -151,11 +151,11 @@ function ScheduleContent() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return 'bg-green-100 text-green-700 border-green-200'
-      case 'IN_PROGRESS': return 'bg-blue-100 text-blue-700 border-blue-200'
-      case 'PLANNED': return 'bg-slate-100 text-slate-700 border-slate-200'
-      case 'SKIPPED': return 'bg-red-100 text-red-700 border-red-200'
-      default: return 'bg-slate-100 text-slate-700 border-slate-200'
+      case 'COMPLETED': return 'bg-green-950/50 text-green-400 border-green-800'
+      case 'IN_PROGRESS': return 'bg-blue-950/50 text-blue-400 border-blue-800'
+      case 'PLANNED': return 'bg-slate-800 text-slate-300 border-slate-700'
+      case 'SKIPPED': return 'bg-red-950/50 text-red-400 border-red-800'
+      default: return 'bg-slate-800 text-slate-300 border-slate-700'
     }
   }
 
@@ -545,7 +545,7 @@ function ScheduleContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-blue-100 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       <TopNav theme="blue" />
       {error && (
         <div className="fixed right-4 top-4 z-50 max-w-md rounded-lg bg-red-500/90 px-6 py-4 text-white shadow-lg backdrop-blur-sm">
@@ -566,7 +566,7 @@ function ScheduleContent() {
       )}
 
       {activeSession && activeSession.length > 0 && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm dark:bg-black/90">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm">
           <TimerDisplay
             topicName={activeSession[0].name}
             initialMinutes={activeSession[0].minutes}
@@ -592,12 +592,12 @@ function ScheduleContent() {
       )}
 
       {quickAddOpen && quickAddDate && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4 dark:bg-black/60">
-          <div className="w-full max-w-2xl rounded-xl border border-slate-200 bg-white p-5 shadow-xl dark:border-slate-700 dark:bg-slate-800">
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-2xl rounded-xl border border-slate-700 bg-slate-800 p-5 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Add Activity to Block</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
+                <h3 className="text-lg font-semibold text-slate-100">Add Activity to Block</h3>
+                <p className="text-sm text-slate-300">
                   {quickAddDate.toLocaleString('en-US', { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
                 </p>
               </div>
@@ -610,7 +610,7 @@ function ScheduleContent() {
               value={quickAddQuery}
               onChange={(e) => setQuickAddQuery(e.target.value)}
               placeholder="Search activities..."
-              className="mb-4 w-full rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400"
+              className="mb-4 w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-400"
             />
 
             {quickAddLoading ? (
@@ -622,7 +622,7 @@ function ScheduleContent() {
                 {filteredQuickAddActivities.map((activity) => (
                   <button
                     key={activity.id}
-                    className="flex w-full items-center justify-between rounded-lg border border-slate-200 p-3 text-left transition hover:border-blue-300 hover:bg-blue-50"
+                    className="flex w-full items-center justify-between rounded-lg border border-slate-700 p-3 text-left transition hover:border-blue-500 hover:bg-blue-950/30"
                     onClick={async () => {
                       try {
                         await createScheduleItem(activity.id, quickAddDate, activity.duration)
@@ -633,8 +633,8 @@ function ScheduleContent() {
                     }}
                   >
                     <div>
-                      <p className="font-medium text-slate-900">{activity.domain?.icon} {activity.title}</p>
-                      <p className="text-xs text-slate-600">{activity.category?.name} • {formatDuration(activity.duration)}</p>
+                      <p className="font-medium text-slate-100">{activity.domain?.icon} {activity.title}</p>
+                      <p className="text-xs text-slate-400">{activity.category?.name} • {formatDuration(activity.duration)}</p>
                     </div>
                     <Plus className="h-4 w-4 text-blue-600" />
                   </button>
@@ -649,18 +649,18 @@ function ScheduleContent() {
         <div className="mb-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-slate-900">Schedule</h1>
-              <p className="text-slate-600">Blue planner: drag, copy/paste, and quick-add to specific blocks</p>
+              <h1 className="text-3xl font-bold text-slate-100">Schedule</h1>
+              <p className="text-slate-400">Blue planner: drag, copy/paste, and quick-add to specific blocks</p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <Button variant="outline" size="sm" onClick={goPrev} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+              <Button variant="outline" size="sm" onClick={goPrev} className="border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700">
                 <PrevIcon className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setCurrentDate(new Date())} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+              <Button variant="outline" size="sm" onClick={() => setCurrentDate(new Date())} className="border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700">
                 Today
               </Button>
-              <Button variant="outline" size="sm" onClick={goNext} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+              <Button variant="outline" size="sm" onClick={goNext} className="border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700">
                 <ChevronRight className="h-4 w-4" />
               </Button>
 
@@ -675,7 +675,7 @@ function ScheduleContent() {
                 variant="outline"
                 size="sm"
                 onClick={() => setTemplatesOpen(true)}
-                className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                className="border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700"
               >
                 <LayoutTemplate className="mr-1 h-4 w-4" />
                 <span className="hidden sm:inline">Templates</span>
@@ -685,7 +685,7 @@ function ScheduleContent() {
                 variant="outline"
                 size="sm"
                 onClick={() => setExportOpen(true)}
-                className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                className="border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700"
               >
                 <Download className="mr-1 h-4 w-4" />
                 <span className="hidden sm:inline">Export</span>
@@ -694,11 +694,11 @@ function ScheduleContent() {
           </div>
 
           {clipboardActivity && (
-            <div className="mt-4 flex items-center justify-between rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 dark:border-blue-900 dark:bg-blue-950/30">
-              <p className="text-sm text-blue-800 dark:text-blue-300">
+            <div className="mt-4 flex items-center justify-between rounded-lg border border-blue-900 bg-blue-950/30 px-4 py-3">
+              <p className="text-sm text-blue-300">
                 Clipboard: {clipboardActivity.icon} {clipboardActivity.title} ({formatDuration(clipboardActivity.duration)})
               </p>
-              <Button variant="ghost" size="sm" className="text-blue-700 dark:text-blue-300" onClick={() => setClipboardActivity(null)}>
+              <Button variant="ghost" size="sm" className="text-blue-300" onClick={() => setClipboardActivity(null)}>
                 Clear
               </Button>
             </div>
@@ -730,13 +730,13 @@ function ScheduleContent() {
         </div>
 
         {view === 'week' && (
-          <Card className="border-slate-200 bg-white shadow-sm">
+          <Card className="border-slate-700 bg-slate-800 shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-slate-900">
+              <CardTitle className="flex items-center gap-2 text-slate-100">
                 <CalendarIcon className="h-5 w-5" />
                 Weekly Schedule
               </CardTitle>
-              <CardDescription className="text-slate-600">
+              <CardDescription className="text-slate-400">
                 Drag to reschedule. Click empty blocks to quick-add. Copy an activity, then click another block to paste.
               </CardDescription>
             </CardHeader>
@@ -755,14 +755,14 @@ function ScheduleContent() {
                         .sort((a, b) => new Date(a.scheduledFor).getTime() - new Date(b.scheduledFor).getTime())
 
                       return (
-                        <div key={dayDate.toISOString()} className="rounded-lg border border-slate-200 p-3">
-                          <div className="mb-2 rounded bg-blue-100 px-3 py-2 text-center text-sm font-semibold text-slate-800">
+                        <div key={dayDate.toISOString()} className="rounded-lg border border-slate-700 p-3">
+                          <div className="mb-2 rounded bg-blue-950/50 px-3 py-2 text-center text-sm font-semibold text-blue-300">
                             {weekDayLabels[dayIndex]} — {dayDate.getMonth() + 1}/{dayDate.getDate()}
                           </div>
                           {dayItemsList.length === 0 ? (
                             <button
                               onClick={() => void handleAddToCell(toCellDate(dayDate, 9))}
-                              className="w-full rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-400 hover:border-blue-300 hover:bg-blue-50"
+                              className="w-full rounded-lg border border-dashed border-slate-600 p-4 text-center text-sm text-slate-400 hover:border-blue-500 hover:bg-blue-950/30"
                             >
                               + Add activity
                             </button>
@@ -778,7 +778,7 @@ function ScheduleContent() {
                                     <div className="truncate font-medium">{getItemIcon(item)} {getItemTitle(item)}</div>
                                     <span
                                       onClick={(e) => { e.stopPropagation(); handleCopyActivity(item) }}
-                                      className="inline-flex h-6 w-6 items-center justify-center rounded bg-white/70 text-slate-600 hover:bg-white"
+                                      className="inline-flex h-6 w-6 items-center justify-center rounded bg-slate-700/70 text-slate-400 hover:bg-slate-700"
                                     >
                                       <Copy className="h-3.5 w-3.5" />
                                     </span>
@@ -804,9 +804,9 @@ function ScheduleContent() {
                       <div className="grid grid-cols-8 gap-2">
                         <div className="py-2 text-sm font-semibold text-slate-500">Time</div>
                         {weekDays.map((day, index) => (
-                          <div key={day.toISOString()} className="rounded bg-blue-100 py-2 text-center text-sm font-semibold text-slate-800">
+                          <div key={day.toISOString()} className="rounded bg-blue-950/50 py-2 text-center text-sm font-semibold text-blue-300">
                             {weekDayLabels[index]}<br />
-                            <span className="text-xs text-slate-600">{day.getMonth() + 1}/{day.getDate()}</span>
+                            <span className="text-xs text-slate-400">{day.getMonth() + 1}/{day.getDate()}</span>
                           </div>
                         ))}
 
@@ -837,8 +837,8 @@ function ScheduleContent() {
                                     }
                                     setDraggingItemId(null)
                                   }}
-                                  className={`min-h-[72px] rounded-lg border border-slate-200 p-2 transition-all ${
-                                    itemsInCell.length > 0 ? 'hover:border-blue-300 hover:bg-blue-50' : 'cursor-pointer hover:border-blue-300 hover:bg-blue-50/70'
+                                  className={`min-h-[72px] rounded-lg border border-slate-700 p-2 transition-all ${
+                                    itemsInCell.length > 0 ? 'hover:border-blue-500 hover:bg-blue-950/30' : 'cursor-pointer hover:border-blue-500 hover:bg-blue-950/30'
                                   } ${draggingItemId ? 'ring-1 ring-blue-300' : ''}`}
                                 >
                                   {itemsInCell.length === 0 && (
@@ -870,7 +870,7 @@ function ScheduleContent() {
                                                 e.stopPropagation()
                                                 handleCopyActivity(item)
                                               }}
-                                              className="inline-flex h-6 w-6 items-center justify-center rounded bg-white/70 text-slate-600 hover:bg-white"
+                                              className="inline-flex h-6 w-6 items-center justify-center rounded bg-slate-700/70 text-slate-400 hover:bg-slate-700"
                                             >
                                               <Copy className="h-3.5 w-3.5" />
                                             </span>
@@ -901,10 +901,10 @@ function ScheduleContent() {
         )}
 
         {view === 'day' && (
-          <Card className="border-slate-200 bg-white shadow-sm">
+          <Card className="border-slate-700 bg-slate-800 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-slate-900">Day View</CardTitle>
-              <CardDescription className="text-slate-600">
+              <CardTitle className="text-slate-100">Day View</CardTitle>
+              <CardDescription className="text-slate-400">
                 {currentDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
               </CardDescription>
             </CardHeader>
@@ -915,7 +915,7 @@ function ScheduleContent() {
                 </div>
               ) : dayItems.length === 0 ? (
                 <div className="py-10 text-center">
-                  <p className="mb-4 text-slate-600">No activities scheduled for this day</p>
+                  <p className="mb-4 text-slate-400">No activities scheduled for this day</p>
                   <Button onClick={() => void handleAddToCell(toCellDate(currentDate, 9))} className="bg-blue-600 text-white hover:bg-blue-700">
                     <Plus className="mr-2 h-4 w-4" /> Add at 9 AM
                   </Button>
@@ -926,13 +926,13 @@ function ScheduleContent() {
                     <div
                       key={item.id}
                       onClick={() => handleActivityClick(item)}
-                      className="group flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:border-blue-300 hover:bg-blue-50"
+                      className="group flex cursor-pointer items-center justify-between rounded-lg border border-slate-700 bg-slate-900 p-4 transition hover:border-blue-500 hover:bg-blue-950/30"
                     >
                       <div className="flex items-center gap-4">
                         <div className="text-2xl">{getItemIcon(item)}</div>
                         <div>
-                          <div className="font-medium text-slate-900">{getItemTitle(item)}</div>
-                          <div className="text-sm text-slate-600">
+                          <div className="font-medium text-slate-100">{getItemTitle(item)}</div>
+                          <div className="text-sm text-slate-400">
                             {new Date(item.scheduledFor).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
                             {' '}• {formatDuration(getItemDuration(item))}
                           </div>
@@ -947,7 +947,7 @@ function ScheduleContent() {
                             e.stopPropagation()
                             handleCopyActivity(item)
                           }}
-                          className="text-slate-500 hover:bg-white hover:text-slate-900"
+                          className="text-slate-400 hover:bg-slate-700 hover:text-slate-100"
                         >
                           <Copy className="h-4 w-4" />
                         </Button>
@@ -961,10 +961,10 @@ function ScheduleContent() {
         )}
 
         {view === 'month' && (
-          <Card className="border-slate-200 bg-white shadow-sm">
+          <Card className="border-slate-700 bg-slate-800 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-slate-900">Month View</CardTitle>
-              <CardDescription className="text-slate-600">
+              <CardTitle className="text-slate-100">Month View</CardTitle>
+              <CardDescription className="text-slate-400">
                 Click any day to add at 9 AM. Use clipboard + click for quick paste.
               </CardDescription>
             </CardHeader>
@@ -991,11 +991,11 @@ function ScheduleContent() {
                       }}
                       className={`min-h-[90px] rounded-lg border p-2 transition ${
                         isCurrentMonth
-                          ? 'cursor-pointer border-slate-200 hover:border-blue-300 hover:bg-blue-50'
-                          : 'border-slate-100 bg-slate-50 text-slate-400'
+                          ? 'cursor-pointer border-slate-700 hover:border-blue-500 hover:bg-blue-950/30'
+                          : 'border-slate-800 bg-slate-900 text-slate-400'
                       }`}
                     >
-                      <div className={`text-sm font-medium ${isCurrentMonth ? 'text-slate-900' : 'text-slate-400'}`}>
+                      <div className={`text-sm font-medium ${isCurrentMonth ? 'text-slate-100' : 'text-slate-400'}`}>
                         {dayDate.getDate()}
                       </div>
 
@@ -1007,13 +1007,13 @@ function ScheduleContent() {
                               e.stopPropagation()
                               handleActivityClick(item)
                             }}
-                            className="truncate rounded bg-blue-100 px-1 py-0.5 text-xs text-blue-800 hover:bg-blue-200"
+                            className="truncate rounded bg-blue-950/50 px-1 py-0.5 text-xs text-blue-300 hover:bg-blue-900"
                           >
                             {getItemIcon(item)} {getItemTitle(item).slice(0, 16)}
                           </div>
                         ))}
                         {dayItems.length > 2 && (
-                          <div className="text-[10px] text-blue-700">+{dayItems.length - 2} more</div>
+                          <div className="text-[10px] text-blue-400">+{dayItems.length - 2} more</div>
                         )}
                         {isCurrentMonth && dayItems.length === 0 && (
                           <div className="text-[10px] text-slate-400">Click to add</div>
@@ -1045,7 +1045,7 @@ function ScheduleContent() {
 export default function SchedulePage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-50 via-blue-100 to-indigo-100">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
         <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
       </div>
     }>

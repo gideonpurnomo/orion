@@ -68,11 +68,11 @@ export default function NewChallengePage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-cyan-50 via-sky-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       <TopNav theme="blue" />
 
       <div className="mx-auto w-full max-w-3xl px-6 py-10">
-        <Card className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+        <Card className="border-slate-700 bg-slate-800">
           <CardHeader>
             <CardTitle>Create Challenge</CardTitle>
             <CardDescription>Set challenge type, date range, and rules.</CardDescription>
@@ -89,7 +89,7 @@ export default function NewChallengePage() {
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                  className="w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm"
                   rows={4}
                   placeholder="Compete to earn the most XP this week"
                 />
@@ -100,7 +100,7 @@ export default function NewChallengePage() {
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as typeof type)}
-                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                  className="w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm"
                 >
                   <option value="XP_COLLECTED">XP Collected</option>
                   <option value="ACTIVITIES_COMPLETED">Activities Completed</option>
@@ -115,7 +115,7 @@ export default function NewChallengePage() {
                   <select
                     value={domainId}
                     onChange={(e) => setDomainId(e.target.value)}
-                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                    className="w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm"
                     required
                   >
                     <option value="">Select a domain...</option>

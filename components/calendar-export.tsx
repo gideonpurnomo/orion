@@ -14,9 +14,9 @@ interface CalendarExportProps {
 }
 
 const FORMATS = [
-  { value: 'ics', label: 'iCalendar (.ics)', icon: '📅', description: 'Best for Google Calendar, Apple Calendar, Outlook', color: 'text-blue-600 bg-blue-50' },
-  { value: 'csv', label: 'CSV (.csv)', icon: '📊', description: 'Best for Excel, Google Sheets, Numbers', color: 'text-green-600 bg-green-50' },
-  { value: 'json', label: 'JSON (.json)', icon: '📋', description: 'Best for backups and custom imports', color: 'text-purple-600 bg-purple-50' },
+  { value: 'ics', label: 'iCalendar (.ics)', icon: '📅', description: 'Best for Google Calendar, Apple Calendar, Outlook', color: 'text-blue-400 bg-blue-950/50' },
+  { value: 'csv', label: 'CSV (.csv)', icon: '📊', description: 'Best for Excel, Google Sheets, Numbers', color: 'text-green-400 bg-green-950/50' },
+  { value: 'json', label: 'JSON (.json)', icon: '📋', description: 'Best for backups and custom imports', color: 'text-purple-400 bg-purple-950/50' },
 ]
 
 const DATE_RANGES = [
@@ -28,9 +28,9 @@ const DATE_RANGES = [
 ]
 
 const INTEGRATIONS = [
-  { value: 'google', label: 'Google Calendar', icon: '📅', color: 'text-blue-600 hover:bg-blue-50' },
-  { value: 'outlook', label: 'Outlook', icon: '📧', color: 'text-purple-600 hover:bg-purple-50' },
-  { value: 'apple', label: 'Apple Calendar', icon: '🍎', color: 'text-slate-600 hover:bg-slate-50' },
+  { value: 'google', label: 'Google Calendar', icon: '📅', color: 'text-blue-400 hover:bg-blue-950/50' },
+  { value: 'outlook', label: 'Outlook', icon: '📧', color: 'text-purple-400 hover:bg-purple-950/50' },
+  { value: 'apple', label: 'Apple Calendar', icon: '🍎', color: 'text-slate-400 hover:bg-slate-700' },
 ]
 
 export default function CalendarExport({ isOpen, onClose }: CalendarExportProps) {
@@ -101,7 +101,7 @@ export default function CalendarExport({ isOpen, onClose }: CalendarExportProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-lg bg-white dark:bg-slate-800">
+      <DialogContent className="max-w-lg bg-slate-800">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CalendarIcon className="h-5 w-5 text-blue-600" />
@@ -115,14 +115,14 @@ export default function CalendarExport({ isOpen, onClose }: CalendarExportProps)
         {exportSuccess ? (
           <div className="py-8 text-center">
             <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-green-700 mb-2">Export Successful!</h3>
-            <p className="text-slate-600">Your schedule has been downloaded.</p>
+            <h3 className="text-2xl font-bold text-green-400 mb-2">Export Successful!</h3>
+            <p className="text-slate-400">Your schedule has been downloaded.</p>
           </div>
         ) : (
           <>
             {/* Format Selection */}
             <div className="space-y-4 py-4">
-              <Label className="text-base font-semibold text-slate-900 dark:text-slate-100">
+              <Label className="text-base font-semibold text-slate-100">
                 Choose Export Format
               </Label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2">
@@ -133,12 +133,12 @@ export default function CalendarExport({ isOpen, onClose }: CalendarExportProps)
                     className={`p-4 rounded-lg border-2 transition-all ${
                       format === fmt.value
                         ? `${fmt.color} ring-2 ring-offset-2`
-                        : 'border-slate-200 hover:border-slate-300 bg-slate-50 dark:border-slate-700 dark:hover:border-slate-600 dark:bg-slate-900'
+                        : 'border-slate-700 hover:border-slate-600 bg-slate-900'
                     }`}
                   >
                     <div className="text-3xl mb-2">{fmt.icon}</div>
                     <div className="font-semibold text-sm">{fmt.label}</div>
-                    <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    <div className="text-xs text-slate-400 mt-1">
                       {fmt.description}
                     </div>
                   </button>
@@ -147,8 +147,8 @@ export default function CalendarExport({ isOpen, onClose }: CalendarExportProps)
             </div>
 
             {/* Date Range Selection */}
-            <div className="space-y-3 py-4 border-t border-slate-200 dark:border-slate-700">
-              <Label className="text-base font-semibold text-slate-900 dark:text-slate-100">
+            <div className="space-y-3 py-4 border-t border-slate-700">
+              <Label className="text-base font-semibold text-slate-100">
                 Date Range
               </Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
@@ -159,7 +159,7 @@ export default function CalendarExport({ isOpen, onClose }: CalendarExportProps)
                     className={`p-3 rounded-lg border-2 transition-all ${
                       dateRange === range.value
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : 'border-slate-200 hover:border-blue-300 bg-slate-50 dark:border-slate-700 dark:hover:border-blue-500 dark:bg-slate-900'
+                        : 'border-slate-700 hover:border-blue-500 bg-slate-900'
                     }`}
                   >
                     <div className="text-sm font-semibold">{range.label}</div>
@@ -170,21 +170,21 @@ export default function CalendarExport({ isOpen, onClose }: CalendarExportProps)
               {dateRange === 'custom' && (
                 <div className="grid grid-cols-2 gap-3 mt-3">
                   <div>
-                    <Label className="text-sm text-slate-700 dark:text-slate-300">Start Date</Label>
+                    <Label className="text-sm text-slate-300">Start Date</Label>
                     <input
                       type="date"
                       value={startDate?.toISOString().split('T')[0] || ''}
                       onChange={(e) => setStartDate(e.target.value ? new Date(e.target.value) : null)}
-                      className="w-full rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                      className="w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
                     />
                   </div>
                   <div>
-                    <Label className="text-sm text-slate-700 dark:text-slate-300">End Date</Label>
+                    <Label className="text-sm text-slate-300">End Date</Label>
                     <input
                       type="date"
                       value={endDate?.toISOString().split('T')[0] || ''}
                       onChange={(e) => setEndDate(e.target.value ? new Date(e.target.value) : null)}
-                      className="w-full rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                      className="w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
                     />
                   </div>
                 </div>
@@ -192,11 +192,11 @@ export default function CalendarExport({ isOpen, onClose }: CalendarExportProps)
             </div>
 
             {/* Integrations */}
-            <div className="space-y-4 py-4 border-t border-slate-200 dark:border-slate-700">
-              <Label className="text-base font-semibold text-slate-900 dark:text-slate-100">
+            <div className="space-y-4 py-4 border-t border-slate-700">
+              <Label className="text-base font-semibold text-slate-100">
                 Calendar Integrations
               </Label>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+              <p className="text-sm text-slate-400 mb-3">
                 Click to open your schedule in external calendar apps
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

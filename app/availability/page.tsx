@@ -45,22 +45,22 @@ export default function AvailabilityPage() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-100 to-slate-200 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       <TopNav />
 
       <div className="mx-auto w-full max-w-4xl px-6 py-10">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+          <h1 className="text-3xl font-bold text-slate-50">
             Find Mutual Availability
           </h1>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-slate-400">
             See when you and your friends are all free to learn together.
           </p>
         </div>
 
         {loading ? (
-          <div className="rounded-lg border border-slate-200 bg-white p-6 text-center dark:border-slate-700 dark:bg-slate-800">
-            <p className="text-slate-600 dark:text-slate-400">Loading friends...</p>
+          <div className="rounded-lg border border-slate-700 bg-slate-800 p-6 text-center">
+            <p className="text-slate-400">Loading friends...</p>
           </div>
         ) : (
           <MutualAvailability friends={friends} />

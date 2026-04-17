@@ -121,15 +121,15 @@ export function MutualAvailability({ friends }: MutualAvailabilityProps) {
   }
 
   const getSlotColor = (duration: number) => {
-    if (duration >= 120) return 'bg-green-100 border-green-300 text-green-800 dark:bg-green-900 dark:border-green-700 dark:text-green-100'
-    if (duration >= 60) return 'bg-blue-100 border-blue-300 text-blue-800 dark:bg-blue-900 dark:border-blue-700 dark:text-blue-100'
-    return 'bg-amber-100 border-amber-300 text-amber-800 dark:bg-amber-900 dark:border-amber-700 dark:text-amber-100'
+    if (duration >= 120) return 'bg-green-900 border-green-700 text-green-100'
+    if (duration >= 60) return 'bg-blue-900 border-blue-700 text-blue-100'
+    return 'bg-amber-900 border-amber-700 text-amber-100'
   }
 
   return (
     <div className="space-y-6">
       {/* Friend Selection */}
-      <Card className="border-slate-200 bg-white">
+      <Card className="border-slate-700 bg-slate-800">
         <CardHeader>
           <CardTitle>Select Friends</CardTitle>
           <CardDescription>
@@ -138,7 +138,7 @@ export function MutualAvailability({ friends }: MutualAvailabilityProps) {
         </CardHeader>
         <CardContent>
           {friends.length === 0 ? (
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-400">
               No friends yet. Add some friends first!
             </p>
           ) : (
@@ -153,7 +153,7 @@ export function MutualAvailability({ friends }: MutualAvailabilityProps) {
                     ${
                       selectedFriends.includes(friend.id)
                         ? 'border-slate-900 bg-slate-900 text-white'
-                        : 'border-slate-300 bg-slate-50 text-slate-700 hover:border-slate-400 hover:bg-slate-100'
+                        : 'border-slate-700 bg-slate-900 text-slate-300 hover:border-slate-500 hover:bg-slate-800'
                     }
                   `}
                 >
@@ -176,7 +176,7 @@ export function MutualAvailability({ friends }: MutualAvailabilityProps) {
       </Card>
 
       {/* Date Range Selection */}
-      <Card className="border-slate-200 bg-white">
+      <Card className="border-slate-700 bg-slate-800">
         <CardHeader>
           <CardTitle>Date Range</CardTitle>
           <CardDescription>Select the date range to check availability</CardDescription>
@@ -184,7 +184,7 @@ export function MutualAvailability({ friends }: MutualAvailabilityProps) {
         <CardContent>
           <div className="flex flex-wrap gap-4">
             <div className="space-y-2">
-              <label htmlFor="startDate" className="text-sm font-medium text-slate-700">
+              <label htmlFor="startDate" className="text-sm font-medium text-slate-300">
                 Start Date
               </label>
               <input
@@ -192,11 +192,11 @@ export function MutualAvailability({ friends }: MutualAvailabilityProps) {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20"
+                className="rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20"
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="endDate" className="text-sm font-medium text-slate-700">
+              <label htmlFor="endDate" className="text-sm font-medium text-slate-300">
                 End Date
               </label>
               <input
@@ -204,7 +204,7 @@ export function MutualAvailability({ friends }: MutualAvailabilityProps) {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20"
+                className="rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20"
               />
             </div>
           </div>
@@ -218,14 +218,14 @@ export function MutualAvailability({ friends }: MutualAvailabilityProps) {
           </Button>
 
           {error && (
-            <p className="mt-3 text-sm text-red-600">{error}</p>
+            <p className="mt-3 text-sm text-red-400">{error}</p>
           )}
         </CardContent>
       </Card>
 
       {/* Results */}
       {availability && (
-        <Card className="border-slate-200 bg-white">
+        <Card className="border-slate-700 bg-slate-800">
           <CardHeader>
             <CardTitle>Mutual Free Time</CardTitle>
             <CardDescription>
@@ -235,9 +235,9 @@ export function MutualAvailability({ friends }: MutualAvailabilityProps) {
           </CardHeader>
           <CardContent>
             {availability.mutualFreeSlots.length === 0 ? (
-              <div className="rounded-lg border border-slate-200 bg-slate-50 p-6 text-center">
-                <p className="text-slate-600">No mutual free time found in this range.</p>
-                <p className="mt-2 text-sm text-slate-500">
+              <div className="rounded-lg border border-slate-700 bg-slate-900 p-6 text-center">
+                <p className="text-slate-400">No mutual free time found in this range.</p>
+                <p className="mt-2 text-sm text-slate-400">
                   Try a different date range or deselect some friends.
                 </p>
               </div>

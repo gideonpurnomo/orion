@@ -71,14 +71,14 @@ export default function ChallengesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-cyan-50 via-sky-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       <TopNav theme="blue" />
 
       <div className="mx-auto w-full max-w-6xl px-6 py-10">
         <div className="mb-6 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Challenges</h1>
-            <p className="text-slate-600 dark:text-slate-300">Compete with others and climb the rankings.</p>
+            <h1 className="text-3xl font-bold text-slate-100">Challenges</h1>
+            <p className="text-slate-300">Compete with others and climb the rankings.</p>
           </div>
           <Button asChild className="bg-slate-900 text-white hover:bg-slate-700">
             <Link href="/challenges/new">Create Challenge</Link>
@@ -99,33 +99,33 @@ export default function ChallengesPage() {
         </div>
 
         {message && (
-          <p className="mb-4 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+          <p className="mb-4 rounded-md border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-200">
             {message}
           </p>
         )}
 
         {loading ? (
-          <p className="text-slate-600 dark:text-slate-300">Loading challenges...</p>
+          <p className="text-slate-300">Loading challenges...</p>
         ) : challenges.length === 0 ? (
-          <Card className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
-            <CardContent className="py-10 text-center text-slate-600 dark:text-slate-300">
+          <Card className="border-slate-700 bg-slate-800">
+            <CardContent className="py-10 text-center text-slate-300">
               No challenges found in this scope.
             </CardContent>
           </Card>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {challenges.map((challenge) => (
-              <Card key={challenge.id} className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+              <Card key={challenge.id} className="border-slate-700 bg-slate-800">
                 <CardHeader>
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <CardTitle className="text-slate-900 dark:text-slate-100">{challenge.title}</CardTitle>
-                      <CardDescription className="text-slate-600 dark:text-slate-300">{challenge.description || 'No description'}</CardDescription>
+                      <CardTitle className="text-slate-100">{challenge.title}</CardTitle>
+                      <CardDescription className="text-slate-300">{challenge.description || 'No description'}</CardDescription>
                     </div>
                     <Badge>{typeLabel[challenge.type]}</Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                <CardContent className="space-y-3 text-sm text-slate-300">
                   <p>
                     {new Date(challenge.startDate).toLocaleDateString()} - {new Date(challenge.endDate).toLocaleDateString()}
                   </p>

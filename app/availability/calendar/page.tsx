@@ -138,9 +138,9 @@ export default function AvailabilityCalendarPage() {
   }
 
   const getSlotClass = (status: boolean | null) => {
-    if (status === null) return 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-600'
-    if (status) return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400'
-    return 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400'
+    if (status === null) return 'bg-slate-800 text-slate-600'
+    if (status) return 'bg-emerald-900/50 text-emerald-400'
+    return 'bg-red-900/50 text-red-400'
   }
 
   const formatHour = (hour24: number) => {
@@ -166,23 +166,23 @@ export default function AvailabilityCalendarPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-blue-100 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Availability Calendar</h1>
-              <p className="text-slate-600 dark:text-slate-400">Set your weekly availability for scheduling</p>
+              <h1 className="text-3xl font-bold text-slate-100">Availability Calendar</h1>
+              <p className="text-slate-400">Set your weekly availability for scheduling</p>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={goPrevWeek} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+              <Button variant="outline" onClick={goPrevWeek} className="border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700">
                 <ChevronLeft className="mr-1 h-4 w-4" /> Prev
               </Button>
-              <Button variant="outline" onClick={goToday} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+              <Button variant="outline" onClick={goToday} className="border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700">
                 Today
               </Button>
-              <Button variant="outline" onClick={goNextWeek} className="border-slate-300 bg-white text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+              <Button variant="outline" onClick={goNextWeek} className="border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700">
                 Next <ChevronRight className="ml-1 h-4 w-4" />
               </Button>
               <Button
@@ -206,19 +206,19 @@ export default function AvailabilityCalendarPage() {
           </div>
 
           {error && (
-            <div className="mt-4 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3 text-red-700 dark:text-red-300">
+            <div className="mt-4 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3 text-red-300">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="mt-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-4 py-3 text-emerald-700 dark:text-emerald-300">
+            <div className="mt-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-4 py-3 text-emerald-300">
               {success}
             </div>
           )}
 
           {/* Legend */}
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-slate-400">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4 text-emerald-500" />
               <span>Available</span>
@@ -232,30 +232,30 @@ export default function AvailabilityCalendarPage() {
               <span>Not set</span>
             </div>
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="border-purple-400/30 text-purple-600">💡</Badge>
+              <Badge variant="outline" className="border-purple-400/30 text-purple-400">💡</Badge>
               <span>Click to toggle status</span>
             </div>
           </div>
         </div>
 
         {/* Calendar */}
-        <Card className="border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <Card className="border-slate-700 bg-slate-800 shadow-sm">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-slate-900 dark:text-slate-100">
+                <CardTitle className="text-slate-100">
                   <CalendarIcon className="mr-2 inline h-5 w-5 text-blue-500" />
                   {weekDaysDates[0].toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                   {' - '}
                   {weekDaysDates[6].toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                 </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-slate-400">
+                <CardDescription className="text-slate-400">
                   Click time slots to set your availability
                 </CardDescription>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-slate-500" />
-                <span className="text-sm text-slate-600 dark:text-slate-400">
+                <Clock className="h-4 w-4 text-slate-400" />
+                <span className="text-sm text-slate-400">
                   {hours.length} hours/day • {hours.length * 7} total slots
                 </span>
               </div>
@@ -271,11 +271,11 @@ export default function AvailabilityCalendarPage() {
                 <div className="min-w-[800px]">
                   {/* Header row */}
                   <div className="grid grid-cols-8 gap-2 mb-4">
-                    <div className="py-2 text-sm font-semibold text-slate-500">Time</div>
+                    <div className="py-2 text-sm font-semibold text-slate-400">Time</div>
                     {weekDays.map((day, index) => (
-                      <div key={day} className="rounded bg-blue-100 py-2 text-center text-sm font-semibold text-slate-800 dark:bg-blue-900/30 dark:text-slate-200">
+                      <div key={day} className="rounded bg-blue-900/30 py-2 text-center text-sm font-semibold text-slate-200">
                         {day}<br />
-                        <span className="text-xs text-slate-600 dark:text-slate-400">
+                        <span className="text-xs text-slate-400">
                           {weekDaysDates[index].getMonth() + 1}/{weekDaysDates[index].getDate()}
                         </span>
                       </div>
@@ -286,7 +286,7 @@ export default function AvailabilityCalendarPage() {
                   <div className="space-y-2">
                     {hours.map(hour => (
                       <div key={hour} className="grid grid-cols-8 gap-2">
-                        <div className="py-3 pr-2 text-right text-sm text-slate-500 dark:text-slate-400">
+                        <div className="py-3 pr-2 text-right text-sm text-slate-400">
                           {formatHour(hour)}
                         </div>
                         {weekDays.map((_, dayIndex) => (
@@ -295,7 +295,7 @@ export default function AvailabilityCalendarPage() {
                             onClick={() => toggleSlot(dayIndex, hour)}
                             className={`min-h-[48px] rounded-lg border p-2 transition-all hover:scale-105 hover:shadow-md ${
                               getSlotClass(availability[dayIndex]?.[hour])
-                            } ${availability[dayIndex]?.[hour] === null ? 'cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700' : ''}`}
+                            } ${availability[dayIndex]?.[hour] === null ? 'cursor-pointer hover:bg-slate-700' : ''}`}
                           >
                             <div className="flex h-full items-center justify-center">
                               {getSlotIcon(availability[dayIndex]?.[hour])}

@@ -78,10 +78,10 @@ export default function ChallengeDetailsPage() {
   }, [params?.id])
 
   const statusTone = useMemo(() => {
-    if (!data) return 'bg-slate-200 text-slate-700'
-    if (data.status === 'ACTIVE') return 'bg-emerald-100 text-emerald-700'
-    if (data.status === 'UPCOMING') return 'bg-blue-100 text-blue-700'
-    return 'bg-slate-200 text-slate-700'
+    if (!data) return 'bg-slate-700 text-slate-300'
+    if (data.status === 'ACTIVE') return 'bg-emerald-900/30 text-emerald-400'
+    if (data.status === 'UPCOMING') return 'bg-blue-900/30 text-blue-400'
+    return 'bg-slate-700 text-slate-300'
   }, [data])
 
   const joinLeave = async (action: 'join' | 'leave') => {
@@ -101,7 +101,7 @@ export default function ChallengeDetailsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-cyan-50 via-sky-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       <TopNav theme="blue" />
 
       <div className="mx-auto w-full max-w-6xl px-6 py-10">
@@ -113,21 +113,21 @@ export default function ChallengeDetailsPage() {
         </div>
 
         {message && (
-          <p className="mb-4 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+          <p className="mb-4 rounded-md border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-200">
             {message}
           </p>
         )}
 
         {loading || !data ? (
-          <p className="text-slate-600 dark:text-slate-300">Loading challenge...</p>
+          <p className="text-slate-300">Loading challenge...</p>
         ) : (
           <div className="space-y-6">
-            <Card className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+            <Card className="border-slate-700 bg-slate-800">
               <CardHeader>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <CardTitle className="text-slate-900 dark:text-slate-100">{data.challenge.title}</CardTitle>
-                    <CardDescription className="text-slate-600 dark:text-slate-300">{data.challenge.description || 'No description'}</CardDescription>
+                    <CardTitle className="text-slate-100">{data.challenge.title}</CardTitle>
+                    <CardDescription className="text-slate-300">{data.challenge.description || 'No description'}</CardDescription>
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge>{typeLabel[data.challenge.type]}</Badge>
@@ -135,7 +135,7 @@ export default function ChallengeDetailsPage() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+              <CardContent className="space-y-3 text-sm text-slate-300">
                 <p>
                   {new Date(data.challenge.startDate).toLocaleString()} - {new Date(data.challenge.endDate).toLocaleString()}
                 </p>
@@ -157,19 +157,19 @@ export default function ChallengeDetailsPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+            <Card className="border-slate-700 bg-slate-800">
               <CardHeader>
                 <CardTitle>Leaderboard</CardTitle>
                 <CardDescription>Rankings for this challenge</CardDescription>
               </CardHeader>
               <CardContent>
                 {data.leaderboard.length === 0 ? (
-                  <p className="text-slate-600 dark:text-slate-300">No participants yet.</p>
+                  <p className="text-slate-300">No participants yet.</p>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-slate-200 text-left text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                        <tr className="border-b border-slate-700 text-left text-slate-400">
                           <th className="px-2 py-2">Rank</th>
                           <th className="px-2 py-2">Participant</th>
                           <th className="px-2 py-2">Score</th>
@@ -178,7 +178,7 @@ export default function ChallengeDetailsPage() {
                       </thead>
                       <tbody>
                         {data.leaderboard.map((entry) => (
-                          <tr key={entry.id} className="border-b border-slate-100 dark:border-slate-700">
+                          <tr key={entry.id} className="border-b border-slate-700">
                             <td className="px-2 py-2 font-semibold">
                               {entry.medal ? `${entry.medal} #${entry.rank}` : `#${entry.rank}`}
                             </td>

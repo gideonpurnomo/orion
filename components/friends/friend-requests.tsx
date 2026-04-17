@@ -13,13 +13,13 @@ interface FriendRequestsProps {
 export function FriendRequests({ incoming, outgoing, loading, loadingId, onAction }: FriendRequestsProps) {
   return (
     <>
-      <Card className="border-slate-200 bg-white lg:col-span-1">
+      <Card className="border-slate-700 bg-slate-800 lg:col-span-1">
         <CardHeader>
           <CardTitle>Incoming</CardTitle>
           <CardDescription>{incoming.length} requests</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          {!loading && incoming.length === 0 && <p className="text-sm text-slate-500">No incoming requests.</p>}
+          {!loading && incoming.length === 0 && <p className="text-sm text-slate-400">No incoming requests.</p>}
           {incoming.map((request) => (
             <FriendRequestRow
               key={request.id}
@@ -33,13 +33,13 @@ export function FriendRequests({ incoming, outgoing, loading, loadingId, onActio
         </CardContent>
       </Card>
 
-      <Card className="border-slate-200 bg-white lg:col-span-1">
+      <Card className="border-slate-700 bg-slate-800 lg:col-span-1">
         <CardHeader>
           <CardTitle>Outgoing</CardTitle>
           <CardDescription>{outgoing.length} requests</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          {!loading && outgoing.length === 0 && <p className="text-sm text-slate-500">No outgoing requests.</p>}
+          {!loading && outgoing.length === 0 && <p className="text-sm text-slate-400">No outgoing requests.</p>}
           {outgoing.map((request) => (
             <FriendRequestRow
               key={request.id}

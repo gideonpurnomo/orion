@@ -205,7 +205,7 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
 
       {/* Search Results Dropdown */}
       {showResults && (query.length >= 1 || results.length > 0) && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl shadow-purple-500/20 overflow-hidden z-50">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-slate-800/90 backdrop-blur-xl border border-slate-700 rounded-xl shadow-2xl shadow-purple-500/20 overflow-hidden z-50">
           {isLoading ? (
             <div className="p-8 text-center text-gray-400">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400"></div>
@@ -213,7 +213,7 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
           ) : results.length > 0 ? (
             <div className="max-h-96 overflow-y-auto">
               {/* Quick Stats */}
-              <div className="px-4 py-3 bg-purple-500/10 border-b border-white/10">
+              <div className="px-4 py-3 bg-purple-500/10 border-b border-slate-700">
                 <div className="flex items-center gap-4 text-sm text-gray-300">
                   <span className="flex items-center gap-1">
                     <Flame className="h-4 w-4 text-purple-400" />
@@ -231,7 +231,7 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
                 <button
                   key={activity.id}
                   onClick={() => handleActivityClick(activity)}
-                  className="group w-full px-4 py-3 hover:bg-white/10 transition-all duration-200 border-b border-white/10 last:border-0 text-left"
+                  className="group w-full px-4 py-3 hover:bg-slate-700/50 transition-all duration-200 border-b border-slate-700 last:border-0 text-left"
                 >
                   <div className="flex items-start gap-3">
                     <div className="text-2xl">{activity.domain?.icon || '📚'}</div>
@@ -276,7 +276,7 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
                       <button
                         key={suggestion}
                         onClick={() => handleSuggestionClick(suggestion)}
-                        className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                        className="rounded-full border border-slate-700 bg-slate-800 px-3 py-1 text-xs text-gray-300 hover:bg-slate-700 hover:text-white transition-colors"
                       >
                         {suggestion}
                       </button>
@@ -287,7 +287,7 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
                 <p className="text-sm text-gray-500 mt-2">Try different keywords or browse the library</p>
               )}
               <Link href="/library">
-                <Button variant="outline" className="mt-4 border-white/20 text-white hover:bg-white/10">
+                <Button variant="outline" className="mt-4 border-slate-700 text-white hover:bg-slate-700">
                   Browse Library
                 </Button>
               </Link>
@@ -299,12 +299,12 @@ const SearchBar = forwardRef<{ focus: () => void }, SearchBarProps>(({
       {/* Keyboard Hints */}
       {variant === 'hero' && (
         <div className="flex items-center gap-2 mt-3 text-xs text-gray-500">
-          <kbd className="px-2 py-1 bg-white/10 rounded border border-white/20">
+          <kbd className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
             /
           </kbd>
           <span>to focus search</span>
           <span className="mx-2">•</span>
-          <kbd className="px-2 py-1 bg-white/10 rounded border border-white/20">
+          <kbd className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
             Esc
           </kbd>
           <span>to close</span>

@@ -38,15 +38,15 @@ export function InviteCodeCard({ inviteCode, onRegenerate, onRedeem, onMessage }
   }
 
   return (
-    <Card className="border-slate-200 bg-white">
+    <Card className="border-slate-700 bg-slate-800">
       <CardHeader>
         <CardTitle>Invite Code</CardTitle>
         <CardDescription>Share your code or redeem someone else&apos;s code.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Your Code</p>
-          <p className="text-2xl font-semibold text-slate-900">{inviteCode?.code || '...'}</p>
+        <div className="rounded-md border border-slate-700 bg-slate-900 p-3">
+          <p className="text-xs uppercase tracking-wide text-slate-400">Your Code</p>
+          <p className="text-2xl font-semibold text-slate-100">{inviteCode?.code || '...'}</p>
         </div>
 
         <div className="flex gap-2">
@@ -64,7 +64,7 @@ export function InviteCodeCard({ inviteCode, onRegenerate, onRedeem, onMessage }
             onChange={(event) => setCode(event.target.value.toUpperCase())}
             placeholder="Enter invite code"
           />
-          <Button type="submit" className="bg-slate-900 text-white hover:bg-slate-700">
+          <Button type="submit" className="bg-slate-700 text-white hover:bg-slate-600">
             Redeem Code
           </Button>
         </form>

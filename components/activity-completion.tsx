@@ -101,10 +101,10 @@ export default function ActivityCompletion({
   }
 
   const getDifficultyColor = (level: number) => {
-    if (level <= 3) return 'text-green-600 bg-green-50'
-    if (level <= 6) return 'text-yellow-600 bg-yellow-50'
-    if (level <= 8) return 'text-orange-600 bg-orange-50'
-    return 'text-red-600 bg-red-50'
+    if (level <= 3) return 'text-green-400 bg-green-950/50'
+    if (level <= 6) return 'text-yellow-400 bg-yellow-950/50'
+    if (level <= 8) return 'text-orange-400 bg-orange-950/50'
+    return 'text-red-400 bg-red-950/50'
   }
 
   const getDifficultyLabel = (level: number) => {
@@ -116,14 +116,14 @@ export default function ActivityCompletion({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md bg-white dark:bg-slate-800">
+      <DialogContent className="max-w-md bg-slate-800">
         {completionResult ? (
           // XP Reward Popup
           <>
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2 text-center">
                 <Sparkles className="h-6 w-6 text-purple-500 animate-pulse" />
-                <span className="text-green-600">
+                <span className="text-green-400">
                   {completionResult.leveledUp ? 'Level Up!' : 'Activity Complete!'}
                 </span>
               </DialogTitle>
@@ -141,30 +141,30 @@ export default function ActivityCompletion({
               )}
 
               {!completionResult.leveledUp && (
-                <div className="rounded-lg bg-green-50 border-2 border-green-200 p-4">
-                  <CheckCircle2 className="h-12 w-12 text-green-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-green-700 mb-2">
+                <div className="rounded-lg bg-green-950/50 border-2 border-green-800 p-4">
+                  <CheckCircle2 className="h-12 w-12 text-green-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-green-400 mb-2">
                     +{completionResult.xpAwarded} XP
                   </div>
-                  <div className="text-sm text-slate-600">
+                  <div className="text-sm text-slate-400">
                     New Total XP: {completionResult.newXP?.toLocaleString()}
                   </div>
                 </div>
               )}
 
               {completionResult.achievements && completionResult.achievements.length > 0 && (
-                <div className="rounded-lg bg-yellow-50 border-2 border-yellow-200 p-4">
-                  <div className="text-lg font-semibold text-yellow-800 mb-3 flex items-center justify-center gap-2">
+                <div className="rounded-lg bg-yellow-950/50 border-2 border-yellow-800 p-4">
+                  <div className="text-lg font-semibold text-yellow-300 mb-3 flex items-center justify-center gap-2">
                     <TrendingUp className="h-5 w-5" />
                     Achievement Unlocked!
                   </div>
                   <div className="space-y-2">
                     {completionResult.achievements.map((achievement) => (
-                      <div key={achievement.id} className="flex items-center gap-3 bg-white p-3 rounded-lg">
+                      <div key={achievement.id} className="flex items-center gap-3 bg-slate-800 p-3 rounded-lg">
                         <div className="text-3xl">{achievement.icon}</div>
                         <div>
-                          <div className="font-medium text-slate-900">{achievement.title}</div>
-                          <div className="text-sm text-slate-600">{achievement.description}</div>
+                          <div className="font-medium text-slate-100">{achievement.title}</div>
+                          <div className="text-sm text-slate-400">{achievement.description}</div>
                         </div>
                       </div>
                     ))}
@@ -194,12 +194,12 @@ export default function ActivityCompletion({
                       <Badge className={getDifficultyColor(activity.difficulty)}>
                         {getDifficultyLabel(activity.difficulty)} - {activity.difficulty}/10
                       </Badge>
-                      <span className="text-sm text-slate-600 dark:text-slate-400">
+                      <span className="text-sm text-slate-400">
                         {activity.duration} min
                       </span>
                     </div>
                     {activity.description && (
-                      <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                      <p className="text-sm text-slate-400 line-clamp-2">
                         {activity.description}
                       </p>
                     )}
@@ -209,7 +209,7 @@ export default function ActivityCompletion({
                   variant="ghost"
                   size="sm"
                   onClick={onClose}
-                  className="ml-0 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
+                  className="ml-0 text-slate-500 hover:text-slate-300"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -219,21 +219,21 @@ export default function ActivityCompletion({
             <div className="space-y-4 py-4">
               {/* Notes Input */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="text-sm font-medium text-slate-300">
                   Notes (optional)
                 </label>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Add any reflections, learnings, or notes about this session..."
-                  className="w-full rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                  className="w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 text-slate-100"
                   rows={3}
                 />
               </div>
 
               {/* Actual Duration Input */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="text-sm font-medium text-slate-300">
                   Actual Duration (minutes)
                 </label>
                 <div className="flex items-center gap-3">
@@ -243,7 +243,7 @@ export default function ActivityCompletion({
                     onChange={(e) => setActualDuration(Math.max(1, parseInt(e.target.value) || 1))}
                     min="1"
                     max="1440"
-                    className="w-24 rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    className="w-24 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 text-slate-100"
                   />
                   <Button
                     variant="outline"
@@ -253,7 +253,7 @@ export default function ActivityCompletion({
                   >
                     Reset
                   </Button>
-                  <div className="text-xs text-slate-600 dark:text-slate-400">
+                  <div className="text-xs text-slate-400">
                     Planned: {activity.duration} min
                   </div>
                 </div>
@@ -265,7 +265,7 @@ export default function ActivityCompletion({
                 onClick={handleInProgress}
                 disabled={isSubmitting}
                 variant="outline"
-                className="w-full border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-950/30"
+                className="w-full border-blue-500 text-blue-500 hover:bg-blue-950/30"
               >
                 {isSubmitting ? (
                   <>
@@ -302,7 +302,7 @@ export default function ActivityCompletion({
                 onClick={handleSkip}
                 disabled={isSubmitting}
                 variant="outline"
-                className="w-full border-slate-300 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+                className="w-full border-slate-700 text-slate-400 hover:bg-slate-800"
               >
                 {isSubmitting ? (
                   <>

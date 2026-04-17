@@ -223,19 +223,19 @@ export default function FriendsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-100 to-slate-200">
+    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       <TopNav />
 
       <div className="mx-auto w-full max-w-5xl px-6 py-10">
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Friends</h1>
-            <p className="text-slate-600">Manage your learning friends and requests.</p>
+            <h1 className="text-3xl font-bold text-slate-100">Friends</h1>
+            <p className="text-slate-400">Manage your learning friends and requests.</p>
           </div>
           <div className="flex items-center gap-2">
-            <Badge className="bg-slate-900 text-white">{pendingCount} pending</Badge>
+            <Badge className="bg-slate-100 text-slate-900">{pendingCount} pending</Badge>
             <Link href="/availability">
-              <Button className="bg-slate-900 text-white hover:bg-slate-700">
+              <Button className="bg-slate-100 text-slate-900 hover:bg-slate-200">
                 Find Mutual Time
               </Button>
             </Link>
@@ -243,7 +243,7 @@ export default function FriendsPage() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <Card className="border-slate-200 bg-white">
+          <Card className="border-slate-700 bg-slate-800">
             <CardHeader>
               <CardTitle>Send Friend Request</CardTitle>
               <CardDescription>Use a user email to send a request.</CardDescription>
@@ -256,7 +256,7 @@ export default function FriendsPage() {
                   onChange={(event) => setEmail(event.target.value)}
                   placeholder="friend@example.com"
                 />
-                <Button type="submit" className="bg-slate-900 text-white hover:bg-slate-700">
+                <Button type="submit" className="bg-slate-100 text-slate-900 hover:bg-slate-200">
                   Send Request
                 </Button>
               </form>
@@ -290,14 +290,14 @@ export default function FriendsPage() {
         </div>
 
         {message && (
-          <p className="mt-4 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+          <p className="mt-4 rounded-md border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-300">
             {message}
           </p>
         )}
       </div>
 
       <Dialog open={scheduleDialogOpen} onOpenChange={setScheduleDialogOpen}>
-        <DialogContent className="max-w-lg bg-white dark:bg-slate-800">
+        <DialogContent className="max-w-lg bg-slate-800">
           <DialogHeader>
             <DialogTitle>{scheduleFriendName}'s Schedule</DialogTitle>
             <DialogDescription>Their activities for this week</DialogDescription>
@@ -307,7 +307,7 @@ export default function FriendsPage() {
               <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
             </div>
           ) : friendSchedule.length === 0 ? (
-            <p className="py-8 text-center text-sm text-slate-500">No activities scheduled this week.</p>
+            <p className="py-8 text-center text-sm text-slate-400">No activities scheduled this week.</p>
           ) : (
             <div className="max-h-[60vh] space-y-2 overflow-y-auto">
               {friendSchedule.map((item) => {
@@ -315,18 +315,18 @@ export default function FriendsPage() {
                 const dayLabel = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
                 const timeLabel = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
                 const statusColor =
-                  item.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
-                  item.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-700' :
-                  item.status === 'SKIPPED' ? 'bg-red-100 text-red-700' :
-                  'bg-slate-100 text-slate-700'
+                  item.status === 'COMPLETED' ? 'bg-green-950/50 text-green-400' :
+                  item.status === 'IN_PROGRESS' ? 'bg-blue-950/50 text-blue-400' :
+                  item.status === 'SKIPPED' ? 'bg-red-950/50 text-red-400' :
+                  'bg-slate-700 text-slate-300'
 
                 return (
-                  <div key={item.id} className="flex items-center justify-between rounded-lg border border-slate-200 p-3">
+                  <div key={item.id} className="flex items-center justify-between rounded-lg border border-slate-700 p-3">
                     <div className="flex items-center gap-3">
                       <span className="text-xl">{item.activity?.domain?.icon || '📚'}</span>
                       <div>
-                        <p className="font-medium text-sm text-slate-900 dark:text-slate-100">{item.activity?.title || 'Untitled'}</p>
-                        <p className="text-xs text-slate-500 flex items-center gap-1">
+                        <p className="font-medium text-sm text-slate-100">{item.activity?.title || 'Untitled'}</p>
+                        <p className="text-xs text-slate-400 flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           {dayLabel} {timeLabel} &middot; {item.duration || item.activity?.duration || 0} min
                         </p>

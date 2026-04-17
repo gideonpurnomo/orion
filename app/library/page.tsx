@@ -329,54 +329,24 @@ function LibraryContent() {
     query || maxDifficulty !== 'all' || durationFilter !== 'all' || selectedTag !== 'all' || sortBy !== 'relevance'
   )
 
-  // Theme-aware colors for better contrast
-  const isDark = theme === 'dark'
-
-  const gradientClass = isDark
-    ? `theme-${theme}`
-    : `theme-${theme}`
-
-  const cardBgClass = isDark
-    ? 'bg-slate-800 border-slate-700'
-    : 'bg-white border-slate-200'
-
-  const textPrimaryClass = isDark
-    ? 'text-slate-100'
-    : 'text-slate-900'
-
-  const textSecondaryClass = isDark
-    ? 'text-slate-300'
-    : 'text-slate-600'
-
-  const textMutedClass = isDark
-    ? 'text-slate-400'
-    : 'text-slate-500'
-
-  const inputBgClass = isDark
-    ? 'bg-slate-900 border-slate-700'
-    : 'bg-white border-slate-300'
-
-  const inputTextClass = isDark
-    ? 'dark:text-slate-100 dark:placeholder:text-slate-400'
-    : 'dark:text-slate-900 dark:placeholder:text-slate-400'
-
-  const buttonClass = isDark
-    ? 'dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
-    : 'bg-white text-slate-700 hover:bg-slate-50'
-
-  const outlineButtonClass = isDark
-    ? 'border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
-    : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+  const cardBgClass = 'bg-slate-800 border-slate-700'
+  const textPrimaryClass = 'text-slate-100'
+  const textSecondaryClass = 'text-slate-300'
+  const textMutedClass = 'text-slate-400'
+  const inputBgClass = 'bg-slate-900 border-slate-700'
+  const inputTextClass = 'text-slate-100 placeholder:text-slate-400'
+  const buttonClass = 'bg-slate-800 text-slate-200 hover:bg-slate-700'
+  const outlineButtonClass = 'border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700'
 
   return (
-    <div className={`min-h-screen ${gradientClass}`}>
+    <div className="min-h-screen">
       <TopNav />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Activity Library</h1>
-              <p className="text-slate-600 dark:text-slate-300">Smart search + filters to quickly find what you want</p>
+              <h1 className="text-3xl font-bold text-slate-100">Activity Library</h1>
+              <p className="text-slate-300">Smart search + filters to quickly find what you want</p>
             </div>
             <Button className="bg-primary hover:opacity-90 border-0" asChild>
               <Link href={nextPath}>
@@ -399,7 +369,7 @@ function LibraryContent() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="relative">
-              <Search className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 ${isDark ? 'text-slate-500' : ''}`} />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
               <input
                 value={queryInput}
                 onChange={(e) => setQueryInput(e.target.value)}
@@ -484,31 +454,26 @@ function LibraryContent() {
                 {
                   name: 'Luminary',
                   description: 'Become the light',
-                  lightBg: 'linear-gradient(135deg, #fbbf24, #f59e0b, #d97706)',
                   darkBg: 'linear-gradient(135deg, #78350f, #92400e, #451a03)',
                 },
                 {
                   name: 'Sunrise',
                   description: 'Morning energy, fresh start',
-                  lightBg: 'linear-gradient(135deg, #fb923c, #f97316, #ea580c)',
                   darkBg: 'linear-gradient(135deg, #7c2d12, #9a3412, #431407)',
                 },
                 {
                   name: 'Nebula',
                   description: 'Exciting possibilities',
-                  lightBg: 'linear-gradient(135deg, #a78bfa, #8b5cf6, #7c3aed)',
                   darkBg: 'linear-gradient(135deg, #3b0764, #4c1d95, #2e1065)',
                 },
                 {
                   name: 'Aurora',
                   description: 'Magic moments',
-                  lightBg: 'linear-gradient(135deg, #22d3ee, #06b6d4, #0891b2)',
                   darkBg: 'linear-gradient(135deg, #164e63, #083344, #0c4a6e)',
                 },
                 {
                   name: 'Forest',
                   description: 'Growth, organic progress',
-                  lightBg: 'linear-gradient(135deg, #34d399, #10b981, #059669)',
                   darkBg: 'linear-gradient(135deg, #064e3b, #065f46, #022c22)',
                 },
               ].map((themeOption) => (
@@ -517,11 +482,11 @@ function LibraryContent() {
                   onClick={() => setTheme(themeOption.name)}
                   className={`relative h-24 rounded-lg border-2 transition-all duration-300 overflow-hidden ${
                     theme === themeOption.name
-                      ? 'ring-2 ring-offset-2 ring-slate-900'
-                      : 'border-slate-200 hover:border-slate-300'
-                  } ${isDark ? 'dark:border-slate-600' : ''}`}
+                      ? 'ring-2 ring-offset-2 ring-slate-900 border-slate-600'
+                      : 'border-slate-600 hover:border-slate-500'
+                  }`}
                 >
-                  <div className={`absolute inset-0 transition-all duration-300`} style={{ background: isDark ? themeOption.darkBg : themeOption.lightBg }}></div>
+                  <div className="absolute inset-0 transition-all duration-300" style={{ background: themeOption.darkBg }}></div>
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                     <div className="text-lg font-semibold text-white drop-shadow-md">{themeOption.name}</div>
                     <div className="text-xs text-white/80">{themeOption.description}</div>
@@ -576,7 +541,7 @@ function LibraryContent() {
                       key={key}
                       onClick={() => handleStarterAdd(subject)}
                       disabled={isLoadingStarter}
-                      className={`rounded-lg border p-3 text-left transition hover:border-orange-300 hover:bg-orange-50 disabled:opacity-70 ${isDark ? 'border-slate-700 bg-slate-700 dark:hover:border-orange-500 dark:hover:bg-orange-950/30' : 'border-slate-200 bg-slate-50'}`}
+                      className={`rounded-lg border p-3 text-left transition hover:border-orange-500 hover:bg-orange-950/30 disabled:opacity-70 border-slate-700 bg-slate-700`}
                     >
                       <div className="flex items-center justify-between">
                         <p className={`font-medium ${textPrimaryClass}`}>{subject.icon} {subject.title}</p>
@@ -630,7 +595,7 @@ function LibraryContent() {
               <p className={`text-sm mb-4 ${textMutedClass}`}>
                 Smart search needs seeded activities before it can return results.
               </p>
-              <div className="mx-auto max-w-xl rounded-md border bg-slate-50 px-3 py-2 text-left text-xs text-slate-700 dark:bg-slate-900 dark:text-slate-300">
+              <div className="mx-auto max-w-xl rounded-md border bg-slate-900 px-3 py-2 text-left text-xs text-slate-300">
                 Run: <span className="font-mono">npm run db:push && npm run db:seed</span>
               </div>
             </CardContent>
@@ -640,7 +605,7 @@ function LibraryContent() {
             {filteredActivities.map((activity) => (
               <Card
                 key={activity.id}
-                className={`group ${cardBgClass} border hover:border-orange-300 hover:bg-orange-50 transition-all duration-300 cursor-pointer hover:scale-[1.01] ${isDark ? 'hover:border-orange-500 hover:bg-orange-950/30' : ''}`}
+                className={`group ${cardBgClass} border hover:border-orange-500 hover:bg-orange-950/30 transition-all duration-300 cursor-pointer hover:scale-[1.01]`}
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between mb-2">

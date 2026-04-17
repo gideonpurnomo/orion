@@ -182,7 +182,7 @@ export function PomodoroTimer({ initialMinutes = 25, onComplete, onCancel }: Pom
     <>
       {showComplete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <Card className="w-full max-w-md bg-white shadow-xl dark:bg-slate-800">
+          <Card className="w-full max-w-md bg-slate-800 shadow-xl">
             <CardHeader className="text-center">
               <CheckCircle2 className="mx-auto h-16 w-16 text-emerald-500 mb-2" />
               <CardTitle className="text-2xl">Session Complete!</CardTitle>
@@ -199,7 +199,7 @@ export function PomodoroTimer({ initialMinutes = 25, onComplete, onCancel }: Pom
               <Button
                 variant="outline"
                 onClick={() => setShowComplete(false)}
-                className="w-full border-slate-300 text-slate-700 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
+                className="w-full border-slate-600 text-slate-200 hover:bg-slate-700"
               >
                 Dismiss
               </Button>

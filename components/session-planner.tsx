@@ -89,9 +89,9 @@ export default function SessionPlanner({ activity, isOpen, onClose, onSave }: Se
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-slate-800 border border-white/20 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-slate-800 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="p-6 border-b border-white/10">
+        <div className="p-6 border-b border-slate-700">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold text-white">Session Planner</h2>
@@ -106,7 +106,7 @@ export default function SessionPlanner({ activity, isOpen, onClose, onSave }: Se
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Activity Info */}
-          <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+          <div className="bg-slate-900 rounded-xl p-4 border border-slate-700">
             <div className="flex items-center gap-3 mb-2">
               <div className="text-3xl">📚</div>
               <div>
@@ -148,7 +148,7 @@ export default function SessionPlanner({ activity, isOpen, onClose, onSave }: Se
                     className={`px-4 py-2 rounded-full text-sm transition-all ${
                       isSelected
                         ? 'bg-purple-600 text-white'
-                        : 'bg-white/10 border border-white/20 text-gray-300 hover:bg-white/20'
+                        : 'bg-slate-700 border border-slate-600 text-gray-300 hover:bg-slate-600'
                     }`}
                   >
                     {isSelected && <span className="mr-1">✓</span>}
@@ -169,9 +169,9 @@ export default function SessionPlanner({ activity, isOpen, onClose, onSave }: Se
                 value={customTopic}
                 onChange={(e) => setCustomTopic(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addCustomTopic()}
-                className="flex-1 bg-white/5 border-white/20 text-white placeholder:text-gray-600 focus:border-purple-400"
+                className="flex-1 bg-slate-900 border-slate-700 text-white placeholder:text-gray-600 focus:border-purple-400"
               />
-              <Button onClick={addCustomTopic} variant="outline" className="border-white/20 text-white">
+              <Button onClick={addCustomTopic} variant="outline" className="border-slate-700 text-white">
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
@@ -185,13 +185,13 @@ export default function SessionPlanner({ activity, isOpen, onClose, onSave }: Se
                 {topics.map((topic) => (
                   <div
                     key={topic.id}
-                    className="flex items-center gap-3 bg-white/5 rounded-lg p-3 border border-white/10"
+                    className="flex items-center gap-3 bg-slate-900 rounded-lg p-3 border border-slate-700"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <span className="text-white font-medium">{topic.name}</span>
                         {topic.isCustom && (
-                          <Badge variant="outline" className="text-xs border-white/20 text-gray-400">
+                          <Badge variant="outline" className="text-xs border-slate-700 text-gray-400">
                             Custom
                           </Badge>
                         )}
@@ -205,7 +205,7 @@ export default function SessionPlanner({ activity, isOpen, onClose, onSave }: Se
                         onChange={(e) => updateTopicTime(topic.id, parseInt(e.target.value) || 0)}
                         min="1"
                         max={totalDuration}
-                        className="w-20 bg-white/10 border-white/20 text-white text-center focus:border-purple-400"
+                        className="w-20 bg-slate-700 border-slate-600 text-white text-center focus:border-purple-400"
                       />
                       <span className="text-gray-400 text-sm">min</span>
                       <Button
@@ -225,8 +225,8 @@ export default function SessionPlanner({ activity, isOpen, onClose, onSave }: Se
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-white/10 flex justify-between items-center">
-          <Button variant="outline" onClick={onClose} className="border-white/20 text-white">
+        <div className="p-6 border-t border-slate-700 flex justify-between items-center">
+          <Button variant="outline" onClick={onClose} className="border-slate-700 text-white">
             Cancel
           </Button>
           <Button

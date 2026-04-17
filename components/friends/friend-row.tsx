@@ -18,18 +18,18 @@ interface FriendRowProps {
 
 export function FriendRow({ user, createdAt, onRemove, onViewSchedule, isRemoving = false }: FriendRowProps) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white p-4">
+    <div className="flex items-center justify-between rounded-lg border border-slate-700 bg-slate-800 p-4">
       <div>
-        <p className="font-medium text-slate-900">{user.name || user.email}</p>
-        <p className="text-sm text-slate-500">{user.email}</p>
-        <p className="text-xs text-slate-400 mt-1">Friends since {new Date(createdAt).toLocaleDateString()}</p>
+        <p className="font-medium text-slate-100">{user.name || user.email}</p>
+        <p className="text-sm text-slate-400">{user.email}</p>
+        <p className="text-xs text-slate-500 mt-1">Friends since {new Date(createdAt).toLocaleDateString()}</p>
       </div>
       <div className="flex items-center gap-2">
         {onViewSchedule && (
           <Button
             variant="outline"
             onClick={() => onViewSchedule(user.id, user.name || user.email)}
-            className="border-slate-200 text-slate-700 hover:bg-slate-50"
+            className="border-slate-700 text-slate-300 hover:bg-slate-700"
           >
             <Calendar className="mr-1 h-4 w-4" />
             Schedule
@@ -39,7 +39,7 @@ export function FriendRow({ user, createdAt, onRemove, onViewSchedule, isRemovin
           variant="outline"
           onClick={() => onRemove(user.id)}
           disabled={isRemoving}
-          className="border-red-200 text-red-600 hover:bg-red-50"
+          className="border-red-800 text-red-400 hover:bg-red-950/30"
         >
           {isRemoving ? 'Removing...' : 'Remove'}
         </Button>

@@ -35,12 +35,12 @@ export function FriendRequestRow({
   const user = mode === 'incoming' ? request.sender : request.receiver
 
   return (
-    <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white p-4">
+    <div className="flex items-center justify-between rounded-lg border border-slate-700 bg-slate-800 p-4">
       <div>
-        <p className="font-medium text-slate-900">{user?.name || user?.email}</p>
-        <p className="text-sm text-slate-500">{user?.email}</p>
-        <p className="text-xs text-slate-400 mt-1">Requested {new Date(request.createdAt).toLocaleDateString()}</p>
-        {request.message && <p className="text-xs text-slate-500 mt-2">{request.message}</p>}
+        <p className="font-medium text-slate-100">{user?.name || user?.email}</p>
+        <p className="text-sm text-slate-400">{user?.email}</p>
+        <p className="text-xs text-slate-500 mt-1">Requested {new Date(request.createdAt).toLocaleDateString()}</p>
+        {request.message && <p className="text-xs text-slate-400 mt-2">{request.message}</p>}
       </div>
 
       {mode === 'incoming' ? (
