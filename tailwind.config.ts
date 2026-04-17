@@ -75,10 +75,25 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "fade-slide-in": {
+          from: { opacity: "0", transform: "translateY(-4px) scale(0.97)" },
+          to: { opacity: "1", transform: "translateY(0) scale(1)" },
+        },
+        "status-pulse": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.6" },
+        },
+        "crossfade-in": {
+          from: { opacity: "0", transform: "translateY(6px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-slide-in": "fade-slide-in 0.15s ease-out",
+        "status-pulse": "status-pulse 2s ease-in-out infinite",
+        "crossfade-in": "crossfade-in 0.2s ease-out",
       },
     },
   },
