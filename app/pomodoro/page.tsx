@@ -4,6 +4,7 @@ import React from 'react'
 import { PomodoroTimer, PomodoroSession } from '@/components/pomodoro-timer'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Clock, Coffee, Zap, Target, Flame, Trophy } from 'lucide-react'
+import TopNav from '@/components/top-nav'
 
 export default function PomodoroPage() {
   const handleComplete = async (session: PomodoroSession) => {
@@ -27,6 +28,7 @@ export default function PomodoroPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-orange-950/30 to-slate-900">
+      <TopNav />
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">

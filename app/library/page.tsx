@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Plus, Clock, Loader2, Search, SlidersHorizontal, X } from 'lucide-react'
 import { formatDuration, getDifficultyColor, getDifficultyLabel } from '@/lib/utils'
 import TopNav from '@/components/top-nav'
+import DomainExplorer from '@/components/library/domain-explorer'
 
 interface Activity {
   id: string
@@ -41,27 +42,32 @@ interface DomainTab {
   }
 }
 
-interface StarterSubject {
-  title: string
-  domainSlug: string
-  icon: string
-  description: string
+interface ExplorerCategory {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  order: number
+  activities: {
+    id: string
+    title: string
+    slug: string
+    description: string | null
+    difficulty: number
+    duration: number
+    tags: string[]
+  }[]
 }
 
-const starterSubjects: StarterSubject[] = [
-  { title: 'JavaScript', domainSlug: 'programming', icon: '💻', description: 'Web interactivity and app logic' },
-  { title: 'Python', domainSlug: 'programming', icon: '💻', description: 'Automation and data scripting' },
-  { title: 'French', domainSlug: 'languages', icon: '🌍', description: 'Travel and conversation basics' },
-  { title: 'Mandarin Chinese', domainSlug: 'languages', icon: '🌍', description: 'Tones, pinyin, and speaking' },
-  { title: 'Algebra', domainSlug: 'school', icon: '📚', description: 'Equations and functions' },
-  { title: 'Physics', domainSlug: 'school', icon: '📚', description: 'Forces, motion, and energy' },
-  { title: 'French Cooking', domainSlug: 'cooking', icon: '🍳', description: 'Classical techniques and sauces' },
-  { title: 'Korean Cooking', domainSlug: 'cooking', icon: '🍳', description: 'Staples, marinades, and stews' },
-  { title: 'Strength Training', domainSlug: 'fitness', icon: '🏋️', description: 'Progressive overload and form' },
-  { title: 'Yoga', domainSlug: 'fitness', icon: '🏋️', description: 'Mobility and recovery' },
-  { title: 'Machine Learning', domainSlug: 'data-ai', icon: '🤖', description: 'Models and practical AI workflows' },
-  { title: 'UX/UI Design', domainSlug: 'design', icon: '🎨', description: 'Usable and accessible interfaces' },
-]
+interface ExplorerDomain {
+  id: string
+  name: string
+  slug: string
+  icon: string | null
+  description: string | null
+  color: string | null
+  categories: ExplorerCategory[]
+}
 
 function normalizeText(value: string) {
   return value
@@ -84,9 +90,7 @@ function LibraryContent() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const [customTopic, setCustomTopic] = useState('')
-  const [isCreatingTopic, setIsCreatingTopic] = useState(false)
-  const [starterLoadingKey, setStarterLoadingKey] = useState('')
+  const [explorerDomains, setExplorerDomains] = useState<ExplorerDomain[]>([])
 
   const [queryInput, setQueryInput] = useState('')
   const [query, setQuery] = useState('')
@@ -118,6 +122,17 @@ function LibraryContent() {
     }
   }
 
+  const fetchExplorerData = async () => {
+    try {
+      const response = await fetch('/api/domains?include=categories,activities')
+      if (!response.ok) throw new Error('Failed to fetch explorer data')
+      const data = await response.json()
+      setExplorerDomains(data.domains || [])
+    } catch (err) {
+      console.error('Fetch explorer data error:', err)
+    }
+  }
+
   const fetchActivities = async (domain: string) => {
     setIsLoading(true)
     try {
@@ -142,23 +157,15 @@ function LibraryContent() {
     }
   }
 
-  const handleCreateTopic = async () => {
-    const topic = customTopic.trim()
-    if (!topic) return
-    if (selectedDomain === 'all') {
-      setError('Choose a domain first, then create your custom topic')
-      return
-    }
-
-    setIsCreatingTopic(true)
+  const handleExplorerCreate = async (title: string, domainSlug: string) => {
     try {
       const response = await fetch('/api/activities', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: topic,
-          domainSlug: selectedDomain,
-          description: `Custom topic: ${topic}`,
+          title,
+          domainSlug,
+          description: `Custom topic: ${title}`,
         }),
       })
 
@@ -167,43 +174,11 @@ function LibraryContent() {
         throw new Error(data.error || 'Failed to create topic')
       }
 
-      setCustomTopic('')
-      await fetchActivities(selectedDomain)
+      await fetchExplorerData()
       router.push(buildAddLink(data.activity.id))
     } catch (err) {
       console.error('Create topic error:', err)
       setError('Could not create custom topic')
-    } finally {
-      setIsCreatingTopic(false)
-    }
-  }
-
-  const handleStarterAdd = async (subject: StarterSubject) => {
-    setStarterLoadingKey(`${subject.domainSlug}:${subject.title}`)
-    try {
-      const response = await fetch('/api/activities', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: subject.title,
-          domainSlug: subject.domainSlug,
-          description: subject.description,
-        }),
-      })
-
-      const data = await response.json()
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to create starter subject')
-      }
-
-      setSelectedDomain(subject.domainSlug)
-      await fetchActivities(subject.domainSlug)
-      router.push(buildAddLink(data.activity.id))
-    } catch (err) {
-      console.error('Starter add error:', err)
-      setError('Could not add starter subject. Please sign in and try again.')
-    } finally {
-      setStarterLoadingKey('')
     }
   }
 
@@ -223,6 +198,7 @@ function LibraryContent() {
 
   useEffect(() => {
     fetchDomains()
+    fetchExplorerData()
   }, [])
 
   useEffect(() => {
@@ -499,59 +475,17 @@ function LibraryContent() {
 
         <Card className={`mb-6 ${cardBgClass}`}>
           <CardHeader className="pb-3">
-            <CardTitle className={`text-lg ${textPrimaryClass}`}>Create Your Own Topic</CardTitle>
+            <CardTitle className={`text-lg ${textPrimaryClass}`}>Explore Topics</CardTitle>
             <CardDescription className={textSecondaryClass}>
-              Type a broad topic like <span className="font-medium">JavaScript</span>, <span className="font-medium">Python</span>, or <span className="font-medium">Calculus</span>.
-              We&apos;ll add it to your selected domain and send it to schedule.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3 md:flex-row">
-            <input
-              value={customTopic}
-              onChange={(e) => setCustomTopic(e.target.value)}
-              placeholder={selectedDomain === 'all' ? 'Select a domain first (e.g. Programming)' : `New ${selectedDomain} topic...`}
-              className={`w-full rounded-md border px-3 py-2 text-sm ${inputBgClass} ${inputTextClass}`}
-            />
-            <Button
-              onClick={handleCreateTopic}
-              disabled={isCreatingTopic || selectedDomain === 'all' || !customTopic.trim()}
-              className="bg-blue-600 text-white hover:bg-blue-700"
-            >
-              {isCreatingTopic ? 'Creating...' : 'Create & Add'}
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className={`mb-6 ${cardBgClass}`}>
-          <CardHeader className="pb-3">
-            <CardTitle className={`text-lg ${textPrimaryClass}`}>Starter Subject Packs</CardTitle>
-            <CardDescription className={textSecondaryClass}>
-              One-click add. Use this to quickly bootstrap your library.
+              Browse domains, pick a topic, and add it to your schedule.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-              {starterSubjects
-                .filter((subject) => selectedDomain === 'all' || subject.domainSlug === selectedDomain)
-                .map((subject) => {
-                  const key = `${subject.domainSlug}:${subject.title}`
-                  const isLoadingStarter = starterLoadingKey === key
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => handleStarterAdd(subject)}
-                      disabled={isLoadingStarter}
-                      className={`rounded-lg border p-3 text-left transition hover:border-orange-500 hover:bg-orange-950/30 disabled:opacity-70 border-slate-700 bg-slate-700`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <p className={`font-medium ${textPrimaryClass}`}>{subject.icon} {subject.title}</p>
-                        {isLoadingStarter ? <Loader2 className="h-4 w-4 animate-spin text-orange-500" /> : null}
-                      </div>
-                      <p className={`mt-1 text-xs ${textSecondaryClass}`}>{subject.description}</p>
-                    </button>
-                  )
-                })}
-            </div>
+            <DomainExplorer
+              domains={explorerDomains}
+              onAddActivity={handleExplorerCreate}
+              buildAddLink={buildAddLink}
+            />
           </CardContent>
         </Card>
 

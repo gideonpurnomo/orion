@@ -150,6 +150,19 @@ async function main() {
     },
   })
 
+  const sports = await prisma.domain.upsert({
+    where: { slug: 'sports' },
+    update: {},
+    create: {
+      name: 'Sports',
+      slug: 'sports',
+      icon: '⚽',
+      description: 'Learn and practice team and individual sports skills',
+      color: '#22d3ee',
+      order: 12,
+    },
+  })
+
   // Create cooking categories
   const italian = await prisma.category.upsert({
     where: { domainId_slug: { domainId: cooking.id, slug: 'italian' } },
@@ -2268,6 +2281,218 @@ async function main() {
   ]
 
   for (const activity of extraMusicSubjects) {
+    await prisma.activity.upsert({
+      where: {
+        domainId_categoryId_slug: {
+          domainId: activity.domainId,
+          categoryId: activity.categoryId,
+          slug: activity.slug,
+        },
+      },
+      update: {},
+      create: activity,
+    })
+  }
+
+  // Sports categories
+  const football = await prisma.category.upsert({
+    where: { domainId_slug: { domainId: sports.id, slug: 'football' } },
+    update: {},
+    create: {
+      domainId: sports.id,
+      name: 'Football',
+      slug: 'football',
+      description: 'Soccer skills, tactics, and fitness',
+      order: 1,
+    },
+  })
+
+  const basketball = await prisma.category.upsert({
+    where: { domainId_slug: { domainId: sports.id, slug: 'basketball' } },
+    update: {},
+    create: {
+      domainId: sports.id,
+      name: 'Basketball',
+      slug: 'basketball',
+      description: 'Basketball fundamentals, shooting, and team play',
+      order: 2,
+    },
+  })
+
+  const swimming = await prisma.category.upsert({
+    where: { domainId_slug: { domainId: sports.id, slug: 'swimming' } },
+    update: {},
+    create: {
+      domainId: sports.id,
+      name: 'Swimming',
+      slug: 'swimming',
+      description: 'Swimming strokes, technique, and endurance',
+      order: 3,
+    },
+  })
+
+  const tennis = await prisma.category.upsert({
+    where: { domainId_slug: { domainId: sports.id, slug: 'tennis' } },
+    update: {},
+    create: {
+      domainId: sports.id,
+      name: 'Tennis',
+      slug: 'tennis',
+      description: 'Tennis strokes, footwork, and match strategy',
+      order: 4,
+    },
+  })
+
+  const badminton = await prisma.category.upsert({
+    where: { domainId_slug: { domainId: sports.id, slug: 'badminton' } },
+    update: {},
+    create: {
+      domainId: sports.id,
+      name: 'Badminton',
+      slug: 'badminton',
+      description: 'Badminton skills, drills, and game tactics',
+      order: 5,
+    },
+  })
+
+  const volleyball = await prisma.category.upsert({
+    where: { domainId_slug: { domainId: sports.id, slug: 'volleyball' } },
+    update: {},
+    create: {
+      domainId: sports.id,
+      name: 'Volleyball',
+      slug: 'volleyball',
+      description: 'Volleyball passing, spiking, and court positioning',
+      order: 6,
+    },
+  })
+
+  const sportsActivities = [
+    {
+      title: 'Football',
+      slug: 'football-track',
+      description: 'Develop dribbling, passing, shooting, and game awareness',
+      difficulty: 2,
+      duration: 60,
+      tags: ['football', 'dribbling', 'passing', 'tactics', 'fitness'],
+      categoryId: football.id,
+      domainId: sports.id,
+    },
+    {
+      title: 'Basketball',
+      slug: 'basketball-track',
+      description: 'Learn shooting form, ball handling, and defensive positioning',
+      difficulty: 2,
+      duration: 60,
+      tags: ['basketball', 'shooting', 'dribbling', 'defense', 'teamwork'],
+      categoryId: basketball.id,
+      domainId: sports.id,
+    },
+    {
+      title: 'Swimming',
+      slug: 'swimming-track',
+      description: 'Master freestyle, backstroke, and breathing technique',
+      difficulty: 2,
+      duration: 45,
+      tags: ['swimming', 'freestyle', 'breathing', 'endurance'],
+      categoryId: swimming.id,
+      domainId: sports.id,
+    },
+    {
+      title: 'Tennis',
+      slug: 'tennis-track',
+      description: 'Build forehand, backhand, serve, and rally consistency',
+      difficulty: 3,
+      duration: 60,
+      tags: ['tennis', 'forehand', 'serve', 'footwork', 'rally'],
+      categoryId: tennis.id,
+      domainId: sports.id,
+    },
+    {
+      title: 'Badminton',
+      slug: 'badminton-track',
+      description: 'Learn clears, smashes, drops, and court movement',
+      difficulty: 2,
+      duration: 50,
+      tags: ['badminton', 'smash', 'clear', 'footwork', 'rally'],
+      categoryId: badminton.id,
+      domainId: sports.id,
+    },
+    {
+      title: 'Volleyball',
+      slug: 'volleyball-track',
+      description: 'Practice passing, setting, spiking, and serving fundamentals',
+      difficulty: 2,
+      duration: 55,
+      tags: ['volleyball', 'passing', 'spiking', 'serving', 'teamwork'],
+      categoryId: volleyball.id,
+      domainId: sports.id,
+    },
+  ]
+
+  for (const activity of sportsActivities) {
+    await prisma.activity.upsert({
+      where: {
+        domainId_categoryId_slug: {
+          domainId: activity.domainId,
+          categoryId: activity.categoryId,
+          slug: activity.slug,
+        },
+      },
+      update: {},
+      create: activity,
+    })
+  }
+
+  // Missing cuisines: Indonesian and Spanish
+  const indonesianCuisine = await prisma.category.upsert({
+    where: { domainId_slug: { domainId: cooking.id, slug: 'indonesian' } },
+    update: {},
+    create: {
+      domainId: cooking.id,
+      name: 'Indonesian Cuisine',
+      slug: 'indonesian',
+      description: 'Indonesian spices, rice dishes, and street food basics',
+      order: 11,
+    },
+  })
+
+  const spanishCuisine = await prisma.category.upsert({
+    where: { domainId_slug: { domainId: cooking.id, slug: 'spanish' } },
+    update: {},
+    create: {
+      domainId: cooking.id,
+      name: 'Spanish Cuisine',
+      slug: 'spanish',
+      description: 'Spanish tapas, paella, and regional flavors',
+      order: 12,
+    },
+  })
+
+  const missingCuisineTracks = [
+    {
+      title: 'Indonesian Cooking',
+      slug: 'indonesian-cooking-track',
+      description: 'Master nasi goreng, rendang, sambals, and Indonesian spice pastes',
+      difficulty: 3,
+      duration: 60,
+      tags: ['indonesian', 'spices', 'rice', 'sambal'],
+      categoryId: indonesianCuisine.id,
+      domainId: cooking.id,
+    },
+    {
+      title: 'Spanish Cooking',
+      slug: 'spanish-cooking-track',
+      description: 'Learn paella, tapas, and essential Spanish cooking techniques',
+      difficulty: 3,
+      duration: 65,
+      tags: ['spanish', 'paella', 'tapas', 'regional'],
+      categoryId: spanishCuisine.id,
+      domainId: cooking.id,
+    },
+  ]
+
+  for (const activity of missingCuisineTracks) {
     await prisma.activity.upsert({
       where: {
         domainId_categoryId_slug: {
